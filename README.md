@@ -8,6 +8,7 @@
 - Integrates [detekt](https://github.com/arturbosch/detekt) for code analysis
 - Default quality profile `Detekt way`
 - Syntax highlighting
+- Supports SonarQube 5.6 and 6.4
 
 ### Usage
 
