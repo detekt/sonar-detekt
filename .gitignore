@@ -1,5 +1,6 @@
 .gradle
 /build/
+.idea
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -12,3 +13,9 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
+gradle/
+sonar-kotlin.iml
+sonar-kotlin.ipr
+sonar-kotlin.iws
+sonar-kotlin_main.iml
+sonar-kotlin_test.iml
