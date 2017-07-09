@@ -13,5 +13,6 @@ val severityTranslations = mapOf(
 		Severity.Minor to org.sonar.api.rule.Severity.MINOR,
 		Severity.Security to org.sonar.api.rule.Severity.BLOCKER,
 		Severity.Style to org.sonar.api.rule.Severity.INFO,
-		Severity.Warning to org.sonar.api.rule.Severity.INFO
+		Severity.Warning to org.sonar.api.rule.Severity.INFO,
+		Severity.Performance to org.sonar.api.rule.Severity.CRITICAL
 )

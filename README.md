@@ -3,6 +3,9 @@
 [![build status](https://travis-ci.org/arturbosch/sonar-kotlin.svg?branch=master)](https://travis-ci.org/arturbosch/sonar-kotlin)
 [![build status windows](https://ci.appveyor.com/api/projects/status/bn2vto5dnkenxeg5?svg=true
 )](https://ci.appveyor.com/project/arturbosch/sonar-kotlin)
+
+![sonar-kotlin-in-action](img/sonar-kotlin.png)
+
 ### Features
 
 - Integrates [detekt](https://github.com/arturbosch/detekt) for code analysis
