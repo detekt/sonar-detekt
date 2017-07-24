@@ -62,12 +62,15 @@ class DetektSensor : Sensor {
 		}
 	}
 
-	private fun NewIssue.primaryLocation(issue: Finding, inputFile: InputFile): NewIssue {
-		val line = issue.startPosition.line
+	private fun NewIssue.primaryLocation(finding: Finding, inputFile: InputFile): NewIssue {
+		val line = finding.startPosition.line
+		val metricMessages = finding.metrics
+				.map { "${it.type} ${it.value} is greater than the threshold ${it.threshold}." }
+				.joinToString(" ")
 		val newIssueLocation = newLocation()
 				.on(inputFile)
 				.at(inputFile.selectLine(line))
-				.message(issue.issue.description)
+				.message("${finding.issue.description} $metricMessages")
 		return this.at(newIssueLocation)
 	}
 
