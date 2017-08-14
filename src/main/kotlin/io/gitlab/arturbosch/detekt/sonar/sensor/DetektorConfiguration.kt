@@ -1,8 +1,9 @@
 package io.gitlab.arturbosch.detekt.sonar.sensor
 
 import io.gitlab.arturbosch.detekt.api.Config
-import io.gitlab.arturbosch.detekt.cli.Main
-import io.gitlab.arturbosch.detekt.cli.SEPARATORS
+import io.gitlab.arturbosch.detekt.cli.Args
+import io.gitlab.arturbosch.detekt.cli.SEPARATOR_COMMA
+import io.gitlab.arturbosch.detekt.cli.SEPARATOR_SEMICOLON
 import io.gitlab.arturbosch.detekt.cli.loadConfiguration
 import io.gitlab.arturbosch.detekt.core.DetektFacade
 import io.gitlab.arturbosch.detekt.core.Detektor
@@ -28,7 +29,7 @@ fun configureDetektor(context: SensorContext): Detektor {
 	val settings = context.settings()
 
 	val pathFiltersString = settings.getString(PATH_FILTERS_KEY) ?: PATH_FILTERS_DEFAULTS
-	val filters = pathFiltersString.split(*SEPARATORS).map { PathFilter(it) }
+	val filters = pathFiltersString.split(SEPARATOR_SEMICOLON, SEPARATOR_COMMA).map { PathFilter(it) }
 
 	val config = chooseConfig(baseDir, settings)
 	val processingSettings = ProcessingSettings(
@@ -52,7 +53,7 @@ private fun chooseConfig(baseDir: File, settings: Settings): Config {
 	val internalConfigResource = settings.getString(CONFIG_RESOURCE_KEY)
 			?.let { if (it.isNullOrBlank()) null else it }
 
-	val possibleParseArguments = Main().apply {
+	val possibleParseArguments = Args().apply {
 		config = externalConfigPath?.path
 		configResource = internalConfigResource
 	}

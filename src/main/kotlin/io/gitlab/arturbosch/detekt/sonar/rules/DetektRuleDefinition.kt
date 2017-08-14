@@ -35,5 +35,5 @@ private fun RulesDefinition.NewRepository.defineRule(rule: Rule) {
 			.setStatus(RuleStatus.READY)
 			.setSeverity(severityTranslations[rule.issue.severity])
 	newRule.setDebtRemediationFunction(
-			newRule.debtRemediationFunctions().linear(rule.issue.dept.toString()))
+			newRule.debtRemediationFunctions().linear(rule.issue.debt.toString()))
 }

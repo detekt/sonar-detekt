@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.detekt.sonar.sensor
 
+import io.gitlab.arturbosch.detekt.api.Detektion
 import io.gitlab.arturbosch.detekt.api.Finding
-import io.gitlab.arturbosch.detekt.core.COMPLEXITY_KEY
-import io.gitlab.arturbosch.detekt.core.Detektion
-import io.gitlab.arturbosch.detekt.core.LLOC_KEY
+import io.gitlab.arturbosch.detekt.core.processors.COMPLEXITY_KEY
+import io.gitlab.arturbosch.detekt.core.processors.LLOC_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.DETEKT_SENSOR
 import io.gitlab.arturbosch.detekt.sonar.foundation.KOTLIN_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.KotlinSyntax

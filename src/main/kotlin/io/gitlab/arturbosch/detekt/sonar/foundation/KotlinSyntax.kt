@@ -1,7 +1,6 @@
 package io.gitlab.arturbosch.detekt.sonar.foundation
 
 import io.gitlab.arturbosch.detekt.api.FACTORY
-import io.gitlab.arturbosch.detekt.api.isPartOf
 import org.jetbrains.kotlin.com.intellij.lang.ASTNode
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
@@ -50,12 +49,10 @@ object KotlinSyntax {
 
 	private fun NewHighlighting.handleAnnotations(astNode: ASTNode) {
 		val psi = astNode.psi
-		if (psi.isPartOf(KtAnnotationEntry::class)) {
-			val annotation = psi.getNonStrictParentOfType(KtAnnotationEntry::class.java)
-			if (annotation != null) {
-				val range = annotation.textRange
-				highlight(range.startOffset, range.endOffset, TypeOfText.ANNOTATION)
-			}
+		val annotationEntry = psi.getNonStrictParentOfType(KtAnnotationEntry::class.java)
+		if (annotationEntry != null) {
+			val range = annotationEntry.textRange
+			highlight(range.startOffset, range.endOffset, TypeOfText.ANNOTATION)
 		}
 	}
 }

@@ -23,6 +23,7 @@ val ALL_LOADED_RULES = ServiceLoader.load(RuleSetProvider::class.java,
 			val subConfig = DEFAULT_YAML_CONFIG.subConfig(ruleSet.ruleSetId)
 			ruleSet.instance(subConfig).rules
 		}
+		.filterIsInstance<Rule>()
 
 val RULE_KEYS = ALL_LOADED_RULES.map { defineRuleKey(it) }
 
