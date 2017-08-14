@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <Blacklist timestamp="1502705980879"></Blacklist>
+  <Whitelist timestamp="1502705980879">
+    <ID>UnsafeCast:NoAutoCorrectConfig.kt$NoAutoCorrectConfig$false as T</ID>
+  </Whitelist>
+</SmellBaseline>

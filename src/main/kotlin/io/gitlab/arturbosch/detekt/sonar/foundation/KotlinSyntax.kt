@@ -56,4 +56,3 @@ object KotlinSyntax {
 		}
 	}
 }
-
