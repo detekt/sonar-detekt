@@ -16,16 +16,17 @@ val DEFAULT_YAML_CONFIG = YamlConfig.loadResource(
 	LOG.info(this.toString())
 }
 
-val ALL_LOADED_RULES = ServiceLoader.load(RuleSetProvider::class.java,
-		Config::javaClass.javaClass.classLoader)
-		.asIterable()
+val ALL_LOADED_RULES = ServiceLoader.load(RuleSetProvider::class.java, Config::javaClass.javaClass.classLoader)
 		.flatMap { ruleSet ->
 			val subConfig = DEFAULT_YAML_CONFIG.subConfig(ruleSet.ruleSetId)
 			ruleSet.instance(subConfig).rules
 		}
 		.filterIsInstance<Rule>()
+		.toList()
 
 val RULE_KEYS = ALL_LOADED_RULES.map { defineRuleKey(it) }
+
+val RULE_KEY_LOOKUP = RULE_KEYS.map { it.ruleKey to it }.toMap()
 
 data class DetektRuleKey(val repositoryKey: String,
 						 val ruleKey: String,
@@ -33,5 +34,3 @@ data class DetektRuleKey(val repositoryKey: String,
 						 val issue: Issue) : RuleKey(repositoryKey, ruleKey)
 
 private fun defineRuleKey(rule: Rule) = DetektRuleKey(DETEKT_REPOSITORY, rule.id, rule.active, rule.issue)
-
-fun findKey(id: String) = RULE_KEYS.find { it.rule() == id }

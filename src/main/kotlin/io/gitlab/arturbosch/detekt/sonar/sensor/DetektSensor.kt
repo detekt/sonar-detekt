@@ -8,7 +8,7 @@ import io.gitlab.arturbosch.detekt.sonar.foundation.DETEKT_SENSOR
 import io.gitlab.arturbosch.detekt.sonar.foundation.KOTLIN_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.KotlinSyntax
 import io.gitlab.arturbosch.detekt.sonar.foundation.LOG
-import io.gitlab.arturbosch.detekt.sonar.rules.findKey
+import io.gitlab.arturbosch.detekt.sonar.rules.RULE_KEY_LOOKUP
 import org.sonar.api.batch.fs.InputFile
 import org.sonar.api.batch.sensor.Sensor
 import org.sonar.api.batch.sensor.SensorContext
@@ -52,7 +52,7 @@ class DetektSensor : Sensor {
 				val inputFile = fileSystem.inputFile(fileSystem.predicates().`is`(baseDir.resolve(issue.location.file)))
 				if (inputFile != null) {
 					val newIssue = context.newIssue()
-							.forRule(findKey(issue.id))
+							.forRule(RULE_KEY_LOOKUP[issue.id])
 							.primaryLocation(issue, inputFile)
 					newIssue.save()
 				} else {
