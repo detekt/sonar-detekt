@@ -1,7 +1,9 @@
 package io.gitlab.arturbosch.detekt.sonar.rules
 
+import io.gitlab.arturbosch.detekt.api.BaseRule
 import io.gitlab.arturbosch.detekt.api.Config
 import io.gitlab.arturbosch.detekt.api.Issue
+import io.gitlab.arturbosch.detekt.api.MultiRule
 import io.gitlab.arturbosch.detekt.api.Rule
 import io.gitlab.arturbosch.detekt.api.RuleSetProvider
 import io.gitlab.arturbosch.detekt.api.YamlConfig
@@ -17,12 +19,15 @@ val DEFAULT_YAML_CONFIG = YamlConfig.loadResource(
 }
 
 val ALL_LOADED_RULES = ServiceLoader.load(RuleSetProvider::class.java, Config::javaClass.javaClass.classLoader)
-		.flatMap { ruleSet ->
-			val subConfig = DEFAULT_YAML_CONFIG.subConfig(ruleSet.ruleSetId)
-			ruleSet.instance(subConfig).rules
-		}
+		.flatMap { loadRules(it) }
+		.flatMap { (it as? MultiRule)?.rules ?: listOf(it) }
 		.filterIsInstance<Rule>()
 		.toList()
+
+private fun loadRules(provider: RuleSetProvider): List<BaseRule> {
+	val subConfig = DEFAULT_YAML_CONFIG.subConfig(provider.ruleSetId)
+	return provider.instance(subConfig).rules
+}
 
 val RULE_KEYS = ALL_LOADED_RULES.map { defineRuleKey(it) }
 

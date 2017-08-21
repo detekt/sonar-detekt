@@ -9,6 +9,7 @@ import io.gitlab.arturbosch.detekt.sonar.foundation.KOTLIN_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.KotlinSyntax
 import io.gitlab.arturbosch.detekt.sonar.foundation.LOG
 import io.gitlab.arturbosch.detekt.sonar.rules.RULE_KEY_LOOKUP
+import org.sonar.api.batch.fs.FileSystem
 import org.sonar.api.batch.fs.InputFile
 import org.sonar.api.batch.sensor.Sensor
 import org.sonar.api.batch.sensor.SensorContext
@@ -45,20 +46,25 @@ class DetektSensor : Sensor {
 
 	private fun reportIssues(detektion: Detektion, context: SensorContext) {
 		val fileSystem = context.fileSystem()
-		val baseDir = fileSystem.baseDir()
 		detektion.findings.forEach { ruleSet, findings ->
 			LOG.info("RuleSet: $ruleSet - ${findings.size}")
-			findings.forEach { issue ->
-				val inputFile = fileSystem.inputFile(fileSystem.predicates().`is`(baseDir.resolve(issue.location.file)))
-				if (inputFile != null) {
-					val newIssue = context.newIssue()
-							.forRule(RULE_KEY_LOOKUP[issue.id])
-							.primaryLocation(issue, inputFile)
-					newIssue.save()
-				} else {
-					LOG.info("No file found for ${issue.location.file}")
-				}
-			}
+			findings.forEach { issue -> reportIssue(fileSystem, issue, context) }
+		}
+	}
+
+	private fun reportIssue(fileSystem: FileSystem, issue: Finding, context: SensorContext) {
+		val baseDir = fileSystem.baseDir()
+		val pathOfIssue = baseDir.resolve(issue.location.file)
+		val inputFile = fileSystem.inputFile(fileSystem.predicates().`is`(pathOfIssue))
+		if (inputFile != null) {
+			RULE_KEY_LOOKUP[issue.id]?.let {
+				val newIssue = context.newIssue()
+						.forRule(it)
+						.primaryLocation(issue, inputFile)
+				newIssue.save()
+			} ?: LOG.warn("Could not find rule key for detekt rule ${issue.id}.")
+		} else {
+			LOG.info("No file found for ${issue.location.file}")
 		}
 	}
 
