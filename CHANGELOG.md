@@ -1,5 +1,9 @@
 # Detekt - Changelog
 
+#### 0.2.3
+
+- Fixed issue with invalid locations - #20
+
 #### 0.2.2
 
 - Fixed RuleKey mandatory issue
