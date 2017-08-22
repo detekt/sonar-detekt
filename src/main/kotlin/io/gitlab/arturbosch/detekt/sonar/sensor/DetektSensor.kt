@@ -53,6 +53,10 @@ class DetektSensor : Sensor {
 	}
 
 	private fun reportIssue(fileSystem: FileSystem, issue: Finding, context: SensorContext) {
+		if (issue.startPosition.line < 0) {
+			LOG.info("Invalid location for ${issue.compactWithSignature()}.")
+			return
+		}
 		val baseDir = fileSystem.baseDir()
 		val pathOfIssue = baseDir.resolve(issue.location.file)
 		val inputFile = fileSystem.inputFile(fileSystem.predicates().`is`(pathOfIssue))
@@ -62,7 +66,7 @@ class DetektSensor : Sensor {
 						.forRule(it)
 						.primaryLocation(issue, inputFile)
 				newIssue.save()
-			} ?: LOG.warn("Could not find rule key for detekt rule ${issue.id}.")
+			} ?: LOG.warn("Could not find rule key for detekt rule ${issue.id} (${issue.compactWithSignature()}).")
 		} else {
 			LOG.info("No file found for ${issue.location.file}")
 		}
@@ -71,8 +75,7 @@ class DetektSensor : Sensor {
 	private fun NewIssue.primaryLocation(finding: Finding, inputFile: InputFile): NewIssue {
 		val line = finding.startPosition.line
 		val metricMessages = finding.metrics
-				.map { "${it.type} ${it.value} is greater than the threshold ${it.threshold}." }
-				.joinToString(" ")
+				.joinToString(" ") { "${it.type} ${it.value} is greater than the threshold ${it.threshold}." }
 		val newIssueLocation = newLocation()
 				.on(inputFile)
 				.at(inputFile.selectLine(line))
