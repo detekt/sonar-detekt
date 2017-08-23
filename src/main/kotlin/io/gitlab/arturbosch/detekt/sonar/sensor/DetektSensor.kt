@@ -4,6 +4,9 @@ import io.gitlab.arturbosch.detekt.api.Detektion
 import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.core.processors.COMPLEXITY_KEY
 import io.gitlab.arturbosch.detekt.core.processors.LLOC_KEY
+import io.gitlab.arturbosch.detekt.core.processors.LOC_KEY
+import io.gitlab.arturbosch.detekt.core.processors.NUMBER_OF_COMMENT_LINES_KEY
+import io.gitlab.arturbosch.detekt.core.processors.SLOC_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.DETEKT_SENSOR
 import io.gitlab.arturbosch.detekt.sonar.foundation.KOTLIN_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.KotlinSyntax
@@ -28,10 +31,11 @@ class DetektSensor : Sensor {
 	override fun execute(context: SensorContext) {
 		val detektor = configureDetektor(context)
 		val detektion = detektor.run()
+		val storage = MeasurementStorage(detektion, context)
 
 		highlightFiles(context)
 		reportIssues(detektion, context)
-		reportMetrics(detektion, context)
+		reportMetrics(storage)
 	}
 
 	private fun highlightFiles(context: SensorContext) {
@@ -83,20 +87,11 @@ class DetektSensor : Sensor {
 		return this.at(newIssueLocation)
 	}
 
-	private fun reportMetrics(detektion: Detektion, context: SensorContext) {
-		detektion.getData(COMPLEXITY_KEY)?.let {
-			context.newMeasure<Int>()
-					.withValue(it)
-					.forMetric(MCCABE_PROJECT)
-					.on(context.module())
-					.save()
-		}
-		detektion.getData(LLOC_KEY)?.let {
-			context.newMeasure<Int>()
-					.withValue(it)
-					.forMetric(LLOC_PROJECT)
-					.on(context.module())
-					.save()
-		}
+	private fun reportMetrics(storage: MeasurementStorage) {
+		storage.save(LOC_KEY, LOC_PROJECT)
+		storage.save(SLOC_KEY, SLOC_PROJECT)
+		storage.save(LLOC_KEY, LLOC_PROJECT)
+		storage.save(NUMBER_OF_COMMENT_LINES_KEY, CLOC_PROJECT)
+		storage.save(COMPLEXITY_KEY, MCCABE_PROJECT)
 	}
 }
