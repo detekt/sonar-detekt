@@ -38,6 +38,8 @@ dependencies {
 	compile "io.gitlab.arturbosch.detekt:detekt-rules:$detektVersion"
 	provided "org.sonarsource.sonarqube:sonar-plugin-api:$sonarVersion"
 
+	testCompile "junit:junit:4.12"
+	testCompile "com.nhaarman:mockito-kotlin-kt1.1:$mockitoKotlinVersion"
 	testCompile "org.junit.jupiter:junit-jupiter-api:$junitEngineVersion"
 	testCompile "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
 	testCompile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"

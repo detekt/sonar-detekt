@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.detekt.sonar.foundation
 
-import io.gitlab.arturbosch.detekt.api.FACTORY
 import org.jetbrains.kotlin.com.intellij.lang.ASTNode
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
+import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
 import org.sonar.api.batch.fs.InputFile
 import org.sonar.api.batch.sensor.SensorContext
@@ -15,12 +15,9 @@ import org.sonar.api.batch.sensor.highlighting.TypeOfText
  */
 object KotlinSyntax {
 
-	fun processFile(inputFile: InputFile, context: SensorContext) {
-		val file = inputFile.file()
-
+	fun processFile(inputFile: InputFile, ktFile: KtFile, context: SensorContext) {
 		val syntax = context.newHighlighting().onFile(inputFile)
 
-		val ktFile = FACTORY.createFile(file.readText())
 		ktFile.node.visitTokens {
 			when (it.elementType) {
 				in KtTokens.KEYWORDS -> syntax.highlightByType(it, TypeOfText.KEYWORD)
