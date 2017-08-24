@@ -7,6 +7,7 @@ import io.gitlab.arturbosch.detekt.cli.SEPARATOR_SEMICOLON
 import io.gitlab.arturbosch.detekt.cli.loadConfiguration
 import io.gitlab.arturbosch.detekt.core.DetektFacade
 import io.gitlab.arturbosch.detekt.core.Detektor
+import io.gitlab.arturbosch.detekt.core.FileProcessorLocator
 import io.gitlab.arturbosch.detekt.core.PathFilter
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
 import io.gitlab.arturbosch.detekt.sonar.foundation.CONFIG_PATH_KEY
@@ -23,48 +24,60 @@ import java.io.File
 /**
  * @author Artur Bosch
  */
-fun configureDetektor(context: SensorContext): Detektor {
-	val fileSystem = context.fileSystem()
-	val baseDir = fileSystem.baseDir()
-	val settings = context.settings()
+class DetektorConfiguration(context: SensorContext) {
 
-	val pathFiltersString = settings.getString(PATH_FILTERS_KEY) ?: PATH_FILTERS_DEFAULTS
-	val filters = pathFiltersString.split(SEPARATOR_SEMICOLON, SEPARATOR_COMMA).map { PathFilter(it) }
+	private val config: Config
+	private val settings: Settings
+	private val baseDir: File
 
-	val config = chooseConfig(baseDir, settings)
-	val processingSettings = ProcessingSettings(
-			baseDir.toPath(), NoAutoCorrectConfig(config), filters)
-
-	return DetektFacade.instance(processingSettings)
-}
-
-private fun chooseConfig(baseDir: File, settings: Settings): Config {
-	val configPath = settings.getString(CONFIG_PATH_KEY)
-	val externalConfigPath = configPath?.let {
-		LOG.info("Registered config path: $it")
-		val configFile = File(it)
-		if (!configFile.isAbsolute) { // TODO find out how to resolve always to root path, not module path
-			val resolved = baseDir.resolve(configPath)
-			LOG.info("Relative path detected. Resolving to project dir: $resolved")
-			resolved
-		} else configFile
+	init {
+		val fileSystem = context.fileSystem()
+		baseDir = fileSystem.baseDir()
+		settings = context.settings()
+		config = chooseConfig(baseDir, settings)
 	}
 
-	val internalConfigResource = settings.getString(CONFIG_RESOURCE_KEY)
-			?.let { if (it.isNullOrBlank()) null else it }
+	/**
+	 * Provides an instance of [Detektor] to be used for whole project analysis.
+	 */
+	fun configureDetektor(): Pair<Detektor, FileProcessorLocator> {
+		val pathFiltersString = settings.getString(PATH_FILTERS_KEY) ?: PATH_FILTERS_DEFAULTS
+		val filters = pathFiltersString.split(SEPARATOR_SEMICOLON, SEPARATOR_COMMA).map { PathFilter(it) }
+		val processingSettings = ProcessingSettings(baseDir.toPath(), NoAutoCorrectConfig(config), filters)
+		val fileProcessorLocator = FileProcessorLocator(processingSettings)
 
-	val possibleParseArguments = Args().apply {
-		config = externalConfigPath?.path
-		configResource = internalConfigResource
+		return DetektFacade.instance(processingSettings).to(fileProcessorLocator)
 	}
 
-	val bestConfigMatch = possibleParseArguments.loadConfiguration()
-	val bestConfigMatchOrDefault = bestConfigMatch.let {
-		if (it == Config.empty) {
-			LOG.info("No detekt yaml configuration file found, using the default configuration.")
-			DEFAULT_YAML_CONFIG
-		} else it
+	private fun chooseConfig(baseDir: File, settings: Settings): Config {
+		val externalConfigPath = settings.getString(CONFIG_PATH_KEY)?.let { configPath ->
+			LOG.info("Registered config path: $configPath")
+			val configFile = File(configPath)
+			if (!configFile.isAbsolute) { // TODO find out how to resolve always to root path, not module path
+				val resolved = baseDir.resolve(configPath)
+				LOG.info("Relative path detected. Resolving to project dir: $resolved")
+				resolved
+			} else {
+				configFile
+			}
+		}
+
+		val internalConfigResource = settings.getString(CONFIG_RESOURCE_KEY)
+				?.let { if (it.isBlank()) null else it }
+
+		val possibleParseArguments = Args().apply {
+			config = externalConfigPath?.path
+			configResource = internalConfigResource
+		}
+
+		return possibleParseArguments.loadConfiguration().let { bestConfigMatch ->
+			if (bestConfigMatch == Config.empty) {
+				LOG.info("No detekt yaml configuration file found, using the default configuration.")
+				DEFAULT_YAML_CONFIG
+			} else {
+				bestConfigMatch
+			}
+		}
 	}
 
-	return bestConfigMatchOrDefault
 }

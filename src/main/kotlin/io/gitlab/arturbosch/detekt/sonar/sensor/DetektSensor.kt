@@ -2,6 +2,7 @@ package io.gitlab.arturbosch.detekt.sonar.sensor
 
 import io.gitlab.arturbosch.detekt.api.Detektion
 import io.gitlab.arturbosch.detekt.api.Finding
+import io.gitlab.arturbosch.detekt.core.KtCompiler
 import io.gitlab.arturbosch.detekt.core.processors.COMPLEXITY_KEY
 import io.gitlab.arturbosch.detekt.core.processors.LLOC_KEY
 import io.gitlab.arturbosch.detekt.core.processors.LOC_KEY
@@ -9,6 +10,7 @@ import io.gitlab.arturbosch.detekt.core.processors.NUMBER_OF_COMMENT_LINES_KEY
 import io.gitlab.arturbosch.detekt.core.processors.SLOC_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.DETEKT_SENSOR
 import io.gitlab.arturbosch.detekt.sonar.foundation.KOTLIN_KEY
+import io.gitlab.arturbosch.detekt.sonar.foundation.KotlinProcessor
 import io.gitlab.arturbosch.detekt.sonar.foundation.KotlinSyntax
 import io.gitlab.arturbosch.detekt.sonar.foundation.LOG
 import io.gitlab.arturbosch.detekt.sonar.rules.RULE_KEY_LOOKUP
@@ -29,22 +31,27 @@ class DetektSensor : Sensor {
 	}
 
 	override fun execute(context: SensorContext) {
-		val detektor = configureDetektor(context)
+		val detektorConfiguration = DetektorConfiguration(context)
+		val (detektor, fileProcessorLocator) = detektorConfiguration.configureDetektor()
 		val detektion = detektor.run()
 		val storage = MeasurementStorage(detektion, context)
+		val kotlinProcessor = KotlinProcessor(context, fileProcessorLocator)
 
-		highlightFiles(context)
+		processFiles(context, kotlinProcessor)
 		reportIssues(detektion, context)
-		reportMetrics(storage)
+		reportProjectMetrics(storage)
 	}
 
-	private fun highlightFiles(context: SensorContext) {
+	private fun processFiles(context: SensorContext, kotlinProcessor: KotlinProcessor) {
 		val fileSystem = context.fileSystem()
+		val project = fileSystem.baseDir().toPath()
 		fileSystem.inputFiles {
 			val language = it.language()
 			language != null && language == KOTLIN_KEY
-		}.forEach {
-			KotlinSyntax.processFile(it, context)
+		}.forEach { inputFile ->
+			val ktFile = KtCompiler(project).compile(inputFile.path())
+			kotlinProcessor.process(ktFile, inputFile)
+			KotlinSyntax.processFile(inputFile, ktFile, context)
 		}
 	}
 
@@ -87,11 +94,12 @@ class DetektSensor : Sensor {
 		return this.at(newIssueLocation)
 	}
 
-	private fun reportMetrics(storage: MeasurementStorage) {
+	private fun reportProjectMetrics(storage: MeasurementStorage) {
 		storage.save(LOC_KEY, LOC_PROJECT)
 		storage.save(SLOC_KEY, SLOC_PROJECT)
 		storage.save(LLOC_KEY, LLOC_PROJECT)
 		storage.save(NUMBER_OF_COMMENT_LINES_KEY, CLOC_PROJECT)
 		storage.save(COMPLEXITY_KEY, MCCABE_PROJECT)
 	}
+
 }
