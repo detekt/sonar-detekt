@@ -6,6 +6,8 @@ import io.gitlab.arturbosch.detekt.sonar.profiles.KotlinProfile
 import io.gitlab.arturbosch.detekt.sonar.rules.DetektRulesDefinition
 import io.gitlab.arturbosch.detekt.sonar.sensor.DetektMetrics
 import io.gitlab.arturbosch.detekt.sonar.sensor.DetektSensor
+import io.gitlab.arturbosch.detekt.sonar.surefire.KotlinSurefireParser
+import io.gitlab.arturbosch.detekt.sonar.surefire.KotlinSurefireSensor
 import org.sonar.api.Plugin
 
 /**
@@ -19,8 +21,10 @@ class DetektPlugin : Plugin {
 				KotlinProfile::class.java,
 				DetektSensor::class.java,
 				DetektRulesDefinition::class.java,
-				DetektMetrics::class.java
-		))
+				DetektMetrics::class.java,
+                KotlinSurefireParser::class.java,
+                KotlinSurefireSensor::class.java
+        ))
 		context.addExtensions(PROPERTIES)
 	}
 
