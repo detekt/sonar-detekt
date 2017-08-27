@@ -19,8 +19,6 @@
  */
 package io.gitlab.arturbosch.detekt.sonar.surefire.data
 
-import java.util.*
-
 class UnitTestClassReport {
     var errors = 0
         private set

@@ -41,7 +41,6 @@ import org.sonar.api.utils.ParsingUtils
 import org.sonar.api.utils.log.Loggers
 import java.io.File
 import java.io.Serializable
-import java.util.*
 import javax.xml.stream.XMLStreamException
 
 @BatchSide
@@ -75,7 +74,10 @@ class KotlinSurefireParser(private val perspectives: ResourcePerspectives, priva
             }
         }
         if (negativeTimeTestNumber > 0) {
-            LOGGER.warn("There is {} test(s) reported with negative time by surefire, total duration may not be accurate.", negativeTimeTestNumber)
+            LOGGER.warn(
+                    "There is {} test(s) reported with negative time by surefire, total duration may not be accurate.",
+                    negativeTimeTestNumber
+            )
         }
     }
 
@@ -94,14 +96,14 @@ class KotlinSurefireParser(private val perspectives: ResourcePerspectives, priva
         saveResults(inputFile, report)
     }
 
-    protected fun saveResults(testFile: InputFile, report: UnitTestClassReport) {
+    private fun saveResults(testFile: InputFile, report: UnitTestClassReport) {
         for (unitTestResult in report.results) {
             val testPlan = perspectives.`as`(MutableTestPlan::class.java, testFile)
             testPlan?.addTestCase(unitTestResult.getName())?.setDurationInMs(Math.max(unitTestResult.getDurationMilliseconds(), 0))?.setStatus(TestCase.Status.of(unitTestResult.getStatus()))?.setMessage(unitTestResult.getMessage())?.setType(TestCase.TYPE_UNIT)?.setStackTrace(unitTestResult.getStackTrace())
         }
     }
 
-    protected fun getUnitTestInputFile(classKey: String): InputFile? {
+    private fun getUnitTestInputFile(classKey: String): InputFile? {
         val fileName = classKey.replace('.', '/')
         val p = fs.predicates()
         val fileNamePredicates = getFileNamePredicateFromSuffixes(p, fileName, arrayOf(KOTLIN_FILE_SUFFIX))

@@ -26,7 +26,7 @@ import org.codehaus.staxmate.`in`.SMHierarchicCursor
 import org.codehaus.staxmate.`in`.SMInputCursor
 import org.sonar.api.utils.ParsingUtils
 import java.text.ParseException
-import java.util.*
+import java.util.Locale
 import javax.xml.stream.XMLStreamException
 
 class SurefireStaxHandler(private val index: UnitTestIndex) : XmlStreamHandler {
