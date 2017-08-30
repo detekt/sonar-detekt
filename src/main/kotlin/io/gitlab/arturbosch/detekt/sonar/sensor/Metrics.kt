@@ -34,7 +34,8 @@ val SLOC_PROJECT: Metric<Int> = Metric.Builder("sloc",
 		.setDomain(CoreMetrics.DOMAIN_GENERAL)
 		.create<Int>()
 
-val LLOC_PROJECT: Metric<Int> = Metric.Builder("lloc", "Logical Lines of Code", Metric.ValueType.INT)
+val LLOC_PROJECT: Metric<Int> = Metric.Builder("lloc",
+		"Logical Lines of Code", Metric.ValueType.INT)
 		.setDescription("Number of logical lines of code.")
 		.setDirection(Metric.DIRECTION_NONE)
 		.setQualitative(false)
