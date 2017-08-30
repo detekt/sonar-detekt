@@ -8,7 +8,6 @@ import io.gitlab.arturbosch.detekt.sonar.foundation.PATH_FILTERS_KEY
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
-import org.sonar.api.batch.fs.InputFile
 import org.sonar.api.batch.fs.internal.DefaultFileSystem
 import org.sonar.api.batch.fs.internal.DefaultInputDir
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder
@@ -43,7 +42,7 @@ class DetektSensorTest {
 		fileLinesContextFactory = mock()
 		fileLinesContext = mock()
 
-		whenever(fileLinesContextFactory.createFor(any<InputFile>())).thenReturn(fileLinesContext)
+		whenever(fileLinesContextFactory.createFor(any())).thenReturn(fileLinesContext)
 	}
 
 	@Test
@@ -52,7 +51,7 @@ class DetektSensorTest {
 
 		sensor.execute(context)
 
-		assertThat(context.measure(kotlinFileKey, NCLOC).value()).isEqualTo(1)
+		assertThat(context.measure(kotlinFileKey, NCLOC).value()).isEqualTo(2)
 		assertThat(context.measure(kotlinFileKey, COMMENT_LINES).value()).isEqualTo(0)
 	}
 
@@ -63,10 +62,10 @@ class DetektSensorTest {
 
 		sensor.execute(context)
 
-		assertThat(context.measure(a, NCLOC).value()).isEqualTo(4)
+		assertThat(context.measure(a, NCLOC).value()).isEqualTo(9)
 		assertThat(context.measure(a, COMMENT_LINES).value()).isEqualTo(3)
 		assertThat(context.measure(a, COMPLEXITY).value()).isEqualTo(1)
-		assertThat(context.measure(b, NCLOC).value()).isEqualTo(3)
+		assertThat(context.measure(b, NCLOC).value()).isEqualTo(6)
 		assertThat(context.measure(b, COMMENT_LINES).value()).isEqualTo(3)
 		assertThat(context.measure(b, COMPLEXITY).value()).isEqualTo(0)
 	}

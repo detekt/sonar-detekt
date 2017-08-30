@@ -3,8 +3,8 @@ package io.gitlab.arturbosch.detekt.sonar.foundation
 import io.gitlab.arturbosch.detekt.api.FileProcessListener
 import io.gitlab.arturbosch.detekt.core.FileProcessorLocator
 import io.gitlab.arturbosch.detekt.core.processors.COMPLEXITY_KEY
-import io.gitlab.arturbosch.detekt.core.processors.LLOC_KEY
 import io.gitlab.arturbosch.detekt.core.processors.NUMBER_OF_COMMENT_LINES_KEY
+import io.gitlab.arturbosch.detekt.core.processors.SLOC_KEY
 import org.jetbrains.kotlin.com.intellij.openapi.util.Key
 import org.jetbrains.kotlin.psi.KtFile
 import org.sonar.api.batch.fs.InputComponent
@@ -30,7 +30,7 @@ class KotlinProcessor(
 	}
 
 	private fun saveResults(file: KtFile, inputComponent: InputComponent) {
-		save(file, inputComponent, LLOC_KEY, NCLOC)
+		save(file, inputComponent, SLOC_KEY, NCLOC)
 		save(file, inputComponent, NUMBER_OF_COMMENT_LINES_KEY, COMMENT_LINES)
 		save(file, inputComponent, COMPLEXITY_KEY, COMPLEXITY)
 	}
