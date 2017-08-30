@@ -28,7 +28,7 @@ fun RulesDefinition.NewRepository.createRules() = this.apply {
 private fun RulesDefinition.NewRepository.defineRule(rule: Rule) {
 	var description = rule.issue.description
 	// TODO remove this after all rules have descriptions
-	if (description.isNullOrBlank()) description = "No description yet!"
+	if (description.isNullOrBlank()) description = "No description yet! Report me or suggest one!"
 	val newRule = createRule(rule.id).setName(rule.id)
 			.setHtmlDescription(description)
 			.setTags(rule.issue.severity.name.toLowerCase())

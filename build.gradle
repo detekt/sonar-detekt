@@ -37,6 +37,7 @@ dependencies {
 	compile "io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion"
 	compile "io.gitlab.arturbosch.detekt:detekt-rules:$detektVersion"
 	provided "org.sonarsource.sonarqube:sonar-plugin-api:$sonarVersion"
+	compile "org.sonarsource.java:java-jacoco:4.11.0.10660"
 
 	testCompile "junit:junit:4.12"
 	testCompile "com.nhaarman:mockito-kotlin-kt1.1:$mockitoKotlinVersion"
