@@ -1,25 +1,12 @@
 package io.gitlab.arturbosch.detekt.sonar.sensor
 
-import io.gitlab.arturbosch.detekt.api.Detektion
-import io.gitlab.arturbosch.detekt.api.Finding
-import io.gitlab.arturbosch.detekt.core.KtCompiler
-import io.gitlab.arturbosch.detekt.core.processors.COMPLEXITY_KEY
-import io.gitlab.arturbosch.detekt.core.processors.LLOC_KEY
-import io.gitlab.arturbosch.detekt.core.processors.LOC_KEY
-import io.gitlab.arturbosch.detekt.core.processors.NUMBER_OF_COMMENT_LINES_KEY
-import io.gitlab.arturbosch.detekt.core.processors.SLOC_KEY
+import io.gitlab.arturbosch.detekt.core.DetektFacade
+import io.gitlab.arturbosch.detekt.core.KtTreeCompiler
 import io.gitlab.arturbosch.detekt.sonar.foundation.DETEKT_SENSOR
 import io.gitlab.arturbosch.detekt.sonar.foundation.KOTLIN_KEY
-import io.gitlab.arturbosch.detekt.sonar.foundation.KotlinProcessor
-import io.gitlab.arturbosch.detekt.sonar.foundation.KotlinSyntax
-import io.gitlab.arturbosch.detekt.sonar.foundation.LOG
-import io.gitlab.arturbosch.detekt.sonar.rules.RULE_KEY_LOOKUP
-import org.sonar.api.batch.fs.FileSystem
-import org.sonar.api.batch.fs.InputFile
 import org.sonar.api.batch.sensor.Sensor
 import org.sonar.api.batch.sensor.SensorContext
 import org.sonar.api.batch.sensor.SensorDescriptor
-import org.sonar.api.batch.sensor.issue.NewIssue
 
 /**
  * @author Artur Bosch
@@ -31,75 +18,15 @@ class DetektSensor : Sensor {
 	}
 
 	override fun execute(context: SensorContext) {
-		val detektorConfiguration = DetektorConfiguration(context)
-		val (detektor, fileProcessorLocator) = detektorConfiguration.configureDetektor()
-		val detektion = detektor.run()
-		val storage = MeasurementStorage(detektion, context)
-		val kotlinProcessor = KotlinProcessor(context, fileProcessorLocator)
+		val settings = createProcessingSettings(context)
+		val detektor = DetektFacade.instance(settings)
+		val compiler = KtTreeCompiler.instance(settings)
 
-		processFiles(context, kotlinProcessor)
-		reportIssues(detektion, context)
-		reportProjectMetrics(storage)
+		val ktFiles = compiler.compile()
+		val detektion = detektor.run(ktFiles)
+
+		IssueReporter(detektion, context).run()
+		ProjectMeasurementStorage(detektion, context).run()
+		FileProcessor(context, ktFiles).run()
 	}
-
-	private fun processFiles(context: SensorContext, kotlinProcessor: KotlinProcessor) {
-		val fileSystem = context.fileSystem()
-		val project = fileSystem.baseDir().toPath()
-		fileSystem.inputFiles {
-			val language = it.language()
-			language != null && language == KOTLIN_KEY
-		}.forEach { inputFile ->
-			val ktFile = KtCompiler(project).compile(inputFile.path())
-			kotlinProcessor.process(ktFile, inputFile)
-			KotlinSyntax.processFile(inputFile, ktFile, context)
-		}
-	}
-
-	private fun reportIssues(detektion: Detektion, context: SensorContext) {
-		val fileSystem = context.fileSystem()
-		detektion.findings.forEach { ruleSet, findings ->
-			LOG.info("RuleSet: $ruleSet - ${findings.size}")
-			findings.forEach { issue -> reportIssue(fileSystem, issue, context) }
-		}
-	}
-
-	private fun reportIssue(fileSystem: FileSystem, issue: Finding, context: SensorContext) {
-		if (issue.startPosition.line < 0) {
-			LOG.info("Invalid location for ${issue.compactWithSignature()}.")
-			return
-		}
-		val baseDir = fileSystem.baseDir()
-		val pathOfIssue = baseDir.resolve(issue.location.file)
-		val inputFile = fileSystem.inputFile(fileSystem.predicates().`is`(pathOfIssue))
-		if (inputFile != null) {
-			RULE_KEY_LOOKUP[issue.id]?.let {
-				val newIssue = context.newIssue()
-						.forRule(it)
-						.primaryLocation(issue, inputFile)
-				newIssue.save()
-			} ?: LOG.warn("Could not find rule key for detekt rule ${issue.id} (${issue.compactWithSignature()}).")
-		} else {
-			LOG.info("No file found for ${issue.location.file}")
-		}
-	}
-
-	private fun NewIssue.primaryLocation(finding: Finding, inputFile: InputFile): NewIssue {
-		val line = finding.startPosition.line
-		val metricMessages = finding.metrics
-				.joinToString(" ") { "${it.type} ${it.value} is greater than the threshold ${it.threshold}." }
-		val newIssueLocation = newLocation()
-				.on(inputFile)
-				.at(inputFile.selectLine(line))
-				.message("${finding.issue.description} $metricMessages")
-		return this.at(newIssueLocation)
-	}
-
-	private fun reportProjectMetrics(storage: MeasurementStorage) {
-		storage.save(LOC_KEY, LOC_PROJECT)
-		storage.save(SLOC_KEY, SLOC_PROJECT)
-		storage.save(LLOC_KEY, LLOC_PROJECT)
-		storage.save(NUMBER_OF_COMMENT_LINES_KEY, CLOC_PROJECT)
-		storage.save(COMPLEXITY_KEY, MCCABE_PROJECT)
-	}
-
 }
