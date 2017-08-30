@@ -11,9 +11,9 @@ import org.junit.Test
 import org.sonar.api.batch.fs.InputFile
 import org.sonar.api.batch.fs.internal.DefaultFileSystem
 import org.sonar.api.batch.fs.internal.DefaultInputDir
-import org.sonar.api.batch.fs.internal.DefaultInputFile
+import org.sonar.api.batch.fs.internal.TestInputFileBuilder
 import org.sonar.api.batch.sensor.internal.SensorContextTester
-import org.sonar.api.config.Settings
+import org.sonar.api.config.MapSettings
 import org.sonar.api.measures.CoreMetrics.COMMENT_LINES
 import org.sonar.api.measures.CoreMetrics.COMPLEXITY
 import org.sonar.api.measures.CoreMetrics.NCLOC
@@ -25,13 +25,13 @@ class DetektSensorTest {
 
 	private val resourcesDir = File(RESOURCES_PATH)
 	private val sourceDir = File(RESOURCES_PATH, KOTLIN_PATH)
-	private val settings = Settings().setProperty(PATH_FILTERS_KEY, KOTLIN_PATH)
+	private val settings = MapSettings().setProperty(PATH_FILTERS_KEY, KOTLIN_PATH)
 
-	lateinit var context: SensorContextTester
-	lateinit var fileSystem: DefaultFileSystem
-	lateinit var fileLinesContextFactory: FileLinesContextFactory
-	lateinit var sensor: DetektSensor
-	lateinit var fileLinesContext: FileLinesContext
+	private lateinit var context: SensorContextTester
+	private lateinit var fileSystem: DefaultFileSystem
+	private lateinit var fileLinesContextFactory: FileLinesContextFactory
+	private lateinit var sensor: DetektSensor
+	private lateinit var fileLinesContext: FileLinesContext
 
 	@Before
 	fun setUp() {
@@ -73,9 +73,10 @@ class DetektSensorTest {
 
 	private fun addMockFile(filePath: String): String {
 		val sourceFile = File(sourceDir, filePath)
-		val kotlinFile = DefaultInputFile("", "$KOTLIN_PATH/$filePath")
+		val kotlinFile = TestInputFileBuilder(RESOURCES_PATH, "$KOTLIN_PATH/$filePath")
 				.setLanguage(KOTLIN_KEY)
 				.initMetadata(sourceFile.readText())
+				.build()
 		fileSystem.add(kotlinFile)
 		return kotlinFile.key()
 	}
