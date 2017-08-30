@@ -1,7 +1,5 @@
-package io.gitlab.arturbosch.detekt.sonar.foundation
+package io.gitlab.arturbosch.detekt.sonar.sensor
 
-import io.gitlab.arturbosch.detekt.api.FileProcessListener
-import io.gitlab.arturbosch.detekt.core.FileProcessorLocator
 import io.gitlab.arturbosch.detekt.core.processors.COMPLEXITY_KEY
 import io.gitlab.arturbosch.detekt.core.processors.NUMBER_OF_COMMENT_LINES_KEY
 import io.gitlab.arturbosch.detekt.core.processors.SLOC_KEY
@@ -17,19 +15,9 @@ import org.sonar.api.measures.Metric
 /**
  * Class responsible for processing individual [KtFile]s and extracting useful metrics.
  */
-class KotlinProcessor(
-		private val context: SensorContext,
-		fileProcessorLocator: FileProcessorLocator
-) {
+class FileMeasurementStorage(private val context: SensorContext) {
 
-	private val processors: List<FileProcessListener> = fileProcessorLocator.load()
-
-	fun process(file: KtFile, inputComponent: InputComponent) {
-		processors.forEach { it.onProcess(file) }
-		saveResults(file, inputComponent)
-	}
-
-	private fun saveResults(file: KtFile, inputComponent: InputComponent) {
+	fun save(file: KtFile, inputComponent: InputComponent) {
 		save(file, inputComponent, SLOC_KEY, NCLOC)
 		save(file, inputComponent, NUMBER_OF_COMMENT_LINES_KEY, COMMENT_LINES)
 		save(file, inputComponent, COMPLEXITY_KEY, COMPLEXITY)
