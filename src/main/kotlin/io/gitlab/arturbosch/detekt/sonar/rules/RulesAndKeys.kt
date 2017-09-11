@@ -33,7 +33,7 @@ val RULE_KEYS = ALL_LOADED_RULES.map { defineRuleKey(it) }
 
 val RULE_KEY_LOOKUP = RULE_KEYS.map { it.ruleKey to it }.toMap()
 
-data class DetektRuleKey(val repositoryKey: String,
+data class DetektRuleKey(private val repositoryKey: String,
 						 val ruleKey: String,
 						 val active: Boolean,
 						 val issue: Issue) : RuleKey(repositoryKey, ruleKey)
