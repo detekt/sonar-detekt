@@ -9,8 +9,8 @@ import kotlin.b.BObjectOne
  */
 class AClassOne {
 
-	val classes: List<Any> = listOf(AClassTwo(), AClassThree(), BClassOne(), BClassTwo())
-	val hash: Int = BObjectOne.hashCode()
+	private val classes: List<Any> = listOf(AClassTwo(), AClassThree(), BClassOne(), BClassTwo())
+	private val hash: Int = BObjectOne.hashCode()
 
 	fun doSomething():Any = classes[hash % classes.size]
 
