@@ -16,10 +16,5 @@ class KotlinJavaResourceLocator(
 				filePredicates.matchesPathPattern("**/" + className.replace('.', '/') + KOTLIN_FILE_SUFFIX),
 				filePredicates.hasLanguage(KOTLIN_KEY),
 				filePredicates.hasType(InputFile.Type.MAIN)))
-				?.let { inputFile -> ModifiedInputFile(inputFile, inputFile.lines()) }
 	}
-}
-
-class ModifiedInputFile(private val inputFile: InputFile, private val lines: Int) : InputFile by inputFile {
-	override fun lines(): Int = lines + 1
 }
