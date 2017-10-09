@@ -96,7 +96,6 @@ detekt {
 	profile("main") {
 		input = "$project.projectDir"
 		filters = '.*/test/.*, .*/resources/.*, .*/build/.*'
-		config = "$project.projectDir/detekt.yml"
 		baseline = "$project.projectDir/reports/baseline.xml"
 	}
 	idea {

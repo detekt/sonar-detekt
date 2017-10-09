@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
   <Blacklist timestamp="1502705980879"></Blacklist>
-  <Whitelist timestamp="1502705980879">
-    <ID>UnsafeCast:NoAutoCorrectConfig.kt$NoAutoCorrectConfig$false as T</ID>
+  <Whitelist timestamp="1507573590351">
+    <ID>ComplexMethod:DetektConfiguration.kt$private fun chooseConfig(baseDir: File, settings: Settings): Config</ID>
   </Whitelist>
 </SmellBaseline>
