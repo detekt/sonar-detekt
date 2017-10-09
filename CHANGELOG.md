@@ -1,5 +1,11 @@
 # Detekt - Changelog
 
+#### 0.2.4
+
+- Based on detekt RC4-3
+- Using lines of code and complexity metrics from detekt (by @schalkms)
+- JaCoCo support (by @vexdev)
+
 #### 0.2.3
 
 - Fixed issue with invalid locations - #20
