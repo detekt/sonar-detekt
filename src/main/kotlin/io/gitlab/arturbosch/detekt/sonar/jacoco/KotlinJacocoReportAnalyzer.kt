@@ -19,7 +19,6 @@
  */
 package io.gitlab.arturbosch.detekt.sonar.jacoco
 
-import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import org.apache.commons.lang.StringUtils
 import org.jacoco.core.analysis.ICounter
@@ -34,28 +33,38 @@ import org.sonar.plugins.jacoco.JaCoCoExtensions
 import org.sonar.plugins.jacoco.JacocoReportReader
 import org.sonar.plugins.java.api.JavaResourceLocator
 import java.io.File
-import java.util.*
+import java.util.ArrayList
 
 
+private const val NO_JACOCO_EXECUTION_DATA_MESSAGE =
+		"Project coverage is set to 0% as no JaCoCo execution data has been dumped: {}"
+private const val NO_CLASS_FILES_MESSAGE =
+		"No JaCoCo analysis of project coverage can be done since there is no class files."
+
+private const val NO_INFORMATION_ABOUT_COVERAGE_DATA_MESSAGE = "No information about coverage per test."
+private const val COVERAGE_PER_TEST_MESSAGE = "Information about coverage per test has been collected."
+
+private const val NO_DATA_COLLECTED_MESSAGE =
+		"Coverage information was not collected. Perhaps you forget to include debug information into compiled classes?"
+
+@Suppress("ALL")
 class KotlinJacocoReportAnalyzer @JvmOverloads constructor(
 		private val javaResourceLocator: JavaResourceLocator,
 		private val javaClasspath: JavaClasspath,
 		private val readCoveragePerTests: Boolean = true,
-		private val report: File
-) {
+		private val report: File) {
 
-	private var classFilesCache: MutableMap<String, File>? = null
-	private var jacocoReportReader: JacocoReportReader? = null
+	private var classFilesCache: MutableMap<String, File> = Maps.newHashMap()
 
-	private fun fullyQualifiedClassName(packageName: String, simpleClassName: String): String {
-		return (if ("" == packageName) "" else packageName + "/") + StringUtils.substringBeforeLast(simpleClassName, ".")
-	}
+	private fun fullyQualifiedClassName(packageName: String, simpleClassName: String): String =
+			if ("" == packageName) ""
+			else packageName + "/" + StringUtils.substringBeforeLast(simpleClassName, ".")
 
 	private fun getResource(coverage: ISourceFileCoverage): InputFile? {
 		val className = fullyQualifiedClassName(coverage.packageName, coverage.name)
 
-		val inputFile = javaResourceLocator.findResourceByClassName(className) ?: // Do not save measures on resource which doesn't exist in the context
-				return null
+		// Do not save measures on resource which doesn't exist in the context
+		val inputFile = javaResourceLocator.findResourceByClassName(className) ?: return null
 		return if (inputFile.type() == InputFile.Type.TEST) {
 			null
 		} else inputFile
@@ -63,19 +72,18 @@ class KotlinJacocoReportAnalyzer @JvmOverloads constructor(
 	}
 
 	fun analyse(context: SensorContext) {
-		classFilesCache = Maps.newHashMap()
 		for (classesDir in javaClasspath.binaryDirs) {
 			populateClassFilesCache(classesDir, "")
 		}
 
-		if (classFilesCache!!.isEmpty()) {
-			JaCoCoExtensions.LOG.info("No JaCoCo analysis of project coverage can be done since there is no class files.")
+		if (classFilesCache.isEmpty()) {
+			JaCoCoExtensions.LOG.info(NO_CLASS_FILES_MESSAGE)
 			return
 		}
 		val jacocoExecutionData = report
 		readExecutionData(jacocoExecutionData, context)
 
-		classFilesCache = null
+		classFilesCache = Maps.newHashMap()
 	}
 
 	private fun populateClassFilesCache(dir: File, path: String) {
@@ -85,7 +93,7 @@ class KotlinJacocoReportAnalyzer @JvmOverloads constructor(
 				populateClassFilesCache(file, path + file.name + "/")
 			} else if (file.name.endsWith(".class")) {
 				val className = path + StringUtils.removeEnd(file.name, ".class")
-				classFilesCache!!.put(className, file)
+				classFilesCache.put(className, file)
 			}
 		}
 	}
@@ -93,15 +101,19 @@ class KotlinJacocoReportAnalyzer @JvmOverloads constructor(
 	private fun readExecutionData(jacocoExecutionData: File?, context: SensorContext) {
 		var newJacocoExecutionData = jacocoExecutionData
 		if (newJacocoExecutionData == null || !newJacocoExecutionData.isFile) {
-			JaCoCoExtensions.LOG.info("Project coverage is set to 0% as no JaCoCo execution data has been dumped: {}", newJacocoExecutionData)
+			JaCoCoExtensions.LOG.info(NO_JACOCO_EXECUTION_DATA_MESSAGE, newJacocoExecutionData)
 			newJacocoExecutionData = null
 		}
+
 		val executionDataVisitor = ExecutionDataVisitor()
-		jacocoReportReader = JacocoReportReader(newJacocoExecutionData).readJacocoReport(executionDataVisitor, executionDataVisitor)
+		val jacocoReportReader = JacocoReportReader(newJacocoExecutionData)
+				.readJacocoReport(executionDataVisitor, executionDataVisitor)
 
-		val collectedCoveragePerTest = readCoveragePerTests(executionDataVisitor)
+		val collectedCoveragePerTest = readCoveragePerTests(executionDataVisitor, jacocoReportReader)
 
-		val coverageBuilder = jacocoReportReader!!.analyzeFiles(executionDataVisitor.merged, classFilesCache!!.values)
+		val coverageBuilder = jacocoReportReader!!.analyzeFiles(
+				executionDataVisitor.merged, classFilesCache.values)
+
 		var analyzedResources = 0
 		for (coverage in coverageBuilder.sourceFiles) {
 			val inputFile = getResource(coverage)
@@ -112,20 +124,20 @@ class KotlinJacocoReportAnalyzer @JvmOverloads constructor(
 				analyzedResources++
 			}
 		}
-		if (analyzedResources == 0) {
-			JaCoCoExtensions.LOG.warn("Coverage information was not collected. Perhaps you forget to include debug information into compiled classes?")
-		} else if (collectedCoveragePerTest) {
-			JaCoCoExtensions.LOG.info("Information about coverage per test has been collected.")
-		} else if (newJacocoExecutionData != null) {
-			JaCoCoExtensions.LOG.info("No information about coverage per test.")
+
+		when {
+			analyzedResources == 0 -> JaCoCoExtensions.LOG.warn(NO_DATA_COLLECTED_MESSAGE)
+			collectedCoveragePerTest -> JaCoCoExtensions.LOG.info(COVERAGE_PER_TEST_MESSAGE)
+			newJacocoExecutionData != null -> JaCoCoExtensions.LOG.info(NO_INFORMATION_ABOUT_COVERAGE_DATA_MESSAGE)
 		}
 	}
 
-	private fun readCoveragePerTests(executionDataVisitor: ExecutionDataVisitor): Boolean {
+	private fun readCoveragePerTests(executionDataVisitor: ExecutionDataVisitor,
+									 jacocoReportReader: JacocoReportReader): Boolean {
 		var collectedCoveragePerTest = false
 		if (readCoveragePerTests) {
 			for ((key, value) in executionDataVisitor.sessions) {
-				if (analyzeLinesCoveredByTests(key, value)) {
+				if (analyzeLinesCoveredByTests(key, value, jacocoReportReader)) {
 					collectedCoveragePerTest = true
 				}
 			}
@@ -133,14 +145,17 @@ class KotlinJacocoReportAnalyzer @JvmOverloads constructor(
 		return collectedCoveragePerTest
 	}
 
-	private fun analyzeLinesCoveredByTests(sessionId: String, executionDataStore: ExecutionDataStore): Boolean {
+	private fun analyzeLinesCoveredByTests(sessionId: String,
+										   executionDataStore: ExecutionDataStore,
+										   jacocoReportReader: JacocoReportReader): Boolean {
 		val i = sessionId.indexOf(' ')
 		if (i < 0) {
 			return false
 		}
 
 		var result = false
-		val coverageBuilder = jacocoReportReader!!.analyzeFiles(executionDataStore, classFilesOfStore(executionDataStore))
+		val coverageBuilder = jacocoReportReader.analyzeFiles(
+				executionDataStore, classFilesOfStore(executionDataStore))
 		for (coverage in coverageBuilder.sourceFiles) {
 			val resource = getResource(coverage)
 			if (resource != null) {
@@ -154,15 +169,9 @@ class KotlinJacocoReportAnalyzer @JvmOverloads constructor(
 	}
 
 	private fun classFilesOfStore(executionDataStore: ExecutionDataStore): Collection<File> {
-		val result = Lists.newArrayList<File>()
-		for (data in executionDataStore.contents) {
-			val vmClassName = data.name
-			val classFile = classFilesCache!![vmClassName]
-			if (classFile != null) {
-				result.add(classFile)
-			}
-		}
-		return result
+		return executionDataStore.contents
+				.map { it.name }
+				.mapNotNullTo(ArrayList()) { classFilesCache[it] }
 	}
 
 	private fun coveredLines(coverage: ISourceFileCoverage): List<Int> {

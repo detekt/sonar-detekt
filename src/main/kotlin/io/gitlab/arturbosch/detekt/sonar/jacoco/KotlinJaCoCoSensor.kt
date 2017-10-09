@@ -34,8 +34,9 @@ import org.sonar.plugins.jacoco.JacocoConfiguration.REPORT_PATHS_PROPERTY
 import org.sonar.plugins.jacoco.JacocoConfiguration.REPORT_PATH_PROPERTY
 import org.sonar.plugins.java.api.JavaResourceLocator
 import java.io.File
-import java.util.*
+import java.util.HashSet
 
+@Suppress("ALL")
 open class KotlinJaCoCoSensor(
 		fileSystem: FileSystem,
 		javaResourceLocator: JavaResourceLocator,

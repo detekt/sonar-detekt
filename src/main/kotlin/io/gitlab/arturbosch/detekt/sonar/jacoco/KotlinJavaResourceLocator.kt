@@ -6,6 +6,7 @@ import org.sonar.api.batch.fs.FileSystem
 import org.sonar.api.batch.fs.InputFile
 import org.sonar.plugins.java.api.JavaResourceLocator
 
+@Suppress("ALL")
 class KotlinJavaResourceLocator(
 		delegate: JavaResourceLocator,
 		private val fileSystem: FileSystem) : JavaResourceLocator by delegate {
