@@ -30,18 +30,8 @@ fun createProcessingSettings(context: SensorContext): ProcessingSettings {
 	return ProcessingSettings(baseDir.toPath(), NoAutoCorrectConfig(config), filters)
 }
 
-private fun chooseConfig(baseDir: File, settings: Settings): Config {
-	val externalConfigPath = settings.getString(CONFIG_PATH_KEY)?.let { configPath ->
-		LOG.info("Registered config path: $configPath")
-		val configFile = File(configPath)
-		if (!configFile.isAbsolute) { // TODO find out how to resolve always to root path, not module path
-			val resolved = baseDir.resolve(configPath)
-			LOG.info("Relative path detected. Resolving to project dir: $resolved")
-			resolved
-		} else {
-			configFile
-		}
-	}
+internal fun chooseConfig(baseDir: File, settings: Settings): Config {
+	val externalConfigPath = tryFindDetektConfigurationFile(settings, baseDir)
 
 	val internalConfigResource = settings.getString(CONFIG_RESOURCE_KEY)
 			?.let { if (it.isBlank()) null else it }
@@ -58,5 +48,25 @@ private fun chooseConfig(baseDir: File, settings: Settings): Config {
 		} else {
 			bestConfigMatch
 		}
+	}
+}
+
+private fun tryFindDetektConfigurationFile(settings: Settings, baseDir: File): File? {
+	return settings.getString(CONFIG_PATH_KEY)?.let { path ->
+		LOG.info("Registered config path: $path")
+		var configFile = File(path)
+
+		if (!configFile.exists() || configFile.endsWith(".yaml")) {
+			configFile = File(baseDir.path, configFile.path)
+		}
+		if (!configFile.exists() || configFile.endsWith(".yaml")) {
+			val parentFile = baseDir.parentFile
+			if (parentFile != null) {
+				configFile = File(parentFile.path, configFile.path)
+			} else {
+				return null
+			}
+		}
+		configFile
 	}
 }
