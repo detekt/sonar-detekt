@@ -17,12 +17,12 @@ class LoadConfigSpec : Spek({
 
 	describe("try loading configuration file via property") {
 
-		val base = File(javaClass.getResource("/configBase/top-detekt-config.yml").toURI()).parentFile
+		val base = File(javaClass.getResource("/configBase/config/detekt-config.yml").toURI()).parentFile
 		assertThat(base).isNotNull()
 
 		it("should match config on sub path level") {
 			val settings = MapSettings().apply {
-				setProperty(CONFIG_PATH_KEY, File.separator + "config" + File.separator + "detekt-config.yml")
+				setProperty(CONFIG_PATH_KEY, "detekt-config.yml")
 			}
 			val config = chooseConfig(base, settings)
 
@@ -31,7 +31,7 @@ class LoadConfigSpec : Spek({
 
 		it("should match config top path level") {
 			val settings = MapSettings().apply {
-				setProperty(CONFIG_PATH_KEY, File.separator + "config" + File.separator + "top-detekt-config.yml")
+				setProperty(CONFIG_PATH_KEY, "top-detekt-config.yml")
 			}
 			val config = chooseConfig(base, settings)
 
