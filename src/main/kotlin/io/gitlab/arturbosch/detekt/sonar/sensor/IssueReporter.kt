@@ -29,7 +29,7 @@ class IssueReporter(private val detektion: Detektion,
 			LOG.info("Invalid location for ${issue.compactWithSignature()}.")
 			return
 		}
-		val pathOfIssue = baseDir.resolve(issue.location.file)
+		val pathOfIssue = baseDir.resolveSibling(issue.location.file)
 		val inputFile = fileSystem.inputFile(fileSystem.predicates().`is`(pathOfIssue))
 		if (inputFile != null) {
 			RULE_KEY_LOOKUP[issue.id]?.let {
