@@ -57,12 +57,12 @@ private fun tryFindDetektConfigurationFile(settings: Settings, baseDir: File): F
 		var configFile = File(path)
 
 		if (!configFile.exists() || configFile.endsWith(".yaml")) {
-			configFile = File(baseDir.path, configFile.path)
+			configFile = File(baseDir.path, path)
 		}
 		if (!configFile.exists() || configFile.endsWith(".yaml")) {
 			val parentFile = baseDir.parentFile
 			if (parentFile != null) {
-				configFile = File(parentFile.path, configFile.path)
+				configFile = File(parentFile.path, path)
 			} else {
 				return null
 			}
