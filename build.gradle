@@ -34,7 +34,7 @@ repositories {
 
 dependencies {
 	compile "io.gitlab.arturbosch.detekt:detekt-core:$detektVersion"
-	compile "io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion"
+	compile "io.gitlab.arturbosch.detekt:detekt-cli:$detektVersion"
 	compile "io.gitlab.arturbosch.detekt:detekt-rules:$detektVersion"
 	compileOnly "org.sonarsource.sonarqube:sonar-plugin-api:$sonarVersion"
 	compile "org.sonarsource.java:java-jacoco:4.11.0.10660"
