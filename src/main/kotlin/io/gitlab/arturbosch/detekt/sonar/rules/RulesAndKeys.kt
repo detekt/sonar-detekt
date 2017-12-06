@@ -9,29 +9,29 @@ import io.gitlab.arturbosch.detekt.api.RuleSetProvider
 import io.gitlab.arturbosch.detekt.api.YamlConfig
 import io.gitlab.arturbosch.detekt.cli.ClasspathResourceConverter
 import io.gitlab.arturbosch.detekt.sonar.foundation.DETEKT_REPOSITORY
-import io.gitlab.arturbosch.detekt.sonar.foundation.LOG
+import io.gitlab.arturbosch.detekt.sonar.foundation.logger
 import org.sonar.api.rule.RuleKey
 import java.util.ServiceLoader
 
-val DEFAULT_YAML_CONFIG = YamlConfig.loadResource(
+val defaultYamlConfig = YamlConfig.loadResource(
 		ClasspathResourceConverter().convert("default-detekt-config.yml")).apply {
-	LOG.info(this.toString())
+	logger.info(this.toString())
 }
 
-val ALL_LOADED_RULES = ServiceLoader.load(RuleSetProvider::class.java, Config::javaClass.javaClass.classLoader)
+val allLoadedRules = ServiceLoader.load(RuleSetProvider::class.java, Config::javaClass.javaClass.classLoader)
 		.flatMap { loadRules(it) }
 		.flatMap { (it as? MultiRule)?.rules ?: listOf(it) }
 		.filterIsInstance<Rule>()
 		.toList()
 
 private fun loadRules(provider: RuleSetProvider): List<BaseRule> {
-	val subConfig = DEFAULT_YAML_CONFIG.subConfig(provider.ruleSetId)
+	val subConfig = defaultYamlConfig.subConfig(provider.ruleSetId)
 	return provider.instance(subConfig).rules
 }
 
-val RULE_KEYS = ALL_LOADED_RULES.map { defineRuleKey(it) }
+val ruleKeys = allLoadedRules.map { defineRuleKey(it) }
 
-val RULE_KEY_LOOKUP = RULE_KEYS.map { it.ruleKey to it }.toMap()
+val ruleKeyLookup = ruleKeys.map { it.ruleKey to it }.toMap()
 
 data class DetektRuleKey(private val repositoryKey: String,
 						 val ruleKey: String,

@@ -22,7 +22,7 @@ class DetektRulesDefinition : RulesDefinition {
 }
 
 fun RulesDefinition.NewRepository.createRules() = apply {
-	ALL_LOADED_RULES.map { defineRule(it) }
+	allLoadedRules.map { defineRule(it) }
 }
 
 private fun RulesDefinition.NewRepository.defineRule(rule: Rule) {

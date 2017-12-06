@@ -27,7 +27,7 @@ const val CONFIG_PATH_NAME = "Detekt yaml config path"
 const val CONFIG_RESOURCE_NAME = "Detekt yaml resource config"
 const val PATH_FILTERS_NAME = "Detekt path filters"
 
-val PROPERTIES = listOf<PropertyDefinition>(
+val propertyDefinitions = listOf<PropertyDefinition>(
 		PropertyDefinition.builder(CONFIG_PATH_KEY)
 				.name(CONFIG_PATH_NAME)
 				.defaultValue(CONFIG_PATH_DEFAULT)

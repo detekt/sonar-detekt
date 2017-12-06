@@ -2,8 +2,8 @@ package io.gitlab.arturbosch.detekt.sonar.sensor
 
 import io.gitlab.arturbosch.detekt.api.Detektion
 import io.gitlab.arturbosch.detekt.api.Finding
-import io.gitlab.arturbosch.detekt.sonar.foundation.LOG
-import io.gitlab.arturbosch.detekt.sonar.rules.RULE_KEY_LOOKUP
+import io.gitlab.arturbosch.detekt.sonar.foundation.logger
+import io.gitlab.arturbosch.detekt.sonar.rules.ruleKeyLookup
 import org.sonar.api.batch.fs.InputFile
 import org.sonar.api.batch.sensor.SensorContext
 import org.sonar.api.batch.sensor.issue.NewIssue
@@ -19,27 +19,27 @@ class IssueReporter(private val detektion: Detektion,
 
 	fun run() {
 		detektion.findings.forEach { ruleSet, findings ->
-			LOG.info("RuleSet: $ruleSet - ${findings.size}")
+			logger.info("RuleSet: $ruleSet - ${findings.size}")
 			findings.forEach(this::reportIssue)
 		}
 	}
 
 	private fun reportIssue(issue: Finding) {
 		if (issue.startPosition.line < 0) {
-			LOG.info("Invalid location for ${issue.compactWithSignature()}.")
+			logger.info("Invalid location for ${issue.compactWithSignature()}.")
 			return
 		}
 		val pathOfIssue = baseDir.resolveSibling(issue.location.file)
 		val inputFile = fileSystem.inputFile(fileSystem.predicates().`is`(pathOfIssue))
 		if (inputFile != null) {
-			RULE_KEY_LOOKUP[issue.id]?.let {
+			ruleKeyLookup[issue.id]?.let {
 				val newIssue = context.newIssue()
 						.forRule(it)
 						.primaryLocation(issue, inputFile)
 				newIssue.save()
-			} ?: LOG.warn("Could not find rule key for detekt rule ${issue.id} (${issue.compactWithSignature()}).")
+			} ?: logger.warn("Could not find rule key for detekt rule ${issue.id} (${issue.compactWithSignature()}).")
 		} else {
-			LOG.info("No file found for ${issue.location.file}")
+			logger.info("No file found for ${issue.location.file}")
 		}
 	}
 

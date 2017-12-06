@@ -14,11 +14,11 @@ class ProjectMeasurementStorage(private val detektion: Detektion,
 								private val context: SensorContext) {
 
 	fun run() {
-		save(linesKey, LOC_PROJECT)
-		save(sourceLinesKey, SLOC_PROJECT)
-		save(logicalLinesKey, LLOC_PROJECT)
-		save(commentLinesKey, CLOC_PROJECT)
-		save(complexityKey, MCCABE_PROJECT)
+		save(linesKey, projectLocMetric)
+		save(sourceLinesKey, projectSlocMetric)
+		save(logicalLinesKey, projectLlocMetric)
+		save(commentLinesKey, projectClocMetric)
+		save(complexityKey, projectComplexityMetric)
 	}
 
 	private fun save(dataKey: Key<Int>, metricKey: Metric<Int>) {

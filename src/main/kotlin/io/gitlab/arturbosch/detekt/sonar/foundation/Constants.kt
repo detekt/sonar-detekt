@@ -14,4 +14,4 @@ const val DETEKT_SENSOR = "DetektSensor"
 const val DETEKT_REPOSITORY = "detekt-kotlin"
 const val DETEKT_ANALYZER = "Detekt-based Kotlin Analyzer"
 
-val LOG: Logger = Loggers.get(DetektPlugin::class.java)
+val logger: Logger = Loggers.get(DetektPlugin::class.java)

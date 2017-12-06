@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.detekt.sonar
 
 import io.gitlab.arturbosch.detekt.sonar.foundation.KotlinLanguage
-import io.gitlab.arturbosch.detekt.sonar.foundation.PROPERTIES
+import io.gitlab.arturbosch.detekt.sonar.foundation.propertyDefinitions
 import io.gitlab.arturbosch.detekt.sonar.jacoco.KotlinJaCoCoSensor
 import io.gitlab.arturbosch.detekt.sonar.profiles.KotlinProfile
 import io.gitlab.arturbosch.detekt.sonar.rules.DetektRulesDefinition
@@ -29,7 +29,7 @@ class DetektPlugin : Plugin {
 				KotlinJaCoCoSensor::class.java,
 				JacocoConfiguration::class.java
 		))
-		context.addExtensions(PROPERTIES)
+		context.addExtensions(propertyDefinitions)
 	}
 
 }

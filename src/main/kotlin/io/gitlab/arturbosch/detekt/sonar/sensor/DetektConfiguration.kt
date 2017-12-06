@@ -9,11 +9,11 @@ import io.gitlab.arturbosch.detekt.core.PathFilter
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
 import io.gitlab.arturbosch.detekt.sonar.foundation.CONFIG_PATH_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.CONFIG_RESOURCE_KEY
-import io.gitlab.arturbosch.detekt.sonar.foundation.LOG
+import io.gitlab.arturbosch.detekt.sonar.foundation.logger
 import io.gitlab.arturbosch.detekt.sonar.foundation.NoAutoCorrectConfig
 import io.gitlab.arturbosch.detekt.sonar.foundation.PATH_FILTERS_DEFAULTS
 import io.gitlab.arturbosch.detekt.sonar.foundation.PATH_FILTERS_KEY
-import io.gitlab.arturbosch.detekt.sonar.rules.DEFAULT_YAML_CONFIG
+import io.gitlab.arturbosch.detekt.sonar.rules.defaultYamlConfig
 import org.sonar.api.batch.sensor.SensorContext
 import org.sonar.api.config.Settings
 import java.io.File
@@ -43,8 +43,8 @@ internal fun chooseConfig(baseDir: File, settings: Settings): Config {
 
 	return possibleParseArguments.loadConfiguration().let { bestConfigMatch ->
 		if (bestConfigMatch == Config.empty) {
-			LOG.info("No detekt yaml configuration file found, using the default configuration.")
-			DEFAULT_YAML_CONFIG
+			logger.info("No detekt yaml configuration file found, using the default configuration.")
+			defaultYamlConfig
 		} else {
 			bestConfigMatch
 		}
@@ -53,7 +53,7 @@ internal fun chooseConfig(baseDir: File, settings: Settings): Config {
 
 private fun tryFindDetektConfigurationFile(settings: Settings, baseDir: File): File? {
 	return settings.getString(CONFIG_PATH_KEY)?.let { path ->
-		LOG.info("Registered config path: $path")
+		logger.info("Registered config path: $path")
 		var configFile = File(path)
 
 		if (!configFile.exists() || configFile.endsWith(".yaml")) {

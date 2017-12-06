@@ -2,7 +2,7 @@ package io.gitlab.arturbosch.detekt.sonar.sensor
 
 import io.gitlab.arturbosch.detekt.api.Config
 import io.gitlab.arturbosch.detekt.sonar.foundation.CONFIG_PATH_KEY
-import io.gitlab.arturbosch.detekt.sonar.rules.DEFAULT_YAML_CONFIG
+import io.gitlab.arturbosch.detekt.sonar.rules.defaultYamlConfig
 import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
@@ -41,7 +41,7 @@ class LoadConfigSpec : Spek({
 		it("should default to default config") {
 			val config = chooseConfig(base, MapSettings())
 
-			assertThat(config == DEFAULT_YAML_CONFIG)
+			assertThat(config == defaultYamlConfig)
 		}
 	}
 })

@@ -10,15 +10,15 @@ import org.sonar.api.measures.Metrics
 class DetektMetrics : Metrics {
 
 	override fun getMetrics(): MutableList<Metric<Int>> = mutableListOf(
-			LOC_PROJECT,
-			SLOC_PROJECT,
-			LLOC_PROJECT,
-			CLOC_PROJECT,
-			MCCABE_PROJECT
+			projectLocMetric,
+			projectSlocMetric,
+			projectLlocMetric,
+			projectClocMetric,
+			projectComplexityMetric
 	)
 }
 
-val LOC_PROJECT: Metric<Int> = Metric.Builder("loc",
+val projectLocMetric: Metric<Int> = Metric.Builder("loc",
 		"Lines of Code", Metric.ValueType.INT)
 		.setDescription("Number of lines of code.")
 		.setDirection(Metric.DIRECTION_NONE)
@@ -26,7 +26,7 @@ val LOC_PROJECT: Metric<Int> = Metric.Builder("loc",
 		.setDomain(CoreMetrics.DOMAIN_GENERAL)
 		.create<Int>()
 
-val SLOC_PROJECT: Metric<Int> = Metric.Builder("sloc",
+val projectSlocMetric: Metric<Int> = Metric.Builder("sloc",
 		"Source Lines of Code", Metric.ValueType.INT)
 		.setDescription("Number of source lines of code.")
 		.setDirection(Metric.DIRECTION_NONE)
@@ -34,7 +34,7 @@ val SLOC_PROJECT: Metric<Int> = Metric.Builder("sloc",
 		.setDomain(CoreMetrics.DOMAIN_GENERAL)
 		.create<Int>()
 
-val LLOC_PROJECT: Metric<Int> = Metric.Builder("lloc",
+val projectLlocMetric: Metric<Int> = Metric.Builder("lloc",
 		"Logical Lines of Code", Metric.ValueType.INT)
 		.setDescription("Number of logical lines of code.")
 		.setDirection(Metric.DIRECTION_NONE)
@@ -42,7 +42,7 @@ val LLOC_PROJECT: Metric<Int> = Metric.Builder("lloc",
 		.setDomain(CoreMetrics.DOMAIN_GENERAL)
 		.create<Int>()
 
-val CLOC_PROJECT: Metric<Int> = Metric.Builder("cloc",
+val projectClocMetric: Metric<Int> = Metric.Builder("cloc",
 		"Comment Lines of Code", Metric.ValueType.INT)
 		.setDescription("Number of comment lines of code.")
 		.setDirection(Metric.DIRECTION_NONE)
@@ -50,7 +50,7 @@ val CLOC_PROJECT: Metric<Int> = Metric.Builder("cloc",
 		.setDomain(CoreMetrics.DOMAIN_GENERAL)
 		.create<Int>()
 
-val MCCABE_PROJECT: Metric<Int> = Metric.Builder("project_complexity",
+val projectComplexityMetric: Metric<Int> = Metric.Builder("project_complexity",
 		"Project Cyclomatic Complexity", Metric.ValueType.INT)
 		.setDescription("Complexity of the whole project based on McCabe.")
 		.setDirection(Metric.DIRECTION_NONE)
