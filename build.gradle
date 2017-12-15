@@ -80,7 +80,7 @@ def USER_HOME = System.getProperty("user.home")
 
 sonarPackaging {
 	serverUrl = 'http://localhost:9000'
-	pluginDir = "$USER_HOME/Downloads/sonarqube-6.4/extensions/plugins"
+	pluginDir = "$USER_HOME/Downloads/sonarqube-6.7/extensions/plugins"
 	pluginKey = 'kotlin'
 	pluginClass = 'io.gitlab.arturbosch.detekt.sonar.DetektPlugin'
 	pluginName = 'Kotlin'
