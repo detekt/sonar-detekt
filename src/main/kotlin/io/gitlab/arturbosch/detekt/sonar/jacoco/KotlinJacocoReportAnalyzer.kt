@@ -26,6 +26,7 @@ import org.jacoco.core.analysis.ISourceFileCoverage
 import org.jacoco.core.data.ExecutionDataStore
 import org.sonar.api.batch.fs.InputFile
 import org.sonar.api.batch.sensor.SensorContext
+import org.sonar.api.batch.sensor.coverage.CoverageType
 import org.sonar.api.batch.sensor.coverage.NewCoverage
 import org.sonar.java.JavaClasspath
 import org.sonar.plugins.jacoco.ExecutionDataVisitor
@@ -118,7 +119,7 @@ class KotlinJacocoReportAnalyzer @JvmOverloads constructor(
 		for (coverage in coverageBuilder.sourceFiles) {
 			val inputFile = getResource(coverage)
 			if (inputFile != null) {
-				val newCoverage = context.newCoverage().onFile(inputFile)
+				val newCoverage = context.newCoverage().onFile(inputFile).ofType(CoverageType.UNIT)
 				analyzeFile(newCoverage, inputFile, coverage)
 				newCoverage.save()
 				analyzedResources++
