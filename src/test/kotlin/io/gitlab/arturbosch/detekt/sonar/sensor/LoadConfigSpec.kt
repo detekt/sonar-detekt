@@ -7,7 +7,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
-import org.sonar.api.config.MapSettings
+import org.sonar.api.config.Settings
 import java.io.File
 
 /**
@@ -21,7 +21,7 @@ class LoadConfigSpec : Spek({
 		assertThat(base).isNotNull()
 
 		it("should match config on sub path level") {
-			val settings = MapSettings().apply {
+			val settings = Settings().apply {
 				setProperty(CONFIG_PATH_KEY, "detekt-config.yml")
 			}
 			val config = chooseConfig(base, settings)
@@ -30,7 +30,7 @@ class LoadConfigSpec : Spek({
 		}
 
 		it("should match config top path level") {
-			val settings = MapSettings().apply {
+			val settings = Settings().apply {
 				setProperty(CONFIG_PATH_KEY, "top-detekt-config.yml")
 			}
 			val config = chooseConfig(base, settings)
@@ -39,7 +39,7 @@ class LoadConfigSpec : Spek({
 		}
 
 		it("should default to default config") {
-			val config = chooseConfig(base, MapSettings())
+			val config = chooseConfig(base, Settings())
 
 			assertThat(config == defaultYamlConfig)
 		}

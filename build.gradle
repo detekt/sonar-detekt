@@ -37,8 +37,9 @@ dependencies {
 	compile "io.gitlab.arturbosch.detekt:detekt-core:$detektVersion"
 	compile "io.gitlab.arturbosch.detekt:detekt-cli:$detektVersion"
 	compile "io.gitlab.arturbosch.detekt:detekt-rules:$detektVersion"
+
 	compileOnly "org.sonarsource.sonarqube:sonar-plugin-api:$sonarVersion"
-	compile "org.sonarsource.java:java-jacoco:4.11.0.10660"
+	testCompile "org.sonarsource.sonarqube:sonar-plugin-api:$sonarVersion"
 
 	testCompile "junit:junit:4.12"
 	testCompile "com.nhaarman:mockito-kotlin-kt1.1:$mockitoKotlinVersion"
@@ -80,7 +81,7 @@ def USER_HOME = System.getProperty("user.home")
 
 sonarPackaging {
 	serverUrl = 'http://localhost:9000'
-	pluginDir = "$USER_HOME/Downloads/sonarqube-6.4/extensions/plugins"
+	pluginDir = "$USER_HOME/Downloads/sonarqube-5.6.7/extensions/plugins"
 	pluginKey = 'kotlin'
 	pluginClass = 'io.gitlab.arturbosch.detekt.sonar.DetektPlugin'
 	pluginName = 'Kotlin'
