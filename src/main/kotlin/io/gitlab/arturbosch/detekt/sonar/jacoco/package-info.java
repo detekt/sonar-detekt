@@ -1,4 +1,4 @@
 /**
- * JaCoCo support adapted from sonarqube-java-plugin.
+ * JaCoCo support adapted from sonarqube-groovy-plugin.
  */
 package io.gitlab.arturbosch.detekt.sonar.jacoco;

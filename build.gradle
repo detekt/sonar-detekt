@@ -16,7 +16,7 @@ buildscript {
 
 plugins {
 	id "com.iadams.sonar-packaging" version "1.0-RC1"
-	id "org.sonarqube" version "2.5"
+	id "org.sonarqube" version "2.6.1"
 	id "io.gitlab.arturbosch.detekt" version "1.0.0.RC4-3"
 }
 
@@ -38,6 +38,8 @@ dependencies {
 	compile "io.gitlab.arturbosch.detekt:detekt-cli:$detektVersion"
 	compile "io.gitlab.arturbosch.detekt:detekt-rules:$detektVersion"
 
+	compile "org.jacoco:org.jacoco.core:0.7.9"
+	compile "commons-lang:commons-lang:2.6"
 	compileOnly "org.sonarsource.sonarqube:sonar-plugin-api:$sonarVersion"
 	testCompile "org.sonarsource.sonarqube:sonar-plugin-api:$sonarVersion"
 
@@ -76,6 +78,15 @@ jacocoTestReport {
 }
 
 check.dependsOn jacocoTestReport
+
+jacoco {
+	toolVersion = "0.7.9"
+	reportsDir = file("$buildDir/jacoco/")
+	applyTo junitPlatformTest
+}
+
+
+test.dependsOn junitPlatformTest
 
 def USER_HOME = System.getProperty("user.home")
 
