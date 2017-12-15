@@ -3,7 +3,7 @@ package io.gitlab.arturbosch.detekt.sonar.rules
 import io.gitlab.arturbosch.detekt.api.Rule
 import io.gitlab.arturbosch.detekt.sonar.foundation.DETEKT_ANALYZER
 import io.gitlab.arturbosch.detekt.sonar.foundation.DETEKT_REPOSITORY
-import io.gitlab.arturbosch.detekt.sonar.foundation.KOTLIN_KEY
+import io.gitlab.arturbosch.detekt.sonar.foundation.KEY
 import org.sonar.api.rule.RuleStatus
 import org.sonar.api.server.rule.RulesDefinition
 
@@ -13,7 +13,7 @@ import org.sonar.api.server.rule.RulesDefinition
 class DetektRulesDefinition : RulesDefinition {
 
 	override fun define(context: RulesDefinition.Context) {
-		context.createRepository(DETEKT_REPOSITORY, KOTLIN_KEY)
+		context.createRepository(DETEKT_REPOSITORY, KEY)
 				.setName(DETEKT_ANALYZER)
 				.createRules()
 				.done()

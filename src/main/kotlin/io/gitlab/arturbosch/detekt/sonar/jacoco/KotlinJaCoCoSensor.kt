@@ -19,7 +19,7 @@
  */
 package io.gitlab.arturbosch.detekt.sonar.jacoco
 
-import io.gitlab.arturbosch.detekt.sonar.foundation.KOTLIN_KEY
+import io.gitlab.arturbosch.detekt.sonar.foundation.KEY
 import org.sonar.api.batch.fs.FileSystem
 import org.sonar.api.batch.sensor.Sensor
 import org.sonar.api.batch.sensor.SensorContext
@@ -45,7 +45,7 @@ open class KotlinJaCoCoSensor(
 	private val javaResourceLocator = KotlinJavaResourceLocator(javaResourceLocator, fileSystem)
 
 	override fun describe(descriptor: SensorDescriptor) {
-		descriptor.onlyOnLanguage(KOTLIN_KEY).name("KotlinJaCoCoSensor")
+		descriptor.onlyOnLanguage(KEY).name("KotlinJaCoCoSensor")
 	}
 
 	override fun execute(context: SensorContext) {

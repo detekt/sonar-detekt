@@ -3,7 +3,7 @@ package io.gitlab.arturbosch.detekt.sonar.sensor
 import io.gitlab.arturbosch.detekt.core.DetektFacade
 import io.gitlab.arturbosch.detekt.core.KtTreeCompiler
 import io.gitlab.arturbosch.detekt.sonar.foundation.DETEKT_SENSOR
-import io.gitlab.arturbosch.detekt.sonar.foundation.KOTLIN_KEY
+import io.gitlab.arturbosch.detekt.sonar.foundation.KEY
 import org.sonar.api.batch.sensor.Sensor
 import org.sonar.api.batch.sensor.SensorContext
 import org.sonar.api.batch.sensor.SensorDescriptor
@@ -14,7 +14,7 @@ import org.sonar.api.batch.sensor.SensorDescriptor
 class DetektSensor : Sensor {
 
 	override fun describe(descriptor: SensorDescriptor) {
-		descriptor.name(DETEKT_SENSOR).onlyOnLanguage(KOTLIN_KEY)
+		descriptor.name(DETEKT_SENSOR).onlyOnLanguage(KEY)
 	}
 
 	override fun execute(context: SensorContext) {

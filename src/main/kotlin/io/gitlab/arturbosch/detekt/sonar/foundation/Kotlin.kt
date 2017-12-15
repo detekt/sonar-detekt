@@ -4,10 +4,10 @@ import io.gitlab.arturbosch.detekt.sonar.DetektPlugin
 import org.sonar.api.utils.log.Logger
 import org.sonar.api.utils.log.Loggers
 
-const val KOTLIN_KEY = "kotlin"
-const val KOTLIN_NAME = "Kotlin"
-const val KOTLIN_FILE_SUFFIX = ".kt"
-const val KOTLIN_SCRIPT_SUFFIX = ".kts"
+const val KEY = "kotlin"
+const val NAME = "Kotlin"
+const val FILE_SUFFIX = ".kt"
+const val SCRIPT_SUFFIX = ".kts"
 
 const val DETEKT_WAY = "Detekt way"
 const val DETEKT_SENSOR = "DetektSensor"

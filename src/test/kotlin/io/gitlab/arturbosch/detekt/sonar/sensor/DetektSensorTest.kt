@@ -3,7 +3,7 @@ package io.gitlab.arturbosch.detekt.sonar.sensor
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
-import io.gitlab.arturbosch.detekt.sonar.foundation.KOTLIN_KEY
+import io.gitlab.arturbosch.detekt.sonar.foundation.KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.PATH_FILTERS_KEY
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -73,7 +73,7 @@ class DetektSensorTest {
 	private fun addMockFile(filePath: String): String {
 		val sourceFile = File(sourceDir, filePath)
 		val kotlinFile = TestInputFileBuilder(RESOURCES_PATH, "$KOTLIN_PATH/$filePath")
-				.setLanguage(KOTLIN_KEY)
+				.setLanguage(KEY)
 				.initMetadata(sourceFile.readText())
 				.build()
 		fileSystem.add(kotlinFile)
