@@ -76,19 +76,20 @@ public abstract class AbstractAnalyzer {
 	}
 
 	private InputFile getInputFile(ISourceFileCoverage coverage) {
-		String className = fullyQualifiedClassName(coverage.getPackageName(), coverage.getName());
-		InputFile fileForClass = kotlinFileSystem.findResourceByClassName(className);
+//		String className = fullyQualifiedClassName(coverage.getPackageName(), coverage.getName());
+//		InputFile fileForClass = kotlinFileSystem.findResourceByClassName(className);
+		String relativePath = getFileRelativePath(coverage);
+		InputFile fileForClass = kotlinFileSystem.sourceInputFileFromRelativePath(relativePath);
 		if (fileForClass == null) {
-			JaCoCoExtensions.logger().warn("File not found: " + className);
+			JaCoCoExtensions.logger().warn("File not found: " + relativePath);
 		}
 		return fileForClass;
 	}
 
-	private String fullyQualifiedClassName(String packageName, String simpleClassName) {
-		if ("".equals(packageName)) return "";
-		else return packageName + "/" + StringUtils.substringBeforeLast(simpleClassName, ".");
-	}
-
+//	private String fullyQualifiedClassName(String packageName, String simpleClassName) {
+//		if ("".equals(packageName)) return "";
+//		else return packageName + "/" + StringUtils.substringBeforeLast(simpleClassName, ".");
+//	}
 
 	private static String getFileRelativePath(ISourceFileCoverage coverage) {
 		return coverage.getPackageName() + "/" + coverage.getName();
