@@ -40,7 +40,7 @@ findings won't get reported anymore in sonar.
 
 ##### Usage
 
-To make use of this features, you have to set up some property files:
+To make use of this features, you have to set up some properties:
 
 ![configs](img/config.png)
 
@@ -51,4 +51,8 @@ values of the later added config files.
 
 ##### Limitations
 
-
+Sonar analyzes each module individually which makes it harder to search for your config files.
+If you use relative paths, sonar-kotlin first tries to find the provided path inside this module and if it can't find
+ it, we are searching for the file in the parent folder. This leads to the limitation that only projects with 
+ sub-projects of depth 1 are supported. If you need more config files in your project hierarchies, provide them in 
+ the sub-projects with the same relative path available.
