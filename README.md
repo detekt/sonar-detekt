@@ -12,7 +12,8 @@
 - Integrates [detekt](https://github.com/arturbosch/detekt) for code analysis
 - Default quality profile `Detekt way`
 - Syntax highlighting
-- Supports SonarQube 5.6 and 6.4
+- Supports SonarQube 5.6.7 and 6.7
+- Supports detekt's `yaml config` and `baseline.xml` (also `path filters`)
 
 ### Usage
 
@@ -24,3 +25,30 @@ Sonar-kotlin is not yet uploaded to the `Update Center`
 - `cp build/libs/sonar-kotlin-[enter_version].jar $SONAR_HOME/extensions/plugins`
 - `cd $SONAR_HOME/bin/[your_os]`
 - `./sonar.sh restart`
+
+### Configurations and Baselines (and Filters)
+
+Read about detekt configuration files [here](https://github.com/arturbosch/detekt#ruleset-configuration)
+and about detekt baseline formats [here](https://github.com/arturbosch/detekt#code-smell-baseline-and-ignore-list).
+
+Best ways to get started is to configure the `detekt-gradle-plugin` in your project and use its `detektBaseline` and 
+`detektGenerateConfig` tasks.
+- `detektGenerateConfig` copies the default configuration file which you can use to turn on and off rules and set 
+appropriate threshold values for some rules.
+- `detektBaseline` analyzes your project and generates a baseline xml file with all your current findings. This 
+findings won't get reported anymore in sonar.
+
+##### Usage
+
+To make use of this features, you have to set up some property files:
+
+![configs](img/config.png)
+
+
+__Detekt path filters__ support multiple regex entries by adding a `,` for separating.
+__Detekt yaml configuration path__ also supports multiple configuration files where the first entered override some 
+values of the later added config files.
+
+##### Limitations
+
+
