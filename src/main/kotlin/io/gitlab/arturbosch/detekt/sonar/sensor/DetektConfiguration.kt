@@ -8,11 +8,10 @@ import io.gitlab.arturbosch.detekt.cli.loadConfiguration
 import io.gitlab.arturbosch.detekt.core.PathFilter
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
 import io.gitlab.arturbosch.detekt.sonar.foundation.CONFIG_PATH_KEY
-import io.gitlab.arturbosch.detekt.sonar.foundation.CONFIG_RESOURCE_KEY
-import io.gitlab.arturbosch.detekt.sonar.foundation.logger
 import io.gitlab.arturbosch.detekt.sonar.foundation.NoAutoCorrectConfig
 import io.gitlab.arturbosch.detekt.sonar.foundation.PATH_FILTERS_DEFAULTS
 import io.gitlab.arturbosch.detekt.sonar.foundation.PATH_FILTERS_KEY
+import io.gitlab.arturbosch.detekt.sonar.foundation.logger
 import io.gitlab.arturbosch.detekt.sonar.rules.defaultYamlConfig
 import org.sonar.api.batch.sensor.SensorContext
 import org.sonar.api.config.Settings
@@ -33,12 +32,8 @@ fun createProcessingSettings(context: SensorContext): ProcessingSettings {
 internal fun chooseConfig(baseDir: File, settings: Settings): Config {
 	val externalConfigPath = tryFindDetektConfigurationFile(settings, baseDir)
 
-	val internalConfigResource = settings.getString(CONFIG_RESOURCE_KEY)
-			?.let { if (it.isBlank()) null else it }
-
 	val possibleParseArguments = Args().apply {
 		config = externalConfigPath?.path
-		configResource = internalConfigResource
 	}
 
 	return possibleParseArguments.loadConfiguration().let { bestConfigMatch ->

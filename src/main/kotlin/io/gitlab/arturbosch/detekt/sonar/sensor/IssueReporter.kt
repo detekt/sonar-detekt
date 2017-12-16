@@ -2,11 +2,15 @@ package io.gitlab.arturbosch.detekt.sonar.sensor
 
 import io.gitlab.arturbosch.detekt.api.Detektion
 import io.gitlab.arturbosch.detekt.api.Finding
+import io.gitlab.arturbosch.detekt.cli.baseline.BaselineFacade
+import io.gitlab.arturbosch.detekt.sonar.foundation.BASELINE_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.logger
 import io.gitlab.arturbosch.detekt.sonar.rules.ruleKeyLookup
 import org.sonar.api.batch.fs.InputFile
 import org.sonar.api.batch.sensor.SensorContext
 import org.sonar.api.batch.sensor.issue.NewIssue
+import org.sonar.api.config.Settings
+import java.io.File
 
 /**
  * @author Artur Bosch
@@ -16,11 +20,35 @@ class IssueReporter(private val detektion: Detektion,
 
 	private val fileSystem = context.fileSystem()
 	private val baseDir = fileSystem.baseDir()
+	private val settings = context.settings()
 
 	fun run() {
 		detektion.findings.forEach { ruleSet, findings ->
 			logger.info("RuleSet: $ruleSet - ${findings.size}")
-			findings.forEach(this::reportIssue)
+			val baseline = tryFindBaseline(settings, baseDir)
+			val filtered = baseline?.filter(findings) ?: findings
+			filtered.forEach(this::reportIssue)
+		}
+	}
+
+	private fun tryFindBaseline(settings: Settings, baseDir: File): BaselineFacade? {
+		return settings.getString(BASELINE_KEY)?.let { path ->
+			logger.info("Registered baseline path: $path")
+			var baselinePath = File(path)
+
+			if (!baselinePath.exists()) {
+				baselinePath = File(baseDir.path, path)
+			}
+
+			if (!baselinePath.exists()) {
+				val parentFile = baseDir.parentFile
+				if (parentFile != null) {
+					baselinePath = File(parentFile.path, path)
+				} else {
+					return null
+				}
+			}
+			BaselineFacade(baselinePath.toPath())
 		}
 	}
 
