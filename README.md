@@ -56,3 +56,9 @@ If you use relative paths, sonar-kotlin first tries to find the provided path in
  it, we are searching for the file in the parent folder. This leads to the limitation that only projects with 
  sub-projects of depth 1 are supported. If you need more config files in your project hierarchies, provide them in 
  the sub-projects with the same relative path available.
+
+### Mentions
+
+As mentioned/used in ...
+
+- [Sonarqube code coverage for Kotlin on Android with Bitrise](https://android.jlelse.eu/sonarqube-code-coverage-for-kotlin-on-android-with-bitrise-71b2fee0b797)
