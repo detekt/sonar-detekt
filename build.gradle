@@ -17,7 +17,7 @@ buildscript {
 plugins {
 	id "com.iadams.sonar-packaging" version "1.0-RC1"
 	id "org.sonarqube" version "2.5"
-	id "io.gitlab.arturbosch.detekt" version "1.0.0.RC4-3"
+	id "io.gitlab.arturbosch.detekt" version "1.0.0.RC6-1"
 }
 
 apply plugin: 'org.junit.platform.gradle.plugin'

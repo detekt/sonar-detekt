@@ -19,14 +19,16 @@ class DetektSensor : Sensor {
 
 	override fun execute(context: SensorContext) {
 		val settings = createProcessingSettings(context)
-		val detektor = DetektFacade.instance(settings)
+		val detektor = DetektFacade.create(settings)
 		val compiler = KtTreeCompiler.instance(settings)
 
-		val ktFiles = compiler.compile()
-		val detektion = detektor.run(ktFiles)
+		settings.project.forEach {
+			val ktFiles = compiler.compile(it)
+			val detektion = detektor.run(it, ktFiles)
 
-		IssueReporter(detektion, context).run()
-		ProjectMeasurementStorage(detektion, context).run()
-		FileProcessor(context, ktFiles).run()
+			IssueReporter(detektion, context).run()
+			ProjectMeasurementStorage(detektion, context).run()
+			FileProcessor(context, ktFiles).run()
+		}
 	}
 }
