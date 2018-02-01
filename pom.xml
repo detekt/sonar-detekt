@@ -14,8 +14,7 @@
     <properties>
         <kotlin.version>1.2.10</kotlin.version>
         <spek.version>1.1.5</spek.version>
-        <detekt.version>1.0.0.RC6-1</detekt.version>
-        <sonar.kotlin.version>0.4.0</sonar.kotlin.version>
+        <detekt.version>1.0.0.RC6-2</detekt.version>
         <sonar.api.version>6.7</sonar.api.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -74,14 +73,13 @@
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jre8</artifactId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
         <dependency>
             <groupId>com.beust</groupId>
             <artifactId>jcommander</artifactId>
             <version>1.72</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
