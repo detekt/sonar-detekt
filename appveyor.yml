@@ -4,6 +4,7 @@ skip_commits:
   message: /\[ci skip\]/
 clone_depth: 10
 environment:
+  MAVEN_VERSION: 3.5.0
   TERM: dumb
   matrix:
     - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
@@ -13,8 +14,8 @@ install:
   - SET PATH=%PATH:C:\Ruby193\bin;=%
   - echo %PATH%
   - java -version
-  - gradlew.bat --version
+  - mvn --version
 build_script:
-  - gradlew.bat -u -i assemble
+  - mvn clean package --batch-mode -DskipTest
 test_script:
-  - gradlew.bat -u -i -S test
+  - mvn clean install --batch-mode

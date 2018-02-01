@@ -7,7 +7,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
-import org.sonar.api.config.MapSettings
+import org.sonar.api.config.internal.MapSettings
 import java.io.File
 
 /**

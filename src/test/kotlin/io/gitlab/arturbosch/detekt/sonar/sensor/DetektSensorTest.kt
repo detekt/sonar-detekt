@@ -12,7 +12,7 @@ import org.sonar.api.batch.fs.internal.DefaultFileSystem
 import org.sonar.api.batch.fs.internal.DefaultInputDir
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder
 import org.sonar.api.batch.sensor.internal.SensorContextTester
-import org.sonar.api.config.MapSettings
+import org.sonar.api.config.internal.MapSettings
 import org.sonar.api.measures.CoreMetrics.COMMENT_LINES
 import org.sonar.api.measures.CoreMetrics.COMPLEXITY
 import org.sonar.api.measures.CoreMetrics.NCLOC
