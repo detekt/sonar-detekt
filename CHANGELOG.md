@@ -1,5 +1,14 @@
 # Detekt - Changelog
 
+#### 0.4.1
+
+- Based on detekt rc6-3
+
+#### 0.4.0 
+
+- Based on detekt rc6-2
+- Migration to maven (by @johnou)
+
 #### 0.3.0
 
 - Based on detekt RC5-6
