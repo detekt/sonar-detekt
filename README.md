@@ -21,8 +21,8 @@ Sonar-kotlin is not yet uploaded to the `Update Center`
 
 - `git clone https://github.com/arturbosch/sonar-kotlin`
 - `cd sonar-kotlin`
-- `./gradlew build`
-- `cp build/libs/sonar-kotlin-[enter_version].jar $SONAR_HOME/extensions/plugins`
+- `mvn package`
+- `cp target/sonar-kotlin-[enter_version].jar $SONAR_HOME/extensions/plugins`
 - `cd $SONAR_HOME/bin/[your_os]`
 - `./sonar.sh restart`
 
