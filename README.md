@@ -12,7 +12,7 @@
 - Integrates [detekt](https://github.com/arturbosch/detekt) for code analysis
 - Default quality profile `Detekt way`
 - Syntax highlighting
-- Supports SonarQube 5.6.7 and 6.7
+- Supports SonarQube 6.7
 - Supports detekt's `yaml config` and `baseline.xml` (also `path filters`)
 
 ### Usage
