@@ -24,7 +24,7 @@ class LoadConfigSpec : Spek({
 			val settings = MapSettings().apply {
 				setProperty(CONFIG_PATH_KEY, "detekt-config.yml")
 			}
-			val config = chooseConfig(base, settings)
+			val config = chooseConfig(base, settings.asConfig())
 
 			assertThat(config).isNotEqualTo(Config.empty)
 		}
@@ -33,13 +33,13 @@ class LoadConfigSpec : Spek({
 			val settings = MapSettings().apply {
 				setProperty(CONFIG_PATH_KEY, "top-detekt-config.yml")
 			}
-			val config = chooseConfig(base, settings)
+			val config = chooseConfig(base, settings.asConfig())
 
 			assertThat(config).isNotEqualTo(Config.empty)
 		}
 
 		it("should default to default config") {
-			val config = chooseConfig(base, MapSettings())
+			val config = chooseConfig(base, MapSettings().asConfig())
 
 			assertThat(config == defaultYamlConfig)
 		}

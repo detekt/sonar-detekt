@@ -17,4 +17,6 @@ class NoAutoCorrectConfig(private val config: Config) : Config {
 		return config.valueOrDefault(key, default)
 	}
 
+	override fun <T : Any> valueOrNull(key: String): T? = config.valueOrNull(key)
+
 }

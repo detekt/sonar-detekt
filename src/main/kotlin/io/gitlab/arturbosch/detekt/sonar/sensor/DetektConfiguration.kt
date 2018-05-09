@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.detekt.sonar.sensor
 
 import io.gitlab.arturbosch.detekt.api.Config
-import io.gitlab.arturbosch.detekt.cli.Args
+import io.gitlab.arturbosch.detekt.cli.CliArgs
 import io.gitlab.arturbosch.detekt.cli.SEPARATOR_COMMA
 import io.gitlab.arturbosch.detekt.cli.SEPARATOR_SEMICOLON
 import io.gitlab.arturbosch.detekt.cli.loadConfiguration
@@ -14,7 +14,7 @@ import io.gitlab.arturbosch.detekt.sonar.foundation.PATH_FILTERS_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.logger
 import io.gitlab.arturbosch.detekt.sonar.rules.defaultYamlConfig
 import org.sonar.api.batch.sensor.SensorContext
-import org.sonar.api.config.Settings
+import org.sonar.api.config.Configuration
 import java.io.File
 
 /**
@@ -22,17 +22,17 @@ import java.io.File
  */
 fun createProcessingSettings(context: SensorContext): ProcessingSettings {
 	val baseDir = context.fileSystem().baseDir()
-	val settings = context.settings()
-	val pathFiltersString = settings.getString(PATH_FILTERS_KEY) ?: PATH_FILTERS_DEFAULTS
+	val settings = context.config()
+	val pathFiltersString = settings.get(PATH_FILTERS_KEY).orElse(PATH_FILTERS_DEFAULTS)
 	val filters = pathFiltersString.split(SEPARATOR_SEMICOLON, SEPARATOR_COMMA).map { PathFilter(it) }
 	val config = chooseConfig(baseDir, settings)
 	return ProcessingSettings(baseDir.toPath(), NoAutoCorrectConfig(config), filters)
 }
 
-internal fun chooseConfig(baseDir: File, settings: Settings): Config {
-	val externalConfigPath = tryFindDetektConfigurationFile(settings, baseDir)
+internal fun chooseConfig(baseDir: File, configuration: Configuration): Config {
+	val externalConfigPath = tryFindDetektConfigurationFile(configuration, baseDir)
 
-	val possibleParseArguments = Args().apply {
+	val possibleParseArguments = CliArgs().apply {
 		config = externalConfigPath?.path
 	}
 
@@ -46,8 +46,8 @@ internal fun chooseConfig(baseDir: File, settings: Settings): Config {
 	}
 }
 
-private fun tryFindDetektConfigurationFile(settings: Settings, baseDir: File): File? {
-	return settings.getString(CONFIG_PATH_KEY)?.let { path ->
+private fun tryFindDetektConfigurationFile(configuration: Configuration, baseDir: File): File? {
+	return configuration.get(CONFIG_PATH_KEY).map { path ->
 		logger.info("Registered config path: $path")
 		var configFile = File(path)
 
@@ -59,9 +59,9 @@ private fun tryFindDetektConfigurationFile(settings: Settings, baseDir: File): F
 			if (parentFile != null) {
 				configFile = File(parentFile.path, path)
 			} else {
-				return null
+				return@map null
 			}
 		}
 		configFile
-	}
+	}.orElse(null)
 }
