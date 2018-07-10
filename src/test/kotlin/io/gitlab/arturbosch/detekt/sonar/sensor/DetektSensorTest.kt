@@ -1,8 +1,8 @@
 package io.gitlab.arturbosch.detekt.sonar.sensor
 
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import io.gitlab.arturbosch.detekt.sonar.foundation.KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.PATH_FILTERS_KEY
 import org.assertj.core.api.Assertions.assertThat
