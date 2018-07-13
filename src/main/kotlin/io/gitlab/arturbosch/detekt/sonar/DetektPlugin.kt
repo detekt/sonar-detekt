@@ -7,6 +7,8 @@ import io.gitlab.arturbosch.detekt.sonar.profiles.KotlinProfile
 import io.gitlab.arturbosch.detekt.sonar.rules.DetektRulesDefinition
 import io.gitlab.arturbosch.detekt.sonar.sensor.DetektMetrics
 import io.gitlab.arturbosch.detekt.sonar.sensor.DetektSensor
+import io.gitlab.arturbosch.detekt.sonar.surefire.KotlinSurefireParser
+import io.gitlab.arturbosch.detekt.sonar.surefire.KotlinSurefireSensor
 import org.sonar.api.Plugin
 import org.sonar.java.JavaClasspath
 import org.sonar.java.JavaTestClasspath
@@ -27,7 +29,10 @@ class DetektPlugin : Plugin {
 				JavaClasspath::class.java,
 				JavaTestClasspath::class.java,
 				KotlinJaCoCoSensor::class.java,
-				JacocoConfiguration::class.java
+				JacocoConfiguration::class.java,
+				// Tests
+				KotlinSurefireSensor::class.java,
+				KotlinSurefireParser::class.java
 		))
 		context.addExtensions(propertyDefinitions)
 	}
