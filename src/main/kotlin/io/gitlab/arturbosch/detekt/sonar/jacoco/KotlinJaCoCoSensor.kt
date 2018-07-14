@@ -20,11 +20,12 @@
 package io.gitlab.arturbosch.detekt.sonar.jacoco
 
 import io.gitlab.arturbosch.detekt.sonar.foundation.KEY
+import io.gitlab.arturbosch.detekt.sonar.foundation.unwrap
 import org.sonar.api.batch.fs.FileSystem
 import org.sonar.api.batch.sensor.Sensor
 import org.sonar.api.batch.sensor.SensorContext
 import org.sonar.api.batch.sensor.SensorDescriptor
-import org.sonar.api.config.Settings
+import org.sonar.api.config.Configuration
 import org.sonar.java.JavaClasspath
 import org.sonar.plugins.jacoco.JaCoCoExtensions.LOG
 import org.sonar.plugins.jacoco.JaCoCoReportMerger
@@ -34,7 +35,7 @@ import org.sonar.plugins.jacoco.JacocoConfiguration.REPORT_PATHS_PROPERTY
 import org.sonar.plugins.jacoco.JacocoConfiguration.REPORT_PATH_PROPERTY
 import org.sonar.plugins.java.api.JavaResourceLocator
 import java.io.File
-import java.util.HashSet
+import java.util.*
 
 @Suppress("ALL")
 open class KotlinJaCoCoSensor(
@@ -49,7 +50,7 @@ open class KotlinJaCoCoSensor(
 	}
 
 	override fun execute(context: SensorContext) {
-		if (context.settings().hasKey(REPORT_MISSING_FORCE_ZERO)) {
+		if (context.config().hasKey(REPORT_MISSING_FORCE_ZERO)) {
 			LOG.warn("Property '{}' is deprecated and its value will be ignored.", REPORT_MISSING_FORCE_ZERO)
 		}
 		val reportPaths = getReportPaths(context)
@@ -78,32 +79,32 @@ open class KotlinJaCoCoSensor(
 
 		private fun getReportPaths(context: SensorContext): Set<File> {
 			val reportPaths = HashSet<File>()
-			val settings = context.settings()
+			val config = context.config()
 			val fs = context.fileSystem()
-			for (reportPath in settings.getStringArray(REPORT_PATHS_PROPERTY)) {
+			for (reportPath in config.getStringArray(REPORT_PATHS_PROPERTY)) {
 				val report = fs.resolvePath(reportPath)
 				if (!report.isFile) {
-					if (settings.hasKey(REPORT_PATHS_PROPERTY)) {
+					if (config.hasKey(REPORT_PATHS_PROPERTY)) {
 						LOG.info("JaCoCo report not found: '{}'", reportPath)
 					}
 				} else {
 					reportPaths.add(report)
 				}
 			}
-			if (settings.hasKey(REPORT_PATH_PROPERTY)) {
-				warnUsageOfDeprecatedProperty(settings, REPORT_PATH_PROPERTY)
-				val report = fs.resolvePath(settings.getString(REPORT_PATH_PROPERTY)!!)
+			if (config.hasKey(REPORT_PATH_PROPERTY)) {
+				warnUsageOfDeprecatedProperty(config, REPORT_PATH_PROPERTY)
+				val report = fs.resolvePath(config.get(REPORT_PATH_PROPERTY).unwrap()!!)
 				if (!report.isFile) {
-					LOG.info("JaCoCo UT report not found: '{}'", settings.getString(REPORT_PATH_PROPERTY))
+					LOG.info("JaCoCo UT report not found: '{}'", config.get(REPORT_PATH_PROPERTY).unwrap())
 				} else {
 					reportPaths.add(report)
 				}
 			}
-			if (settings.hasKey(IT_REPORT_PATH_PROPERTY)) {
-				warnUsageOfDeprecatedProperty(settings, IT_REPORT_PATH_PROPERTY)
-				val report = fs.resolvePath(settings.getString(IT_REPORT_PATH_PROPERTY)!!)
+			if (config.hasKey(IT_REPORT_PATH_PROPERTY)) {
+				warnUsageOfDeprecatedProperty(config, IT_REPORT_PATH_PROPERTY)
+				val report = fs.resolvePath(config.get(IT_REPORT_PATH_PROPERTY).unwrap()!!)
 				if (!report.isFile) {
-					LOG.info("JaCoCo IT report not found: '{}'", settings.getString(IT_REPORT_PATH_PROPERTY))
+					LOG.info("JaCoCo IT report not found: '{}'", config.get(IT_REPORT_PATH_PROPERTY).unwrap())
 				} else {
 					reportPaths.add(report)
 				}
@@ -111,8 +112,8 @@ open class KotlinJaCoCoSensor(
 			return reportPaths
 		}
 
-		private fun warnUsageOfDeprecatedProperty(settings: Settings, reportPathProperty: String) {
-			if (!settings.hasKey(REPORT_PATHS_PROPERTY)) {
+		private fun warnUsageOfDeprecatedProperty(config: Configuration, reportPathProperty: String) {
+			if (!config.hasKey(REPORT_PATHS_PROPERTY)) {
 				LOG.warn("Property '{}' is deprecated. Please use '{}' instead.", reportPathProperty, REPORT_PATHS_PROPERTY)
 			}
 		}

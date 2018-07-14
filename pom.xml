@@ -6,15 +6,15 @@
     <groupId>io.gitlab.arturbosch</groupId>
     <!-- it's recommended to follow the pattern "sonar-{key}-plugin", for example "sonar-php-plugin" -->
     <artifactId>sonar-kotlin</artifactId>
-    <version>0.4.2</version>
+    <version>0.4.3</version>
 
     <!-- this is important for sonar-packaging-maven-plugin -->
     <packaging>sonar-plugin</packaging>
 
     <properties>
-        <kotlin.version>1.2.41</kotlin.version>
+        <kotlin.version>1.2.51</kotlin.version>
         <spek.version>1.1.5</spek.version>
-        <detekt.version>1.0.0.RC7</detekt.version>
+        <detekt.version>1.0.0.RC7-3</detekt.version>
         <sonar.api.version>6.7.3</sonar.api.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
