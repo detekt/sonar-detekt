@@ -5,11 +5,12 @@ import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.cli.baseline.BaselineFacade
 import io.gitlab.arturbosch.detekt.sonar.foundation.BASELINE_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.logger
+import io.gitlab.arturbosch.detekt.sonar.foundation.unwrap
 import io.gitlab.arturbosch.detekt.sonar.rules.ruleKeyLookup
 import org.sonar.api.batch.fs.InputFile
 import org.sonar.api.batch.sensor.SensorContext
 import org.sonar.api.batch.sensor.issue.NewIssue
-import org.sonar.api.config.Settings
+import org.sonar.api.config.Configuration
 import java.io.File
 
 /**
@@ -20,19 +21,19 @@ class IssueReporter(private val detektion: Detektion,
 
 	private val fileSystem = context.fileSystem()
 	private val baseDir = fileSystem.baseDir()
-	private val settings = context.settings()
+	private val config = context.config()
 
 	fun run() {
 		detektion.findings.forEach { ruleSet, findings ->
 			logger.info("RuleSet: $ruleSet - ${findings.size}")
-			val baseline = tryFindBaseline(settings, baseDir)
+			val baseline = tryFindBaseline(config, baseDir)
 			val filtered = baseline?.filter(findings) ?: findings
 			filtered.forEach(this::reportIssue)
 		}
 	}
 
-	private fun tryFindBaseline(settings: Settings, baseDir: File): BaselineFacade? {
-		return settings.getString(BASELINE_KEY)?.let { path ->
+	private fun tryFindBaseline(config: Configuration, baseDir: File): BaselineFacade? {
+		return config.get(BASELINE_KEY).unwrap()?.let { path ->
 			logger.info("Registered baseline path: $path")
 			var baselinePath = File(path)
 
