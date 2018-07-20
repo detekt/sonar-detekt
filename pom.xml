@@ -4,9 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.gitlab.arturbosch</groupId>
-    <!-- it's recommended to follow the pattern "sonar-{key}-plugin", for example "sonar-php-plugin" -->
     <artifactId>sonar-kotlin</artifactId>
-    <version>0.4.3</version>
+    <version>0.5.0</version>
 
     <!-- this is important for sonar-packaging-maven-plugin -->
     <packaging>sonar-plugin</packaging>
