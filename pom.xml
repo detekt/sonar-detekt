@@ -11,9 +11,9 @@
     <packaging>sonar-plugin</packaging>
 
     <properties>
-        <kotlin.version>1.2.51</kotlin.version>
-        <spek.version>1.1.5</spek.version>
-        <detekt.version>1.0.0.RC7-3</detekt.version>
+        <kotlin.version>1.2.60</kotlin.version>
+        <spek.version>1.2.0</spek.version>
+        <detekt.version>1.0.0.RC8</detekt.version>
         <sonar.api.version>6.7.3</sonar.api.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
