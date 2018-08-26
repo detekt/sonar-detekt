@@ -62,7 +62,7 @@
         <dependency>
             <groupId>org.sonarsource.java</groupId>
             <artifactId>java-jacoco</artifactId>
-            <version>4.11.0.10660</version>
+            <version>5.7.0.15470</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
