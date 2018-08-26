@@ -27,12 +27,8 @@ import org.sonar.api.batch.sensor.SensorContext
 import org.sonar.api.batch.sensor.SensorDescriptor
 import org.sonar.api.config.Configuration
 import org.sonar.java.JavaClasspath
-import org.sonar.plugins.jacoco.JaCoCoExtensions.LOG
+import org.sonar.plugins.jacoco.JaCoCoExtensions.*
 import org.sonar.plugins.jacoco.JaCoCoReportMerger
-import org.sonar.plugins.jacoco.JacocoConfiguration.IT_REPORT_PATH_PROPERTY
-import org.sonar.plugins.jacoco.JacocoConfiguration.REPORT_MISSING_FORCE_ZERO
-import org.sonar.plugins.jacoco.JacocoConfiguration.REPORT_PATHS_PROPERTY
-import org.sonar.plugins.jacoco.JacocoConfiguration.REPORT_PATH_PROPERTY
 import org.sonar.plugins.java.api.JavaResourceLocator
 import java.io.File
 import java.util.*

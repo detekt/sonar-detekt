@@ -36,7 +36,7 @@ import org.sonar.api.measures.Metric
 import org.sonar.api.test.MutableTestPlan
 import org.sonar.api.test.TestCase
 import org.sonar.api.utils.log.Loggers
-import org.sonar.squidbridge.api.AnalysisException
+import org.sonar.java.AnalysisException
 import java.io.File
 import java.io.Serializable
 import java.util.*
