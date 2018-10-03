@@ -20,6 +20,7 @@
 package io.gitlab.arturbosch.detekt.sonar.jacoco
 
 import com.google.common.collect.Maps
+import io.gitlab.arturbosch.detekt.sonar.foundation.KotlinClasspath
 import org.apache.commons.lang.StringUtils
 import org.jacoco.core.analysis.ICounter
 import org.jacoco.core.analysis.ISourceFileCoverage
@@ -28,7 +29,6 @@ import org.sonar.api.batch.fs.InputFile
 import org.sonar.api.batch.sensor.SensorContext
 import org.sonar.api.batch.sensor.coverage.CoverageType
 import org.sonar.api.batch.sensor.coverage.NewCoverage
-import org.sonar.java.JavaClasspath
 import org.sonar.plugins.jacoco.ExecutionDataVisitor
 import org.sonar.plugins.jacoco.JaCoCoExtensions
 import org.sonar.plugins.jacoco.JacocoReportReader
@@ -51,7 +51,7 @@ private const val NO_DATA_COLLECTED_MESSAGE =
 @Suppress("ALL")
 class KotlinJacocoReportAnalyzer @JvmOverloads constructor(
 		private val javaResourceLocator: JavaResourceLocator,
-		private val javaClasspath: JavaClasspath,
+		private val kotlinClasspath: KotlinClasspath,
 		private val readCoveragePerTests: Boolean = true,
 		private val report: File) {
 
@@ -73,7 +73,7 @@ class KotlinJacocoReportAnalyzer @JvmOverloads constructor(
 	}
 
 	fun analyse(context: SensorContext) {
-		for (classesDir in javaClasspath.binaryDirs) {
+		for (classesDir in kotlinClasspath.binaryDirs) {
 			populateClassFilesCache(classesDir, "")
 		}
 

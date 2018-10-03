@@ -20,13 +20,13 @@
 package io.gitlab.arturbosch.detekt.sonar.jacoco
 
 import io.gitlab.arturbosch.detekt.sonar.foundation.KEY
+import io.gitlab.arturbosch.detekt.sonar.foundation.KotlinClasspath
 import io.gitlab.arturbosch.detekt.sonar.foundation.unwrap
 import org.sonar.api.batch.fs.FileSystem
 import org.sonar.api.batch.sensor.Sensor
 import org.sonar.api.batch.sensor.SensorContext
 import org.sonar.api.batch.sensor.SensorDescriptor
 import org.sonar.api.config.Configuration
-import org.sonar.java.JavaClasspath
 import org.sonar.plugins.jacoco.JaCoCoExtensions.*
 import org.sonar.plugins.jacoco.JaCoCoReportMerger
 import org.sonar.plugins.java.api.JavaResourceLocator
@@ -37,7 +37,7 @@ import java.util.*
 open class KotlinJaCoCoSensor(
 		fileSystem: FileSystem,
 		javaResourceLocator: JavaResourceLocator,
-		private val javaClasspath: JavaClasspath
+		private val kotlinClasspath: KotlinClasspath
 ) : Sensor {
 	private val javaResourceLocator = KotlinJavaResourceLocator(javaResourceLocator, fileSystem)
 
@@ -62,7 +62,7 @@ open class KotlinJaCoCoSensor(
 			reportMerged.parentFile.mkdirs()
 			JaCoCoReportMerger.mergeReports(reportMerged, *reportPaths.toTypedArray())
 		}
-		KotlinJacocoReportAnalyzer(javaResourceLocator, javaClasspath, report = reportMerged).analyse(context)
+		KotlinJacocoReportAnalyzer(javaResourceLocator, kotlinClasspath, report = reportMerged).analyse(context)
 	}
 
 	override fun toString(): String {
