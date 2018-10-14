@@ -13,7 +13,7 @@
         <kotlin.version>1.2.71</kotlin.version>
         <spek.version>1.2.0</spek.version>
         <detekt.version>1.0.0.RC9.2</detekt.version>
-        <sonar.api.version>6.7.5</sonar.api.version>
+        <sonar.api.version>6.7.3</sonar.api.version>
         <assertj.version>3.11.1</assertj.version>
         <jcommander.version>1.74</jcommander.version>
         <maven.compiler.source>1.8</maven.compiler.source>
