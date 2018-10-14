@@ -21,6 +21,7 @@ val defaultYamlConfig = YamlConfig.loadResource(
 val allLoadedRules = ServiceLoader.load(RuleSetProvider::class.java, Config::javaClass.javaClass.classLoader)
 		.flatMap { loadRules(it) }
 		.flatMap { (it as? MultiRule)?.rules ?: listOf(it) }
+		.asSequence()
 		.filterIsInstance<Rule>()
 		.toList()
 
@@ -38,4 +39,4 @@ data class DetektRuleKey(private val repositoryKey: String,
 						 val active: Boolean,
 						 val issue: Issue) : RuleKey(repositoryKey, ruleKey)
 
-private fun defineRuleKey(rule: Rule) = DetektRuleKey(DETEKT_REPOSITORY, rule.id, rule.active, rule.issue)
+private fun defineRuleKey(rule: Rule) = DetektRuleKey(DETEKT_REPOSITORY, rule.ruleId, rule.active, rule.issue)

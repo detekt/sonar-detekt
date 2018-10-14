@@ -31,8 +31,8 @@ private fun RulesDefinition.NewRepository.defineRule(rule: Rule) {
 		description = "Uups, this rule should have a description. Please report or contribute one!"
 	}
 	val severity = severityTranslations[rule.issue.severity]
-			?: throw IllegalStateException("Unexpected severity '${rule.issue.severity}' for rule '${rule.id}'.")
-	val newRule = createRule(rule.id).setName(rule.id)
+			?: throw IllegalStateException("Unexpected severity '${rule.issue.severity}' for rule '${rule.ruleId}'.")
+	val newRule = createRule(rule.ruleId).setName(rule.ruleId)
 			.setHtmlDescription(description)
 			.setTags(rule.issue.severity.name.toLowerCase())
 			.setStatus(RuleStatus.READY)

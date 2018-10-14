@@ -5,16 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.gitlab.arturbosch</groupId>
     <artifactId>sonar-kotlin</artifactId>
-    <version>0.5.0</version>
+    <version>0.5.1</version>
 
-    <!-- this is important for sonar-packaging-maven-plugin -->
     <packaging>sonar-plugin</packaging>
 
     <properties>
-        <kotlin.version>1.2.60</kotlin.version>
+        <kotlin.version>1.2.71</kotlin.version>
         <spek.version>1.2.0</spek.version>
-        <detekt.version>1.0.0.RC8</detekt.version>
-        <sonar.api.version>6.7.3</sonar.api.version>
+        <detekt.version>1.0.0.RC9.2</detekt.version>
+        <sonar.api.version>6.7.5</sonar.api.version>
+        <assertj.version>3.11.1</assertj.version>
+        <jcommander.version>1.74</jcommander.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
@@ -39,9 +40,7 @@
         <dependency>
             <groupId>org.sonarsource.sonarqube</groupId>
             <artifactId>sonar-plugin-api</artifactId>
-            <!-- minimal version of SonarQube to support. Note that the groupId was "org.codehaus.sonar" before version 5.2 -->
             <version>${sonar.api.version}</version>
-            <!-- mandatory scope -->
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -78,7 +77,7 @@
         <dependency>
             <groupId>com.beust</groupId>
             <artifactId>jcommander</artifactId>
-            <version>1.72</version>
+            <version>${jcommander.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -89,7 +88,7 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.9.0</version>
+            <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
