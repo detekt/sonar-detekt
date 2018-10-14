@@ -19,38 +19,39 @@
  */
 package io.gitlab.arturbosch.detekt.sonar.surefire.data
 
+/**
+ * Adapted from sonar's java plugin and translated to kotlin.
+ */
 data class UnitTestClassReport(
-        var errors: Int = 0,
-        var failures: Int = 0,
-        var skipped: Int = 0,
-        var tests: Int = 0,
-        var durationMilliseconds: Long = 0L,
-        var negativeTimeTestNumber: Long = 0L,
-        val results: MutableList<UnitTestResult> = mutableListOf()
+		var errors: Int = 0,
+		var failures: Int = 0,
+		var skipped: Int = 0,
+		var tests: Int = 0,
+		var durationMilliseconds: Long = 0L,
+		var negativeTimeTestNumber: Long = 0L,
+		val results: MutableList<UnitTestResult> = mutableListOf()
 ) {
 
+	fun add(other: UnitTestClassReport): UnitTestClassReport {
+		for (otherResult in other.results) {
+			add(otherResult)
+		}
+		return this
+	}
 
-    fun add(other: UnitTestClassReport): UnitTestClassReport {
-        for (otherResult in other.results) {
-            add(otherResult)
-        }
-        return this
-    }
-
-    fun add(result: UnitTestResult): UnitTestClassReport {
-        results.add(result)
-        when {
-            result.status == UnitTestResult.STATUS_SKIPPED -> skipped += 1
-            result.status == UnitTestResult.STATUS_FAILURE -> failures += 1
-            result.status == UnitTestResult.STATUS_ERROR -> errors += 1
-        }
-        tests += 1
-        if (result.durationMilliseconds < 0) {
-            negativeTimeTestNumber += 1
-        } else {
-            durationMilliseconds += result.durationMilliseconds
-        }
-        return this
-    }
-
+	fun add(result: UnitTestResult): UnitTestClassReport {
+		results.add(result)
+		when {
+			result.status == UnitTestResult.STATUS_SKIPPED -> skipped += 1
+			result.status == UnitTestResult.STATUS_FAILURE -> failures += 1
+			result.status == UnitTestResult.STATUS_ERROR -> errors += 1
+		}
+		tests += 1
+		if (result.durationMilliseconds < 0) {
+			negativeTimeTestNumber += 1
+		} else {
+			durationMilliseconds += result.durationMilliseconds
+		}
+		return this
+	}
 }

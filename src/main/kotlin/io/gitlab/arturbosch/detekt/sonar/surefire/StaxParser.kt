@@ -24,47 +24,49 @@ import io.gitlab.arturbosch.detekt.sonar.surefire.data.SurefireStaxHandler
 import io.gitlab.arturbosch.detekt.sonar.surefire.data.UnitTestIndex
 import org.codehaus.staxmate.SMInputFactory
 import org.codehaus.staxmate.`in`.SMHierarchicCursor
-
-import javax.xml.stream.XMLInputFactory
-import javax.xml.stream.XMLStreamException
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
+import javax.xml.stream.XMLInputFactory
+import javax.xml.stream.XMLStreamException
 
+/**
+ * Adapted from sonar's java plugin and translated to kotlin.
+ */
 internal class StaxParser(index: UnitTestIndex) {
 
-    private val inf: SMInputFactory
-    private val streamHandler: SurefireStaxHandler = SurefireStaxHandler(index)
+	private val inf: SMInputFactory
+	private val streamHandler: SurefireStaxHandler = SurefireStaxHandler(index)
 
-    init {
-        val xmlFactory = XMLInputFactory.newInstance()
-        if (xmlFactory is WstxInputFactory) {
-            xmlFactory.configureForLowMemUsage()
-            xmlFactory.config.setUndeclaredEntityResolver { _: String, _: String, _: String, namespace: String ->
-                namespace
-            }
-        }
-        xmlFactory.setProperty(XMLInputFactory.IS_VALIDATING, false)
-        xmlFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false)
-        xmlFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, false)
-        inf = SMInputFactory(xmlFactory)
-    }
+	init {
+		val xmlFactory = XMLInputFactory.newInstance()
+		if (xmlFactory is WstxInputFactory) {
+			xmlFactory.configureForLowMemUsage()
+			xmlFactory.config.setUndeclaredEntityResolver { _: String, _: String, _: String, namespace: String ->
+				namespace
+			}
+		}
+		xmlFactory.setProperty(XMLInputFactory.IS_VALIDATING, false)
+		xmlFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false)
+		xmlFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, false)
+		inf = SMInputFactory(xmlFactory)
+	}
 
-    @Throws(XMLStreamException::class)
-    fun parse(xmlFile: File) {
-        try {
-            FileInputStream(xmlFile).use { input -> parse(inf.rootElementCursor(input)) }
-        } catch (e: IOException) {
-            throw XMLStreamException(e)
-        }
-    }
+	@Throws(XMLStreamException::class)
+	fun parse(xmlFile: File) {
+		try {
+			FileInputStream(xmlFile).use { input -> parse(inf.rootElementCursor(input)) }
+		} catch (e: IOException) {
+			throw XMLStreamException(e)
+		}
+	}
 
-    @Throws(XMLStreamException::class)
-    private fun parse(rootCursor: SMHierarchicCursor) {
-        try {
-            streamHandler.stream(rootCursor)
-        } finally {
-            rootCursor.streamReader.closeCompletely()
-        }
-    }
+	@Throws(XMLStreamException::class)
+	private fun parse(rootCursor: SMHierarchicCursor) {
+		try {
+			streamHandler.stream(rootCursor)
+		} finally {
+			rootCursor.streamReader.closeCompletely()
+		}
+	}
 }

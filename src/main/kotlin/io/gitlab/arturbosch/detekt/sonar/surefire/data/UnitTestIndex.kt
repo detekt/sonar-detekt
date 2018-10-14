@@ -22,32 +22,34 @@ package io.gitlab.arturbosch.detekt.sonar.surefire.data
 import com.google.common.collect.Maps
 import com.google.common.collect.Sets
 
+/**
+ * Adapted from sonar's java plugin and translated to kotlin.
+ */
 class UnitTestIndex {
 
-    val indexByClassname: MutableMap<String, UnitTestClassReport>
-    val classnames: Set<String> get() = Sets.newHashSet(indexByClassname.keys)
+	val indexByClassname: MutableMap<String, UnitTestClassReport>
+	val classnames: Set<String> get() = Sets.newHashSet(indexByClassname.keys)
 
-    init {
-        this.indexByClassname = Maps.newHashMap()
-    }
+	init {
+		this.indexByClassname = Maps.newHashMap()
+	}
 
-    fun index(classname: String): UnitTestClassReport {
-        return indexByClassname.computeIfAbsent(classname) { UnitTestClassReport() }
-    }
+	fun index(classname: String): UnitTestClassReport {
+		return indexByClassname.computeIfAbsent(classname) { UnitTestClassReport() }
+	}
 
-    operator fun get(classname: String): UnitTestClassReport? {
-        return indexByClassname[classname]
-    }
+	operator fun get(classname: String): UnitTestClassReport? {
+		return indexByClassname[classname]
+	}
 
-    fun merge(classname: String, intoClassname: String): UnitTestClassReport? {
-        val from = indexByClassname[classname]
-        if (from != null) {
-            val to = index(intoClassname)
-            to.add(from)
-            indexByClassname.remove(classname)
-            return to
-        }
-        return null
-    }
-
+	fun merge(classname: String, intoClassname: String): UnitTestClassReport? {
+		val from = indexByClassname[classname]
+		if (from != null) {
+			val to = index(intoClassname)
+			to.add(from)
+			indexByClassname.remove(classname)
+			return to
+		}
+		return null
+	}
 }

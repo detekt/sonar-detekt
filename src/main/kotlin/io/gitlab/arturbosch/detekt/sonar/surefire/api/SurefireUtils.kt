@@ -19,80 +19,76 @@
  */
 package io.gitlab.arturbosch.detekt.sonar.surefire.api
 
-import java.io.File
-import java.util.Arrays
-import java.util.Collections
-import java.util.Objects
-import java.util.stream.Collectors
 import org.sonar.api.batch.fs.FileSystem
 import org.sonar.api.config.Configuration
 import org.sonar.api.scan.filesystem.PathResolver
-import org.sonar.api.utils.log.Logger
 import org.sonar.api.utils.log.Loggers
+import java.io.File
 
+/**
+ * Adapted from sonar's java plugin and translated to kotlin.
+ */
 object SurefireUtils {
 
-    private val LOGGER = Loggers.get(SurefireUtils::class.java)
+	private val LOGGER = Loggers.get(SurefireUtils::class.java)
 
-    @Deprecated("since 4.11")
-    val SUREFIRE_REPORTS_PATH_PROPERTY = "sonar.junit.reportsPath"
-    val SUREFIRE_REPORT_PATHS_PROPERTY = "sonar.junit.reportPaths"
+	const val SUREFIRE_REPORTS_PATH_PROPERTY = "sonar.junit.reportsPath"
+	const val SUREFIRE_REPORT_PATHS_PROPERTY = "sonar.junit.reportPaths"
 
-    /**
-     * Find the directories containing the surefire reports.
-     * @param settings Analysis settings.
-     * @param fs FileSystem containing indexed files.
-     * @param pathResolver Path solver.
-     * @return The directories containing the surefire reports or default one (target/surefire-reports) if not found (not configured or not found).
-     */
-    fun getReportsDirectories(settings: Configuration, fs: FileSystem, pathResolver: PathResolver): List<File> {
-        val dir = getReportsDirectoryFromDeprecatedProperty(settings, fs, pathResolver)
-        val dirs = getReportsDirectoriesFromProperty(settings, fs, pathResolver)
-        if (dirs != null) {
-            if (dir != null) {
-                // both properties are set, deprecated property ignored
-                LOGGER.debug("Property '{}' is deprecated and will be ignored, as property '{}' is also set.", SUREFIRE_REPORTS_PATH_PROPERTY, SUREFIRE_REPORT_PATHS_PROPERTY)
-            }
-            return dirs
-        }
-        if (dir != null) {
-            LOGGER.info("Property '{}' is deprecated. Use property '{}' instead.", SUREFIRE_REPORTS_PATH_PROPERTY, SUREFIRE_REPORT_PATHS_PROPERTY)
-            return listOf(dir)
-        }
-        // both properties are not set
-        return listOf(File(fs.baseDir(), "target/surefire-reports"))
-    }
+	/**
+	 * Find the directories containing the surefire reports.
+	 * @param settings Analysis settings.
+	 * @param fs FileSystem containing indexed files.
+	 * @param pathResolver Path solver.
+	 * @return The directories containing the surefire reports or default one (target/surefire-reports) if not found (not configured or not found).
+	 */
+	fun getReportsDirectories(settings: Configuration, fs: FileSystem, pathResolver: PathResolver): List<File> {
+		val dir = getReportsDirectoryFromDeprecatedProperty(settings, fs, pathResolver)
+		val dirs = getReportsDirectoriesFromProperty(settings, fs, pathResolver)
+		if (dirs != null) {
+			if (dir != null) {
+				// both properties are set, deprecated property ignored
+				LOGGER.debug("Property '{}' is deprecated and will be ignored, as property '{}' is also set.", SUREFIRE_REPORTS_PATH_PROPERTY, SUREFIRE_REPORT_PATHS_PROPERTY)
+			}
+			return dirs
+		}
+		if (dir != null) {
+			LOGGER.info("Property '{}' is deprecated. Use property '{}' instead.", SUREFIRE_REPORTS_PATH_PROPERTY, SUREFIRE_REPORT_PATHS_PROPERTY)
+			return listOf(dir)
+		}
+		// both properties are not set
+		return listOf(File(fs.baseDir(), "target/surefire-reports"))
+	}
 
-    private fun getReportsDirectoriesFromProperty(settings: Configuration, fs: FileSystem, pathResolver: PathResolver): List<File>? {
-        return if (settings.hasKey(SUREFIRE_REPORT_PATHS_PROPERTY)) {
-            settings.getStringArray(SUREFIRE_REPORT_PATHS_PROPERTY)
-                    .map { it.trim() }
-                    .map { getFileFromPath(fs, pathResolver, it) }
-                    .filter { it != null }
-                    .map { it!! }
-                    .toList()
-        } else null
-    }
+	private fun getReportsDirectoriesFromProperty(settings: Configuration, fs: FileSystem, pathResolver: PathResolver): List<File>? {
+		return if (settings.hasKey(SUREFIRE_REPORT_PATHS_PROPERTY)) {
+			settings.getStringArray(SUREFIRE_REPORT_PATHS_PROPERTY)
+					.map { it.trim() }
+					.map { getFileFromPath(fs, pathResolver, it) }
+					.filter { it != null }
+					.map { it!! }
+					.toList()
+		} else null
+	}
 
-    private fun getReportsDirectoryFromDeprecatedProperty(settings: Configuration, fs: FileSystem, pathResolver: PathResolver): File? {
-        if (settings.hasKey(SUREFIRE_REPORTS_PATH_PROPERTY)) {
-            val path = settings.get(SUREFIRE_REPORTS_PATH_PROPERTY).orElse(null)
-            if (path != null) {
-                return getFileFromPath(fs, pathResolver, path)
-            }
-        }
-        return null
-    }
+	private fun getReportsDirectoryFromDeprecatedProperty(settings: Configuration, fs: FileSystem, pathResolver: PathResolver): File? {
+		if (settings.hasKey(SUREFIRE_REPORTS_PATH_PROPERTY)) {
+			val path = settings.get(SUREFIRE_REPORTS_PATH_PROPERTY).orElse(null)
+			if (path != null) {
+				return getFileFromPath(fs, pathResolver, path)
+			}
+		}
+		return null
+	}
 
-    private fun getFileFromPath(fs: FileSystem, pathResolver: PathResolver, path: String): File? {
-        try {
-            return pathResolver.relativeFile(fs.baseDir(), path)
-        } catch (e: Exception) {
-            // exceptions on file not found was only occurring with SQ 5.6 LTS, not with SQ 6.4
-            LOGGER.info("Surefire report path: {}/{} not found.", fs.baseDir(), path)
-        }
+	private fun getFileFromPath(fs: FileSystem, pathResolver: PathResolver, path: String): File? {
+		try {
+			return pathResolver.relativeFile(fs.baseDir(), path)
+		} catch (e: Exception) {
+			// exceptions on file not found was only occurring with SQ 5.6 LTS, not with SQ 6.4
+			LOGGER.info("Surefire report path: {}/{} not found.", fs.baseDir(), path)
+		}
 
-        return null
-    }
-
+		return null
+	}
 }

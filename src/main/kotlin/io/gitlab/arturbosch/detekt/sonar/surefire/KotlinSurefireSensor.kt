@@ -31,36 +31,38 @@ import org.sonar.api.scan.filesystem.PathResolver
 import org.sonar.api.utils.log.Loggers
 import java.io.File
 
+/**
+ * Adapted from sonar's java plugin and translated to kotlin.
+ */
 @DependedUpon("surefire-java")
 class KotlinSurefireSensor(
-        private val kotlinSurefireParser: KotlinSurefireParser,
-        private val configuration: Configuration,
-        private val fs: FileSystem,
-        private val pathResolver: PathResolver
+		private val kotlinSurefireParser: KotlinSurefireParser,
+		private val configuration: Configuration,
+		private val fs: FileSystem,
+		private val pathResolver: PathResolver
 ) : Sensor {
 
-    override fun describe(descriptor: SensorDescriptor) {
-        descriptor.onlyOnLanguage(KEY).name("KotlinSurefireSensor")
-    }
+	override fun describe(descriptor: SensorDescriptor) {
+		descriptor.onlyOnLanguage(KEY).name("KotlinSurefireSensor")
+	}
 
-    override fun execute(context: SensorContext) {
-        val dir = SurefireUtils.getReportsDirectories(configuration, fs, pathResolver).distinct()
-        collect(context, dir)
-    }
+	override fun execute(context: SensorContext) {
+		val dir = SurefireUtils.getReportsDirectories(configuration, fs, pathResolver).distinct()
+		collect(context, dir)
+	}
 
-    private fun collect(context: SensorContext, reportsDir: List<File>) {
-        LOGGER.info("parsing {}", reportsDir)
-        kotlinSurefireParser.collect(context, reportsDir,
-                configuration.hasKey(SurefireUtils.SUREFIRE_REPORT_PATHS_PROPERTY)
-                        || configuration.hasKey(SurefireUtils.SUREFIRE_REPORTS_PATH_PROPERTY))
-    }
+	private fun collect(context: SensorContext, reportsDir: List<File>) {
+		LOGGER.info("parsing {}", reportsDir)
+		kotlinSurefireParser.collect(context, reportsDir,
+				configuration.hasKey(SurefireUtils.SUREFIRE_REPORT_PATHS_PROPERTY)
+						|| configuration.hasKey(SurefireUtils.SUREFIRE_REPORTS_PATH_PROPERTY))
+	}
 
-    override fun toString(): String {
-        return javaClass.simpleName
-    }
+	override fun toString(): String {
+		return javaClass.simpleName
+	}
 
-    companion object {
-        private val LOGGER = Loggers.get(KotlinSurefireSensor::class.java)
-    }
-
+	companion object {
+		private val LOGGER = Loggers.get(KotlinSurefireSensor::class.java)
+	}
 }

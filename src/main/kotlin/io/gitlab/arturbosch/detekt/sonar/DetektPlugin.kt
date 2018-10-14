@@ -34,5 +34,4 @@ class DetektPlugin : Plugin {
 		))
 		context.addExtensions(propertyDefinitions)
 	}
-
 }
