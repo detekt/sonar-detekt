@@ -232,7 +232,12 @@
                 <executions>
                     <execution>
                         <phase>verify</phase>
-                        <goals><goal>check</goal></goals>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <baseline>${project.basedir}/reports/baseline.xml</baseline>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
