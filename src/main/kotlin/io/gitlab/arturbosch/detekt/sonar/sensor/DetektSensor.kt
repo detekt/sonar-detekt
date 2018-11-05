@@ -22,7 +22,7 @@ class DetektSensor : Sensor {
 		val detektor = DetektFacade.create(settings)
 		val compiler = KtTreeCompiler.instance(settings)
 
-		settings.project.forEach {
+		settings.inputPaths.forEach {
 			val ktFiles = compiler.compile(it)
 			val detektion = detektor.run(it, ktFiles)
 
