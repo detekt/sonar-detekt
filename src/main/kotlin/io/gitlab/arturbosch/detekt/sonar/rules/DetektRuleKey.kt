@@ -35,8 +35,23 @@ val ruleKeys = allLoadedRules.map { defineRuleKey(it) }
 val ruleKeyLookup = ruleKeys.map { it.ruleKey to it }.toMap()
 
 data class DetektRuleKey(private val repositoryKey: String,
-						 val ruleKey: String,
-						 val active: Boolean,
-						 val issue: Issue) : RuleKey(repositoryKey, ruleKey)
+                         val ruleKey: String,
+                         val active: Boolean,
+                         val issue: Issue) : RuleKey(repositoryKey, ruleKey) {
+    override fun hashCode(): Int {
+        return super.hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+
+        if (other?.javaClass != javaClass && other?.javaClass != RuleKey::class.java) return false
+
+        val ruleKey = other as RuleKey?
+        return repository() == ruleKey!!.repository() && rule() == ruleKey.rule()
+
+        return super.equals(other)
+    }
+}
 
 private fun defineRuleKey(rule: Rule) = DetektRuleKey(DETEKT_REPOSITORY, rule.ruleId, rule.active, rule.issue)
