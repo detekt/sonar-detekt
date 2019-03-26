@@ -29,8 +29,8 @@ Sonar-kotlin is not yet uploaded to the `Update Center`
 
 ### Configurations and Baselines (and Filters)
 
-Read about detekt configuration files [here](https://github.com/arturbosch/detekt#ruleset-configuration)
-and about detekt baseline formats [here](https://github.com/arturbosch/detekt#code-smell-baseline-and-ignore-list).
+Read about detekt configuration files [here](https://arturbosch.github.io/detekt/configurations.html)
+and about detekt baseline formats [here](https://arturbosch.github.io/detekt/baseline.html).
 
 Best ways to get started is to configure the `detekt-gradle-plugin` in your project and use its `detektBaseline` and 
 `detektGenerateConfig` tasks.
