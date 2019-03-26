@@ -4,10 +4,9 @@ import io.gitlab.arturbosch.detekt.api.Config
 import io.gitlab.arturbosch.detekt.sonar.foundation.CONFIG_PATH_KEY
 import io.gitlab.arturbosch.detekt.sonar.rules.defaultYamlConfig
 import org.assertj.core.api.Assertions.assertThat
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.it
 import org.sonar.api.config.internal.MapSettings
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 import java.io.File
 
 /**

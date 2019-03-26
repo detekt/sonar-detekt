@@ -11,7 +11,7 @@
 
     <properties>
         <kotlin.version>1.3.21</kotlin.version>
-        <spek.version>1.2.1</spek.version>
+        <spek.version>2.0.1</spek.version>
         <detekt.version>1.0.0-RC14</detekt.version>
         <sonar.api.version>6.7.6</sonar.api.version>
         <assertj.version>3.12.2</assertj.version>
@@ -100,20 +100,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains.spek</groupId>
-            <artifactId>spek-api</artifactId>
+            <groupId>org.spekframework.spek2</groupId>
+            <artifactId>spek-dsl-jvm</artifactId>
             <version>${spek.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains.spek</groupId>
-            <artifactId>spek-subject-extension</artifactId>
-            <version>${spek.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.spek</groupId>
-            <artifactId>spek-junit-platform-engine</artifactId>
+            <groupId>org.spekframework.spek2</groupId>
+            <artifactId>spek-runner-junit5</artifactId>
             <version>${spek.version}</version>
             <scope>test</scope>
         </dependency>
