@@ -1,10 +1,9 @@
 package io.gitlab.arturbosch.detekt.sonar.sensor
 
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
 import io.gitlab.arturbosch.detekt.sonar.foundation.KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.PATH_FILTERS_KEY
+import io.mockk.every
+import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -39,10 +38,10 @@ class DetektSensorTest {
 		fileSystem = context.fileSystem().add(DefaultInputDir("", ""))
 		sensor = DetektSensor()
 
-		fileLinesContextFactory = mock()
-		fileLinesContext = mock()
+		fileLinesContextFactory = mockk()
+		fileLinesContext = mockk()
 
-		whenever(fileLinesContextFactory.createFor(any())).thenReturn(fileLinesContext)
+		every { fileLinesContextFactory.createFor(any()) } returns fileLinesContext
 	}
 
 	@Test
