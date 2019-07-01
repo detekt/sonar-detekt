@@ -13,25 +13,22 @@ import io.gitlab.arturbosch.detekt.sonar.surefire.KotlinSurefireSensor
 import org.sonar.api.Plugin
 import org.sonar.java.JavaTestClasspath
 
-/**
- * @author Artur Bosch
- */
 class DetektPlugin : Plugin {
 
-	override fun define(context: Plugin.Context) {
-		context.addExtensions(listOf(
-				KotlinLanguage::class.java,
-				KotlinProfile::class.java,
-				DetektSensor::class.java,
-				DetektRulesDefinition::class.java,
-				DetektMetrics::class.java,
-				KotlinClasspath::class.java,
-				JavaTestClasspath::class.java,
-				KotlinJaCoCoSensor::class.java,
-				// Tests
-				KotlinSurefireSensor::class.java,
-				KotlinSurefireParser::class.java
-		))
-		context.addExtensions(propertyDefinitions)
-	}
+    override fun define(context: Plugin.Context) {
+        context.addExtensions(listOf(
+            KotlinLanguage::class.java,
+            KotlinProfile::class.java,
+            DetektSensor::class.java,
+            DetektRulesDefinition::class.java,
+            DetektMetrics::class.java,
+            KotlinClasspath::class.java,
+            JavaTestClasspath::class.java,
+            KotlinJaCoCoSensor::class.java,
+            // Tests
+            KotlinSurefireSensor::class.java,
+            KotlinSurefireParser::class.java
+        ))
+        context.addExtensions(propertyDefinitions)
+    }
 }

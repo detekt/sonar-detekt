@@ -9,38 +9,35 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import java.io.File
 
-/**
- * @author Artur Bosch
- */
 class LoadConfigSpec : Spek({
 
-	describe("try loading configuration file via property") {
+    describe("try loading configuration file via property") {
 
-		val base = File(javaClass.getResource("/configBase/config/detekt-config.yml").toURI()).parentFile
-		assertThat(base).isNotNull()
+        val base = File(javaClass.getResource("/configBase/config/detekt-config.yml").toURI()).parentFile
+        assertThat(base).isNotNull()
 
-		it("should match config on sub path level") {
-			val settings = MapSettings().apply {
-				setProperty(CONFIG_PATH_KEY, "detekt-config.yml")
-			}
-			val config = chooseConfig(base, settings.asConfig())
+        it("should match config on sub path level") {
+            val settings = MapSettings().apply {
+                setProperty(CONFIG_PATH_KEY, "detekt-config.yml")
+            }
+            val config = chooseConfig(base, settings.asConfig())
 
-			assertThat(config).isNotEqualTo(Config.empty)
-		}
+            assertThat(config).isNotEqualTo(Config.empty)
+        }
 
-		it("should match config top path level") {
-			val settings = MapSettings().apply {
-				setProperty(CONFIG_PATH_KEY, "top-detekt-config.yml")
-			}
-			val config = chooseConfig(base, settings.asConfig())
+        it("should match config top path level") {
+            val settings = MapSettings().apply {
+                setProperty(CONFIG_PATH_KEY, "top-detekt-config.yml")
+            }
+            val config = chooseConfig(base, settings.asConfig())
 
-			assertThat(config).isNotEqualTo(Config.empty)
-		}
+            assertThat(config).isNotEqualTo(Config.empty)
+        }
 
-		it("should default to default config") {
-			val config = chooseConfig(base, MapSettings().asConfig())
+        it("should default to default config") {
+            val config = chooseConfig(base, MapSettings().asConfig())
 
-			assertThat(config == defaultYamlConfig)
-		}
-	}
+            assertThat(config == defaultYamlConfig)
+        }
+    }
 })

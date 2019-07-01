@@ -15,6 +15,7 @@ import org.spekframework.spek2.style.specification.describe
 const val className = "foo.Bar"
 
 class KotlinJavaResourceLocatorTest : Spek({
+
     val javaLocator = mockk<JavaResourceLocator>()
     val fileSystem = mockk<FileSystem>()
     val predicates = mockk<FilePredicates>()

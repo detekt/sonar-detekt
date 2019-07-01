@@ -54,8 +54,8 @@ class KotlinClasspath(settings: Configuration?, fs: FileSystem?) : AbstractJavaC
 
     private fun hasMoreThanOneKotlinFile(): Boolean {
         return fs.inputFiles(ktPredicate(fs.predicates()))
-                .filterIndexed { i, _ -> i > 1 }
-                .any()
+            .filterIndexed { i, _ -> i > 1 }
+            .any()
     }
 
     private fun ktPredicate(p: FilePredicates) = p.and(p.hasLanguage(KEY), p.hasType(type))

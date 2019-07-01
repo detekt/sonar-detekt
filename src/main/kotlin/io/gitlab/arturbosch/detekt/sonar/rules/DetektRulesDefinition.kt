@@ -7,36 +7,33 @@ import io.gitlab.arturbosch.detekt.sonar.foundation.KEY
 import org.sonar.api.rule.RuleStatus
 import org.sonar.api.server.rule.RulesDefinition
 
-/**
- * @author Artur Bosch
- */
 class DetektRulesDefinition : RulesDefinition {
 
-	override fun define(context: RulesDefinition.Context) {
-		context.createRepository(DETEKT_REPOSITORY, KEY)
-				.setName(DETEKT_ANALYZER)
-				.createRules()
-				.done()
-	}
+    override fun define(context: RulesDefinition.Context) {
+        context.createRepository(DETEKT_REPOSITORY, KEY)
+            .setName(DETEKT_ANALYZER)
+            .createRules()
+            .done()
+    }
 
 }
 
 fun RulesDefinition.NewRepository.createRules() = apply {
-	allLoadedRules.map { defineRule(it) }
+    allLoadedRules.map { defineRule(it) }
 }
 
 private fun RulesDefinition.NewRepository.defineRule(rule: Rule) {
-	var description = rule.issue.description
-	if (description.isBlank()) {
-		description = "Uups, this rule should have a description. Please report or contribute one!"
-	}
-	val severity = severityTranslations[rule.issue.severity]
-			?: throw IllegalStateException("Unexpected severity '${rule.issue.severity}' for rule '${rule.ruleId}'.")
-	val newRule = createRule(rule.ruleId).setName(rule.ruleId)
-			.setHtmlDescription(description)
-			.setTags(rule.issue.severity.name.toLowerCase())
-			.setStatus(RuleStatus.READY)
-			.setSeverity(severity)
-	newRule.setDebtRemediationFunction(
-			newRule.debtRemediationFunctions().linear(rule.issue.debt.toString()))
+    var description = rule.issue.description
+    if (description.isBlank()) {
+        description = "Uups, this rule should have a description. Please report or contribute one!"
+    }
+    val severity = severityTranslations[rule.issue.severity]
+        ?: throw IllegalStateException("Unexpected severity '${rule.issue.severity}' for rule '${rule.ruleId}'.")
+    val newRule = createRule(rule.ruleId).setName(rule.ruleId)
+        .setHtmlDescription(description)
+        .setTags(rule.issue.severity.name.toLowerCase())
+        .setStatus(RuleStatus.READY)
+        .setSeverity(severity)
+    newRule.setDebtRemediationFunction(
+        newRule.debtRemediationFunctions().linear(rule.issue.debt.toString()))
 }

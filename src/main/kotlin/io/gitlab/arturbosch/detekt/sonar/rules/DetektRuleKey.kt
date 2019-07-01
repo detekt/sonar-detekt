@@ -49,8 +49,6 @@ data class DetektRuleKey(private val repositoryKey: String,
 
         val ruleKey = other as RuleKey?
         return repository() == ruleKey!!.repository() && rule() == ruleKey.rule()
-
-        return super.equals(other)
     }
 }
 

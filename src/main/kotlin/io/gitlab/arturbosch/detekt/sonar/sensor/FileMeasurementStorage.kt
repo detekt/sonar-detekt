@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.detekt.sonar.sensor
 
-import io.gitlab.arturbosch.detekt.core.processors.complexityKey
 import io.gitlab.arturbosch.detekt.core.processors.commentLinesKey
+import io.gitlab.arturbosch.detekt.core.processors.complexityKey
 import io.gitlab.arturbosch.detekt.core.processors.sourceLinesKey
 import org.jetbrains.kotlin.com.intellij.openapi.util.Key
 import org.jetbrains.kotlin.psi.KtFile
@@ -17,21 +17,20 @@ import org.sonar.api.measures.Metric
  */
 class FileMeasurementStorage(private val context: SensorContext) {
 
-	fun save(file: KtFile, inputComponent: InputComponent) {
-		save(file, inputComponent, sourceLinesKey, NCLOC)
-		save(file, inputComponent, commentLinesKey, COMMENT_LINES)
-		save(file, inputComponent, complexityKey, COMPLEXITY)
-	}
+    fun save(file: KtFile, inputComponent: InputComponent) {
+        save(file, inputComponent, sourceLinesKey, NCLOC)
+        save(file, inputComponent, commentLinesKey, COMMENT_LINES)
+        save(file, inputComponent, complexityKey, COMPLEXITY)
+    }
 
-	private fun save(file: KtFile, inputComponent: InputComponent,
-					 dataKey: Key<Int>, metricKey: Metric<Int>) {
-		file.getUserData(dataKey)?.let {
-			context.newMeasure<Int>()
-					.withValue(it)
-					.forMetric(metricKey)
-					.on(inputComponent)
-					.save()
-		}
-	}
-
+    private fun save(file: KtFile, inputComponent: InputComponent,
+                     dataKey: Key<Int>, metricKey: Metric<Int>) {
+        file.getUserData(dataKey)?.let {
+            context.newMeasure<Int>()
+                .withValue(it)
+                .forMetric(metricKey)
+                .on(inputComponent)
+                .save()
+        }
+    }
 }

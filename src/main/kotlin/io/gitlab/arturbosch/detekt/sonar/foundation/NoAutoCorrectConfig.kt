@@ -8,15 +8,15 @@ import io.gitlab.arturbosch.detekt.api.Config
 @Suppress("UNCHECKED_CAST")
 class NoAutoCorrectConfig(private val config: Config) : Config {
 
-	override fun subConfig(key: String): Config = config.subConfig(key)
+    override fun subConfig(key: String): Config = config.subConfig(key)
 
-	override fun <T : Any> valueOrDefault(key: String, default: T): T {
-		if ("autoCorrect" == key) {
-			return false as T
-		}
-		return config.valueOrDefault(key, default)
-	}
+    override fun <T : Any> valueOrDefault(key: String, default: T): T {
+        if ("autoCorrect" == key) {
+            return false as T
+        }
+        return config.valueOrDefault(key, default)
+    }
 
-	override fun <T : Any> valueOrNull(key: String): T? = config.valueOrNull(key)
+    override fun <T : Any> valueOrNull(key: String): T? = config.valueOrNull(key)
 
 }

@@ -3,7 +3,7 @@ package io.gitlab.arturbosch.detekt.sonar.foundation
 import io.gitlab.arturbosch.detekt.sonar.DetektPlugin
 import org.sonar.api.utils.log.Logger
 import org.sonar.api.utils.log.Loggers
-import java.util.*
+import java.util.Optional
 
 const val KEY = "kotlin"
 const val NAME = "Kotlin"

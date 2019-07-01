@@ -24,21 +24,21 @@ package io.gitlab.arturbosch.detekt.sonar.surefire.data
  */
 @Suppress("unused")
 data class UnitTestResult(
-		var name: String? = null,
-		var testSuiteClassName: String? = null,
-		var status: String? = null,
-		var stackTrace: String? = null,
-		var message: String? = null,
-		var durationMilliseconds: Long = 0L
+    var name: String? = null,
+    var testSuiteClassName: String? = null,
+    var status: String? = null,
+    var stackTrace: String? = null,
+    var message: String? = null,
+    var durationMilliseconds: Long = 0L
 ) {
-	val isErrorOrFailure: Boolean get() = STATUS_ERROR == status || STATUS_FAILURE == status
+    val isErrorOrFailure: Boolean get() = STATUS_ERROR == status || STATUS_FAILURE == status
 
-	val isError: Boolean get() = STATUS_ERROR == status
+    val isError: Boolean get() = STATUS_ERROR == status
 
-	companion object {
-		const val STATUS_OK = "ok"
-		const val STATUS_ERROR = "error"
-		const val STATUS_FAILURE = "failure"
-		const val STATUS_SKIPPED = "skipped"
-	}
+    companion object {
+        const val STATUS_OK = "ok"
+        const val STATUS_ERROR = "error"
+        const val STATUS_FAILURE = "failure"
+        const val STATUS_SKIPPED = "skipped"
+    }
 }
