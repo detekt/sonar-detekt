@@ -11,9 +11,9 @@ const val CONFIG_PATH_DEFAULT = ""
 
 const val PATH_FILTERS_NAME = "Detekt path filters"
 const val PATH_FILTERS_KEY = "detekt.sonar.kotlin.filters"
-const val PATH_FILTERS_DESCRIPTIONS = "Regex based path filters eg. '.*/test/.*'. " +
+const val PATH_FILTERS_DESCRIPTIONS = "Regex based path filters eg. '**/test/**'. " +
     "All paths like '/my/custom/test/path' will be filtered."
-const val PATH_FILTERS_DEFAULTS = ".*/test/.*,.*/resources/.*,.*/build/.*,.*/target/.*"
+const val PATH_FILTERS_DEFAULTS = "**/resources/**,**/build/**,**/target/**"
 
 const val BASELINE_NAME = "Detekt baseline configuration path"
 const val BASELINE_KEY = "detekt.sonar.kotlin.baseline.path"
