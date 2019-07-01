@@ -2,6 +2,7 @@ package io.gitlab.arturbosch.detekt.sonar.sensor
 
 import io.gitlab.arturbosch.detekt.api.Config
 import io.gitlab.arturbosch.detekt.cli.CliArgs
+import io.gitlab.arturbosch.detekt.cli.FailFastConfig
 import io.gitlab.arturbosch.detekt.cli.SEPARATOR_COMMA
 import io.gitlab.arturbosch.detekt.cli.SEPARATOR_SEMICOLON
 import io.gitlab.arturbosch.detekt.cli.loadConfiguration
@@ -34,11 +35,13 @@ internal fun chooseConfig(baseDir: File, configuration: Configuration): Config {
     }
 
     return possibleParseArguments.loadConfiguration().let { bestConfigMatch ->
+        // always use FailFast config to activate all detekt rules
+        // let the user decide through sonar's quality profiles which rules should not get executed instead
         if (bestConfigMatch == Config.empty) {
             logger.info("No detekt yaml configuration file found, using the default configuration.")
-            defaultYamlConfig
+            FailFastConfig(Config.empty, defaultYamlConfig)
         } else {
-            bestConfigMatch
+            FailFastConfig(bestConfigMatch, defaultYamlConfig)
         }
     }
 }
