@@ -11,14 +11,18 @@
 ### Features
 
 - Integrates [detekt](https://github.com/arturbosch/detekt) for code analysis
-- Default quality profile `Detekt way`
+- Default quality profile `detekt active` (80 rules) and `detekt all` (164 rules)
 - Syntax highlighting
-- Supports SonarQube 6.7.3 and up
+- Supports SonarQube 6.7.7 and up
 - Supports detekt's `yaml config` and `baseline.xml` (also `path filters`)
+- Jacoco support
+- Lines of code and complexity metrics
 
 ### Usage
 
-Sonar-kotlin is not yet uploaded to the `Update Center`
+This sonar-kotlin is not the official sonarqube plugin.
+It was released before the official plugin and uses the same plugin key 'kotlin'.
+That means you can't use this plugin together with the official one.
 
 - `git clone https://github.com/arturbosch/sonar-kotlin`
 - `cd sonar-kotlin`
