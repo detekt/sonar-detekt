@@ -14,20 +14,20 @@ import org.sonar.api.rule.RuleKey
 import java.util.ServiceLoader
 
 val defaultYamlConfig = YamlConfig.loadResource(
-		ClasspathResourceConverter().convert("default-detekt-config.yml")).apply {
-	logger.info(this.toString())
+    ClasspathResourceConverter().convert("default-detekt-config.yml")).apply {
+    logger.info(this.toString())
 }
 
 val allLoadedRules = ServiceLoader.load(RuleSetProvider::class.java, Config::javaClass.javaClass.classLoader)
-		.flatMap { loadRules(it) }
-		.flatMap { (it as? MultiRule)?.rules ?: listOf(it) }
-		.asSequence()
-		.filterIsInstance<Rule>()
-		.toList()
+    .flatMap { loadRules(it) }
+    .flatMap { (it as? MultiRule)?.rules ?: listOf(it) }
+    .asSequence()
+    .filterIsInstance<Rule>()
+    .toList()
 
 private fun loadRules(provider: RuleSetProvider): List<BaseRule> {
-	val subConfig = defaultYamlConfig.subConfig(provider.ruleSetId)
-	return provider.instance(subConfig).rules
+    val subConfig = defaultYamlConfig.subConfig(provider.ruleSetId)
+    return provider.instance(subConfig).rules
 }
 
 val ruleKeys = allLoadedRules.map { defineRuleKey(it) }
