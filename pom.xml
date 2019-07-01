@@ -68,6 +68,11 @@
             <version>${detekt.version}</version>
         </dependency>
         <dependency>
+            <groupId>io.gitlab.arturbosch.detekt</groupId>
+            <artifactId>detekt-formatting</artifactId>
+            <version>${detekt.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.sonarsource.java</groupId>
             <artifactId>java-jacoco</artifactId>
             <version>5.7.0.15470</version>
