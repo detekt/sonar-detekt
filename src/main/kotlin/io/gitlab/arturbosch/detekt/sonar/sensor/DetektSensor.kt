@@ -1,6 +1,7 @@
 package io.gitlab.arturbosch.detekt.sonar.sensor
 
 import io.gitlab.arturbosch.detekt.core.DetektFacade
+import io.gitlab.arturbosch.detekt.core.FileProcessorLocator
 import io.gitlab.arturbosch.detekt.core.RuleSetLocator
 import io.gitlab.arturbosch.detekt.sonar.foundation.DETEKT_SENSOR
 import io.gitlab.arturbosch.detekt.sonar.foundation.KEY
@@ -17,11 +18,12 @@ class DetektSensor : Sensor {
     override fun execute(context: SensorContext) {
         val settings = createProcessingSettings(context)
         val providers = RuleSetLocator(settings).load()
-        val listener = ReturnKtFilesAnalysisEndsListener()
-        val detektor = DetektFacade.create(settings, providers, listOf(listener))
+        val ktFilesListener = ReturnKtFilesAnalysisEndsListener()
+        val processors = FileProcessorLocator(settings).load() + ktFilesListener
+        val detektor = DetektFacade.create(settings, providers, processors)
         val results = detektor.run()
         IssueReporter(results, context).run()
         ProjectMeasurementStorage(results, context).run()
-        FileProcessor(context, listener.kotlinFiles).run()
+        FileProcessor(context, ktFilesListener.kotlinFiles).run()
     }
 }
