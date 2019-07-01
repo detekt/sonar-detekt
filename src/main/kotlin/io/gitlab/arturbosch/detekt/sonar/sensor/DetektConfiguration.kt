@@ -1,12 +1,10 @@
 package io.gitlab.arturbosch.detekt.sonar.sensor
 
 import io.gitlab.arturbosch.detekt.api.Config
+import io.gitlab.arturbosch.detekt.api.internal.PathFilters
 import io.gitlab.arturbosch.detekt.cli.CliArgs
 import io.gitlab.arturbosch.detekt.cli.FailFastConfig
-import io.gitlab.arturbosch.detekt.cli.SEPARATOR_COMMA
-import io.gitlab.arturbosch.detekt.cli.SEPARATOR_SEMICOLON
 import io.gitlab.arturbosch.detekt.cli.loadConfiguration
-import io.gitlab.arturbosch.detekt.core.PathFilter
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
 import io.gitlab.arturbosch.detekt.sonar.foundation.CONFIG_PATH_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.NoAutoCorrectConfig
@@ -22,7 +20,7 @@ fun createProcessingSettings(context: SensorContext): ProcessingSettings {
     val baseDir = context.fileSystem().baseDir()
     val settings = context.config()
     val pathFiltersString = settings.get(PATH_FILTERS_KEY).orElse(PATH_FILTERS_DEFAULTS)
-    val filters = pathFiltersString.split(SEPARATOR_SEMICOLON, SEPARATOR_COMMA).map { PathFilter(it) }
+    val filters = PathFilters.of(null, pathFiltersString)
     val config = chooseConfig(baseDir, settings)
     return ProcessingSettings(baseDir.toPath(), NoAutoCorrectConfig(config), filters)
 }
