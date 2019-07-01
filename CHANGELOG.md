@@ -1,5 +1,36 @@
 # Detekt - Changelog
 
+#### 0.6.0
+
+- Based on sonar-api 6.7.7 and detekt RC16, see rc15 and rc16 for breaking changes
+- Renamed default profile to "detekt active", containing 80 rules marked active in detekt
+- Introduced a second quality profile "detekt all", containing 164 rules
+- Integrated detekt-formatting, a wrapper over KtLint, provides 30+ additional rules
+- Tested on sonaqube 7.7, 7.8 and 7.9
+
+#### 0.5.3
+
+- Based on sonar 6.7.7, kotlin 1.3.21 and detekt RC14
+
+#### 0.5.2
+
+- Upgrade to detekt 1.0.0-RC10
+
+#### 0.5.1
+
+- based on detekt RC9.2
+- jacoco fix by @kzaikin
+- jacoco update for 7.3 by @underyx
+
+#### 0.5.0
+
+- based on detekt 1.0.0.RC7-3 (by @grevolution)
+- parsing Surefire/JUinit reports (by @vexdev)
+
+#### 0.4.2
+
+- based on detekt RC7, see https://arturbosch.github.io/detekt/changelog.html for closed Issues
+
 #### 0.4.1
 
 - Based on detekt rc6-3
