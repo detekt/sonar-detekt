@@ -1,12 +1,9 @@
 language: java
-jdk: oraclejdk8
+jdk: openjdk8
 sudo: false
 cache:
   directories:
   - "$HOME/.m2"
 install:
   - echo "<settings><profiles><profile><repositories><repository><snapshots><enabled>false</enabled></snapshots><id>central</id><name>bintray</name><url>http://jcenter.bintray.com</url></repository></repositories><pluginRepositories><pluginRepository><snapshots><enabled>false</enabled></snapshots><id>central</id><name>bintray-plugins</name><url>http://jcenter.bintray.com</url></pluginRepository></pluginRepositories><id>bintray</id></profile></profiles><activeProfiles><activeProfile>bintray</activeProfile></activeProfiles></settings>" > $HOME/.m2/settings.xml
-addons:
-  apt:
-    packages:
-      - oracle-java8-installer
+  
