@@ -1,5 +1,12 @@
 # Detekt - Changelog
 
+#### 1.0.0
+
+- Based on sonar-api 6.7.7 and detekt 1.0.0
+- Gradle Plugin: removed report consolidation. It was flawed and some users were stuck with RC14. It will be replaced in a further version.
+- Gradle Plugin: `autoCorrect` property is now allowed on the detekt extension. No need to create a new task anymore.
+- Formatting: updated to KtLint 0.34.2 which removed the two rules `NoItParamInMultilineLambda` and `SpacingAroundUnaryOperators`. 
+
 #### 0.6.0
 
 - Based on sonar-api 6.7.7 and detekt RC16, see rc15 and rc16 for breaking changes
