@@ -23,8 +23,12 @@ class FileMeasurementStorage(private val context: SensorContext) {
         save(file, inputComponent, complexityKey, COMPLEXITY)
     }
 
-    private fun save(file: KtFile, inputComponent: InputComponent,
-                     dataKey: Key<Int>, metricKey: Metric<Int>) {
+    private fun save(
+        file: KtFile,
+        inputComponent: InputComponent,
+        dataKey: Key<Int>,
+        metricKey: Metric<Int>
+    ) {
         file.getUserData(dataKey)?.let {
             context.newMeasure<Int>()
                 .withValue(it)

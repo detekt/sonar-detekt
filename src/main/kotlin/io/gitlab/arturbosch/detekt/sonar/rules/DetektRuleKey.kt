@@ -34,10 +34,12 @@ val ruleKeys = allLoadedRules.map { defineRuleKey(it) }
 
 val ruleKeyLookup = ruleKeys.map { it.ruleKey to it }.toMap()
 
-data class DetektRuleKey(private val repositoryKey: String,
-                         val ruleKey: String,
-                         val active: Boolean,
-                         val issue: Issue) : RuleKey(repositoryKey, ruleKey) {
+data class DetektRuleKey(
+    private val repositoryKey: String,
+    val ruleKey: String,
+    val active: Boolean,
+    val issue: Issue
+) : RuleKey(repositoryKey, ruleKey) {
     override fun hashCode(): Int {
         return super.hashCode()
     }
