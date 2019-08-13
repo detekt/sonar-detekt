@@ -22,7 +22,11 @@ fun createProcessingSettings(context: SensorContext): ProcessingSettings {
     val pathFiltersString = settings.get(PATH_FILTERS_KEY).orElse(PATH_FILTERS_DEFAULTS)
     val filters = PathFilters.of(null, pathFiltersString)
     val config = chooseConfig(baseDir, settings)
-    return ProcessingSettings(baseDir.toPath(), NoAutoCorrectConfig(config), filters)
+    return ProcessingSettings(
+        inputPath = baseDir.toPath(),
+        config = NoAutoCorrectConfig(config),
+        pathFilters = filters
+    )
 }
 
 internal fun chooseConfig(baseDir: File, configuration: Configuration): Config {
