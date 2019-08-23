@@ -10,7 +10,7 @@
     <packaging>sonar-plugin</packaging>
 
     <properties>
-        <kotlin.version>1.3.41</kotlin.version>
+        <kotlin.version>1.3.50</kotlin.version>
         <spek.version>2.0.2</spek.version>
         <detekt.version>1.0.0</detekt.version>
         <sonar.api.version>6.7.7</sonar.api.version>
