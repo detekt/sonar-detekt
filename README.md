@@ -43,7 +43,7 @@ appropriate threshold values for some rules.
 - `detektBaseline` analyzes your project and generates a baseline xml file with all your current findings. This 
 findings won't get reported anymore in sonar.
 
-##### Usage
+##### Settings
 
 To make use of this features, you have to set up some properties:
 
@@ -67,7 +67,7 @@ If you use relative paths, sonar-kotlin first tries to find the provided path in
 As mentioned/used in ...
 
 - [Sonarqube code coverage for Kotlin on Android with Bitrise](https://android.jlelse.eu/sonarqube-code-coverage-for-kotlin-on-android-with-bitrise-71b2fee0b797)
-
+- [Sample Android-Gradle-Sonar-Kotlin integration](https://github.com/marcinbak/android-sonar-kotlin)
 
 ## License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Farturbosch%2Fsonar-kotlin.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Farturbosch%2Fsonar-kotlin?ref=badge_large)

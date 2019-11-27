@@ -137,14 +137,12 @@
                 <version>1.18.0.372</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <!-- the entry-point class that extends org.sonar.api.SonarPlugin -->
                     <pluginClass>io.gitlab.arturbosch.detekt.sonar.DetektPlugin</pluginClass>
-                    <pluginDescription>Work in progress kotlin sonar plugin based on detekt.</pluginDescription>
+                    <pluginDescription>Sonarqube plugin for Kotlin based on detekt.</pluginDescription>
                     <pluginKey>kotlin</pluginKey>
                     <pluginName>Kotlin</pluginName>
-                    <pluginSourcesUrl>https://github.com/arturbosch/sonar-kotlin</pluginSourcesUrl>
-                    <pluginUrl>https://github.com/arturbosch/sonar-kotlin</pluginUrl>
-                    <!-- advanced properties can be set here. See paragraph "Advanced Build Properties". -->
+                    <pluginSourcesUrl>https://github.com/detekt/sonar-kotlin</pluginSourcesUrl>
+                    <pluginUrl>https://github.com/detekt/sonar-kotlin</pluginUrl>
                 </configuration>
             </plugin>
             <plugin>
