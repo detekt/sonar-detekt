@@ -10,8 +10,10 @@ import org.jetbrains.kotlin.com.intellij.openapi.util.Key
 import org.sonar.api.batch.sensor.SensorContext
 import org.sonar.api.measures.Metric
 
-class ProjectMeasurementStorage(private val detektion: Detektion,
-                                private val context: SensorContext) {
+class ProjectMeasurementStorage(
+    private val detektion: Detektion,
+    private val context: SensorContext
+) {
 
     fun run() {
         save(linesKey, projectLocMetric)

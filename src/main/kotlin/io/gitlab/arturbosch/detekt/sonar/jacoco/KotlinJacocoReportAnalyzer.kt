@@ -36,7 +36,6 @@ import org.sonar.plugins.java.api.JavaResourceLocator
 import java.io.File
 import java.util.ArrayList
 
-
 private const val NO_JACOCO_EXECUTION_DATA_MESSAGE =
     "Project coverage is set to 0% as no JaCoCo execution data has been dumped: {}"
 private const val NO_CLASS_FILES_MESSAGE =
@@ -53,7 +52,8 @@ class KotlinJacocoReportAnalyzer @JvmOverloads constructor(
     private val javaResourceLocator: JavaResourceLocator,
     private val kotlinClasspath: KotlinClasspath,
     private val readCoveragePerTests: Boolean = true,
-    private val report: File) {
+    private val report: File
+) {
 
     private var classFilesCache: MutableMap<String, File> = Maps.newHashMap()
 
@@ -68,8 +68,9 @@ class KotlinJacocoReportAnalyzer @JvmOverloads constructor(
         val inputFile = javaResourceLocator.findResourceByClassName(className) ?: return null
         return if (inputFile.type() == InputFile.Type.TEST) {
             null
-        } else inputFile
-
+        } else {
+            inputFile
+        }
     }
 
     fun analyse(context: SensorContext) {
@@ -94,7 +95,7 @@ class KotlinJacocoReportAnalyzer @JvmOverloads constructor(
                 populateClassFilesCache(file, path + file.name + "/")
             } else if (file.name.endsWith(".class")) {
                 val className = path + StringUtils.removeEnd(file.name, ".class")
-                classFilesCache.put(className, file)
+                classFilesCache[className] = file
             }
         }
     }
@@ -133,8 +134,10 @@ class KotlinJacocoReportAnalyzer @JvmOverloads constructor(
         }
     }
 
-    private fun readCoveragePerTests(executionDataVisitor: ExecutionDataVisitor,
-                                     jacocoReportReader: JacocoReportReader): Boolean {
+    private fun readCoveragePerTests(
+        executionDataVisitor: ExecutionDataVisitor,
+        jacocoReportReader: JacocoReportReader
+    ): Boolean {
         var collectedCoveragePerTest = false
         if (readCoveragePerTests) {
             for ((key, value) in executionDataVisitor.sessions) {
@@ -146,9 +149,11 @@ class KotlinJacocoReportAnalyzer @JvmOverloads constructor(
         return collectedCoveragePerTest
     }
 
-    private fun analyzeLinesCoveredByTests(sessionId: String,
-                                           executionDataStore: ExecutionDataStore,
-                                           jacocoReportReader: JacocoReportReader): Boolean {
+    private fun analyzeLinesCoveredByTests(
+        sessionId: String,
+        executionDataStore: ExecutionDataStore,
+        jacocoReportReader: JacocoReportReader
+    ): Boolean {
         val i = sessionId.indexOf(' ')
         if (i < 0) {
             return false
@@ -161,7 +166,7 @@ class KotlinJacocoReportAnalyzer @JvmOverloads constructor(
             val resource = getResource(coverage)
             if (resource != null) {
                 val coveredLines = coveredLines(coverage)
-                if (!coveredLines.isEmpty()) {
+                if (coveredLines.isNotEmpty()) {
                     result = true
                 }
             }
@@ -218,5 +223,4 @@ class KotlinJacocoReportAnalyzer @JvmOverloads constructor(
             lineId++
         }
     }
-
 }

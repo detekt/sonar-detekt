@@ -13,8 +13,10 @@ import org.sonar.api.batch.sensor.issue.NewIssue
 import org.sonar.api.config.Configuration
 import java.io.File
 
-class IssueReporter(private val detektion: Detektion,
-                    private val context: SensorContext) {
+class IssueReporter(
+    private val detektion: Detektion,
+    private val context: SensorContext
+) {
 
     private val fileSystem = context.fileSystem()
     private val baseDir = fileSystem.baseDir()

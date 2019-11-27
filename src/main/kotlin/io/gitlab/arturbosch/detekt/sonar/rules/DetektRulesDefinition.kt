@@ -15,7 +15,6 @@ class DetektRulesDefinition : RulesDefinition {
             .createRules()
             .done()
     }
-
 }
 
 fun RulesDefinition.NewRepository.createRules() = apply {
