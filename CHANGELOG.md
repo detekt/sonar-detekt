@@ -1,5 +1,11 @@
 # Detekt - Changelog
 
+#### 1.1.0
+
+- Based on detekt 1.1.1
+- Based on Kotlin 1.3.50
+- Rewrote syntax highlighting to make use of kotlinc internal offset to line/column translation
+
 #### 1.0.0
 
 - Based on sonar-api 6.7.7 and detekt 1.0.0

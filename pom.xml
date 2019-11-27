@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.gitlab.arturbosch</groupId>
     <artifactId>sonar-kotlin</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.0</version>
 
     <packaging>sonar-plugin</packaging>
 
