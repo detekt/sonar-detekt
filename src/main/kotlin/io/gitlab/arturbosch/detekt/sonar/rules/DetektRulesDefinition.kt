@@ -22,12 +22,10 @@ fun RulesDefinition.NewRepository.createRules() = apply {
 }
 
 private fun RulesDefinition.NewRepository.defineRule(rule: Rule) {
-    var description = rule.issue.description
-    if (description.isBlank()) {
-        description = "Uups, this rule should have a description. Please report or contribute one!"
-    }
+    val description = rule.issue.description
+    check(description.isNotBlank()) { "Rule '${rule.ruleId}' has no description." }
     val severity = severityTranslations[rule.issue.severity]
-        ?: throw IllegalStateException("Unexpected severity '${rule.issue.severity}' for rule '${rule.ruleId}'.")
+    checkNotNull(severity) { "Unexpected severity '${rule.issue.severity}' for rule '${rule.ruleId}'." }
     val newRule = createRule(rule.ruleId).setName(rule.ruleId)
         .setHtmlDescription(description)
         .setTags(rule.issue.severity.name.toLowerCase())
