@@ -24,15 +24,24 @@ object KotlinSyntax {
 
         fun highlightByType(psi: PsiElement, type: TypeOfText) {
             val (start, end) = positions(psi)
-            syntax.highlight(
-                inputFile.newRange(
-                    start.line,
-                    start.column - 1,
-                    end.line,
-                    end.column - 1
-                ),
-                type
-            )
+            try {
+                syntax.highlight(
+                    inputFile.newRange(
+                        start.line,
+                        start.column - 1,
+                        end.line,
+                        end.column - 1
+                    ),
+                    type
+                )
+            } catch (error: IllegalArgumentException) {
+                logger.warn(
+                    "Could not highlight psi element '$psi'" +
+                        " with content '${psi.text}'" +
+                        " for file '${inputFile.uri()}'."
+                )
+                logger.warn(error.localizedMessage)
+            }
         }
 
         fun highlightByType(astNode: ASTNode, type: TypeOfText) {
