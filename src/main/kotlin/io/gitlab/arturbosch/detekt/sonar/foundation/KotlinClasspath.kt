@@ -13,7 +13,8 @@ import org.sonar.java.JavaClasspath
 private val type = InputFile.Type.MAIN
 
 /**
- * This class is based on [JavaClasspath] adding kotlin compiled .class files to binaries using the default kotlin .class files location.
+ * This class is based on [JavaClasspath] adding kotlin compiled .class files
+ * to binaries using the default kotlin .class files location.
  */
 class KotlinClasspath(settings: Configuration, fs: FileSystem) : AbstractJavaClasspath(settings, fs, type) {
     private val log = Loggers.get(JavaClasspath::class.java)
@@ -34,12 +35,18 @@ class KotlinClasspath(settings: Configuration, fs: FileSystem) : AbstractJavaCla
             }
 
             if (binaryFiles.isEmpty() && hasMoreThanOneKotlinFile()) {
-                throw AnalysisException("Please provide compiled classes of your project with sonar.java.binaries property")
+                throw AnalysisException(
+                    "Please provide compiled classes of your project with sonar.java.binaries property"
+                )
             }
 
             binaries = binaryFiles
             if (libraries.isEmpty() && hasKotlinSources()) {
-                log.warn("Bytecode of dependencies was not provided for analysis of source files, you might end up with less precise results. Bytecode can be provided using sonar.java.libraries property")
+                log.warn(
+                    "Bytecode of dependencies was not provided for analysis of source files," +
+                        " you might end up with less precise results." +
+                        " Bytecode can be provided using sonar.java.libraries property"
+                )
             }
 
             elements = ArrayList(binaries)

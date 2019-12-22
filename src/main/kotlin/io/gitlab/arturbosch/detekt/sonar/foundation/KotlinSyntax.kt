@@ -14,6 +14,7 @@ import org.sonar.api.batch.sensor.highlighting.TypeOfText
 
 object KotlinSyntax {
 
+    @Suppress("ComplexMethod")
     fun processFile(inputFile: InputFile, ktFile: KtFile, context: SensorContext) {
         val syntax = context.newHighlighting().onFile(inputFile)
         val document: Document = ktFile.viewProvider.document ?: return

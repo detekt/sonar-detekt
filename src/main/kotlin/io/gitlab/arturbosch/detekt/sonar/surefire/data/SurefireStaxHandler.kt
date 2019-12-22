@@ -128,12 +128,17 @@ class SurefireStaxHandler(private val index: UnitTestIndex) {
         return detail
     }
 
+    @Suppress("MagicNumber")
     @Throws(XMLStreamException::class)
     private fun getTimeAttributeInMS(value: String): Long {
         // hardcoded to Locale.ENGLISH see http://jira.codehaus.org/browse/SONAR-602
         try {
             val time = ParsingUtils.parseNumber(value, Locale.ENGLISH)
-            return if (!java.lang.Double.isNaN(time)) ParsingUtils.scaleValue(time * 1000, 3).toLong() else 0L
+            return if (!time.isNaN()) {
+                ParsingUtils.scaleValue(time * 1000, 3).toLong()
+            } else {
+                0L
+            }
         } catch (e: ParseException) {
             throw XMLStreamException(e)
         }
@@ -146,7 +151,9 @@ class SurefireStaxHandler(private val index: UnitTestIndex) {
         val name = testCaseCursor.getAttrValue("name")
         return if (StringUtils.contains(classname, "$")) {
             StringUtils.substringAfter(classname, "$") + "/" + name
-        } else name
+        } else {
+            name
+        }
     }
 
 }

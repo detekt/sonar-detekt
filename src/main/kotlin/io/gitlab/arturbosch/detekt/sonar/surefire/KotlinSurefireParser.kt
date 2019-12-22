@@ -84,9 +84,11 @@ class KotlinSurefireParser(
         }
     }
 
-    private fun mapToInputFile(indexByClassname: Map<String, UnitTestClassReport>): Map<InputFile, UnitTestClassReport> {
+    private fun mapToInputFile(
+        indexByClassname: Map<String, UnitTestClassReport>
+    ): Map<InputFile, UnitTestClassReport> {
         val result = HashMap<InputFile, UnitTestClassReport>()
-        indexByClassname.forEach { className, index ->
+        for ((className, index) in indexByClassname) {
             val resource = getUnitTestResource(className, index)
             if (resource != null) {
                 val report = (result as MutableMap<InputFile, UnitTestClassReport>)
@@ -123,9 +125,10 @@ class KotlinSurefireParser(
 
     private fun getUnitTestResource(className: String, unitTestClassReport: UnitTestClassReport): InputFile? {
         return findKotlinTestByClassname(className)
-            ?: // fall back on testSuite class name (repeated and parameterized tests from JUnit 5.0 are using test name as classname)
-            // Should be fixed with JUnit 5.1, see: https://github.com/junit-team/junit5/issues/1182
-            return unitTestClassReport.results
+        // fall back on testSuite class name
+        // (repeated and parameterized tests from JUnit 5.0 are using test name as classname)
+        // Should be fixed with JUnit 5.1, see: https://github.com/junit-team/junit5/issues/1182
+            ?: unitTestClassReport.results
                 .asSequence()
                 .filter { it.testSuiteClassName != null }
                 .map { findKotlinTestByClassname(it.testSuiteClassName!!) }
@@ -134,9 +137,16 @@ class KotlinSurefireParser(
 
     private fun findKotlinTestByClassname(className: String): InputFile? {
         val fileName = StringUtils.replace(className, ".", "/")
-        val p = fileSystem.predicates()
-        val fileNamePredicates = getFileNamePredicateFromSuffixes(p, fileName, arrayOf(FILE_SUFFIX))
-        val searchPredicate = p.and(p.and(p.hasLanguage(KEY), p.hasType(InputFile.Type.TEST)), fileNamePredicates)
+        val predicates = fileSystem.predicates()
+        val fileNamePredicates = getFileNamePredicateFromSuffixes(
+            predicates,
+            fileName,
+            arrayOf(FILE_SUFFIX)
+        )
+        val searchPredicate = predicates.and(predicates.and(
+            predicates.hasLanguage(KEY),
+            predicates.hasType(InputFile.Type.TEST)
+        ), fileNamePredicates)
         return if (fileSystem.hasFiles(searchPredicate)) {
             fileSystem.inputFiles(searchPredicate).iterator().next()
         } else {
@@ -144,7 +154,11 @@ class KotlinSurefireParser(
         }
     }
 
-    private fun getFileNamePredicateFromSuffixes(p: FilePredicates, fileName: String, suffixes: Array<String>): FilePredicate {
+    private fun getFileNamePredicateFromSuffixes(
+        p: FilePredicates,
+        fileName: String,
+        suffixes: Array<String>
+    ): FilePredicate {
         val fileNamePredicates = ArrayList<FilePredicate>(suffixes.size)
         for (suffix in suffixes) {
             fileNamePredicates.add(p.matchesPathPattern("**/$fileName$suffix"))
@@ -156,12 +170,11 @@ class KotlinSurefireParser(
 
         private val LOGGER = Loggers.get(KotlinSurefireParser::class.java)
 
-        private fun getReports(dirs: List<File>, reportDirSetByUser: Boolean): List<File> {
-            return dirs
+        private fun getReports(dirs: List<File>, reportDirSetByUser: Boolean): List<File> =
+            dirs.asSequence()
                 .map { getReports(it, reportDirSetByUser) }
-                .flatMap { it }
+                .flatten()
                 .toList()
-        }
 
         private fun getReports(dir: File, reportDirSetByUser: Boolean): List<File> {
             if (!dir.isDirectory) {
@@ -181,10 +194,9 @@ class KotlinSurefireParser(
             return unitTestResultFiles.toList()
         }
 
-        private fun findXMLFilesStartingWith(dir: File, fileNameStart: String): Array<File> {
-            return dir.listFiles { _, name -> name.startsWith(fileNameStart) && name.endsWith(".xml") }
+        private fun findXMLFilesStartingWith(dir: File, fileNameStart: String): Array<File> =
+            dir.listFiles { _, name -> name.startsWith(fileNameStart) && name.endsWith(".xml") }
                 ?: emptyArray()
-        }
 
         private fun parseFiles(reports: List<File>, index: UnitTestIndex) {
             val parser = StaxParser(index)
@@ -208,7 +220,12 @@ class KotlinSurefireParser(
             }
         }
 
-        private fun <T : Serializable> saveMeasure(context: SensorContext, inputFile: InputFile, metric: Metric<T>, value: T) {
+        private fun <T : Serializable> saveMeasure(
+            context: SensorContext,
+            inputFile: InputFile,
+            metric: Metric<T>,
+            value: T
+        ) {
             context.newMeasure<T>().forMetric(metric).on(inputFile).withValue(value).save()
         }
     }

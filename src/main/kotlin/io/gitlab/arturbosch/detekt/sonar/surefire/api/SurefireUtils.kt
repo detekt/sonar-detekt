@@ -40,8 +40,10 @@ object SurefireUtils {
      * @param settings Analysis settings.
      * @param fs FileSystem containing indexed files.
      * @param pathResolver Path solver.
-     * @return The directories containing the surefire reports or default one (target/surefire-reports) if not found (not configured or not found).
+     * @return The directories containing the surefire reports or
+     * default one (target/surefire-reports) if not found (not configured or not found).
      */
+    @Suppress("ReturnCount")
     fun getReportsDirectories(settings: Configuration, fs: FileSystem, pathResolver: PathResolver): List<File> {
         val dir = getReportsDirectoryFromDeprecatedProperty(settings, fs, pathResolver)
         val dirs = getReportsDirectoriesFromProperty(settings, fs, pathResolver)
@@ -79,7 +81,9 @@ object SurefireUtils {
                 .map { it.trim() }
                 .mapNotNull { getFileFromPath(fs, pathResolver, it) }
                 .toList()
-        } else null
+        } else {
+            null
+        }
     }
 
     private fun getReportsDirectoryFromDeprecatedProperty(
@@ -96,6 +100,7 @@ object SurefireUtils {
         return null
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private fun getFileFromPath(fs: FileSystem, pathResolver: PathResolver, path: String): File? {
         try {
             return pathResolver.relativeFile(fs.baseDir(), path)
@@ -103,7 +108,6 @@ object SurefireUtils {
             // exceptions on file not found was only occurring with SQ 5.6 LTS, not with SQ 6.4
             LOGGER.info("Surefire report path: {}/{} not found.", fs.baseDir(), path)
         }
-
         return null
     }
 }
