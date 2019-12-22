@@ -54,8 +54,8 @@ class KotlinSurefireSensor(
     private fun collect(context: SensorContext, reportsDir: List<File>) {
         LOGGER.info("parsing {}", reportsDir)
         kotlinSurefireParser.collect(context, reportsDir,
-            configuration.hasKey(SurefireUtils.SUREFIRE_REPORT_PATHS_PROPERTY)
-                || configuration.hasKey(SurefireUtils.SUREFIRE_REPORTS_PATH_PROPERTY))
+            configuration.hasKey(SurefireUtils.SUREFIRE_REPORT_PATHS_PROPERTY) ||
+                configuration.hasKey(SurefireUtils.SUREFIRE_REPORTS_PATH_PROPERTY))
     }
 
     override fun toString(): String {

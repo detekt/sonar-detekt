@@ -12,7 +12,8 @@ import org.sonar.plugins.java.api.JavaResourceLocator
 @Suppress("ALL")
 class KotlinJavaResourceLocator(
     private val javaResourceLocator: JavaResourceLocator,
-    private val fileSystem: FileSystem) : JavaResourceLocator by javaResourceLocator {
+    private val fileSystem: FileSystem
+) : JavaResourceLocator by javaResourceLocator {
 
     override fun findResourceByClassName(className: String): InputFile? {
         return kotlinResource(className) ?: javaResourceLocator.findResourceByClassName(className)

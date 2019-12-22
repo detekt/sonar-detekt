@@ -104,12 +104,10 @@ class SurefireStaxHandler(private val index: UnitTestIndex) {
                     status = UnitTestResult.STATUS_SKIPPED
                     // bug with surefire reporting wrong time for skipped tests
                     duration = 0L
-
                 }
                 "failure" -> {
                     status = UnitTestResult.STATUS_FAILURE
                     setStackAndMessage(detail, childNode)
-
                 }
                 "error" -> {
                     status = UnitTestResult.STATUS_ERROR
@@ -142,7 +140,6 @@ class SurefireStaxHandler(private val index: UnitTestIndex) {
         } catch (e: ParseException) {
             throw XMLStreamException(e)
         }
-
     }
 
     @Throws(XMLStreamException::class)
@@ -155,5 +152,4 @@ class SurefireStaxHandler(private val index: UnitTestIndex) {
             name
         }
     }
-
 }

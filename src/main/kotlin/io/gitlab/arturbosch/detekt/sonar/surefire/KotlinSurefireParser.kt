@@ -206,7 +206,6 @@ class KotlinSurefireParser(
                 } catch (e: XMLStreamException) {
                     throw AnalysisException("Fail to parse the Surefire report: $report", e)
                 }
-
             }
         }
 

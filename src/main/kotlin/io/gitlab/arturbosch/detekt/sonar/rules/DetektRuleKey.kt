@@ -9,12 +9,12 @@ import io.gitlab.arturbosch.detekt.api.RuleSetProvider
 import io.gitlab.arturbosch.detekt.api.YamlConfig
 import io.gitlab.arturbosch.detekt.cli.ClasspathResourceConverter
 import io.gitlab.arturbosch.detekt.sonar.foundation.DETEKT_REPOSITORY
-import io.gitlab.arturbosch.detekt.sonar.foundation.logger
 import org.sonar.api.rule.RuleKey
 import java.util.ServiceLoader
 
 val defaultYamlConfig = YamlConfig.loadResource(
-    ClasspathResourceConverter().convert("default-detekt-config.yml"))
+    ClasspathResourceConverter().convert("default-detekt-config.yml")
+)
 
 val allLoadedRules = ServiceLoader.load(RuleSetProvider::class.java, Config::javaClass.javaClass.classLoader)
     .flatMap { loadRules(it) }

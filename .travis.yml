@@ -1,8 +1,19 @@
+branches:
+  only:
+    - master
 language: java
-jdk: openjdk8
-sudo: false
+matrix:
+  include:
+    - os: linux
+      dist: bionic
+      jdk: openjdk11
+      env: COMPILE_TEST_SNIPPETS=false
+    - os: osx
+      osx_image: xcode10.1
 cache:
   directories:
   - "$HOME/.m2"
 install:
   - echo "<settings><profiles><profile><repositories><repository><snapshots><enabled>false</enabled></snapshots><id>central</id><name>bintray</name><url>http://jcenter.bintray.com</url></repository></repositories><pluginRepositories><pluginRepository><snapshots><enabled>false</enabled></snapshots><id>central</id><name>bintray-plugins</name><url>http://jcenter.bintray.com</url></pluginRepository></pluginRepositories><id>bintray</id></profile></profiles><activeProfiles><activeProfile>bintray</activeProfile></activeProfiles></settings>" > $HOME/.m2/settings.xml
+script:
+  - mvn clean install --batch-mode

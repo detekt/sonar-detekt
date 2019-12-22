@@ -75,7 +75,7 @@ open class KotlinJaCoCoSensor(
 
     companion object {
 
-        private val JACOCO_MERGED_FILENAME = "jacoco-merged.exec"
+        private const val JACOCO_MERGED_FILENAME = "jacoco-merged.exec"
 
         private fun getReportPaths(context: SensorContext): Set<File> {
             val reportPaths = HashSet<File>()
@@ -118,5 +118,4 @@ open class KotlinJaCoCoSensor(
             }
         }
     }
-
 }
