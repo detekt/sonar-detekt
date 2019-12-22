@@ -83,5 +83,4 @@ class DetektSensorTest {
         const val RESOURCES_PATH = "src/test/resources"
         const val KOTLIN_PATH = "kotlin"
     }
-
 }
