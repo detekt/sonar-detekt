@@ -1,5 +1,10 @@
 # Detekt - Changelog
 
+#### 1.2.0
+
+- Based on detekt 1.3.0
+- Based on Kotlin 1.3.61
+
 #### 1.1.0
 
 - Based on detekt 1.1.1
