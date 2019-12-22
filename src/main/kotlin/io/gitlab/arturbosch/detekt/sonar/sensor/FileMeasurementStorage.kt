@@ -29,9 +29,10 @@ class FileMeasurementStorage(private val context: SensorContext) {
         dataKey: Key<Int>,
         metricKey: Metric<Int>
     ) {
-        file.getUserData(dataKey)?.let {
+        val data = file.getUserData(dataKey)
+        if (data != null) {
             context.newMeasure<Int>()
-                .withValue(it)
+                .withValue(data)
                 .forMetric(metricKey)
                 .on(inputComponent)
                 .save()

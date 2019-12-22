@@ -17,9 +17,8 @@ class DetektRulesDefinition : RulesDefinition {
     }
 }
 
-fun RulesDefinition.NewRepository.createRules() = apply {
-    allLoadedRules.map { defineRule(it) }
-}
+fun RulesDefinition.NewRepository.createRules() =
+    apply { allLoadedRules.map { defineRule(it) } }
 
 private fun RulesDefinition.NewRepository.defineRule(rule: Rule) {
     val description = rule.issue.description

@@ -20,10 +20,10 @@ class DetektSensor : Sensor {
         val providers = RuleSetLocator(settings).load()
         val ktFilesListener = ReturnKtFilesAnalysisEndsListener()
         val processors = FileProcessorLocator(settings).load() + ktFilesListener
-        val detektor = DetektFacade.create(settings, providers, processors)
-        val results = detektor.run()
-        IssueReporter(results, context).run()
-        ProjectMeasurementStorage(results, context).run()
+        val facade = DetektFacade.create(settings, providers, processors)
+        val result = facade.run()
+        IssueReporter(result, context).run()
+        ProjectMeasurementStorage(result, context).run()
         FileProcessor(context, ktFilesListener.kotlinFiles).run()
     }
 }

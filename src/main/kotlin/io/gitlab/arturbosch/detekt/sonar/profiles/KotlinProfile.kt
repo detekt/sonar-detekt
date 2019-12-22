@@ -29,8 +29,8 @@ class KotlinProfile : BuiltInQualityProfilesDefinition {
         for (ruleKey in rules) {
             val severity = severityTranslations[ruleKey.issue.severity]
                 ?: error("Unexpected severity '${ruleKey.issue.severity}'")
-            val rule = profile.activateRule(ruleKey.repository(), ruleKey.rule())
-            rule.overrideSeverity(severity)
+            profile.activateRule(ruleKey.repository(), ruleKey.rule())
+                .overrideSeverity(severity)
         }
 
         profile.done()

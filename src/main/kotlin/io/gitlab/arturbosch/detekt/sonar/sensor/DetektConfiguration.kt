@@ -38,7 +38,7 @@ internal fun chooseConfig(baseDir: File, configuration: Configuration): Config {
 
     return possibleParseArguments.loadConfiguration().let { bestConfigMatch ->
         // always use FailFast config to activate all detekt rules
-        // let the user decide through sonar's quality profiles which rules should not get executed instead
+        // let the user decide through sonar's quality profiles which rules should not report instead
         if (bestConfigMatch == Config.empty) {
             logger.info("No detekt yaml configuration file found, using the default configuration.")
             FailFastConfig(Config.empty, defaultYamlConfig)

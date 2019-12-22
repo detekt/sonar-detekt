@@ -15,7 +15,7 @@ private val type = InputFile.Type.MAIN
 /**
  * This class is based on [JavaClasspath] adding kotlin compiled .class files to binaries using the default kotlin .class files location.
  */
-class KotlinClasspath(settings: Configuration?, fs: FileSystem?) : AbstractJavaClasspath(settings, fs, type) {
+class KotlinClasspath(settings: Configuration, fs: FileSystem) : AbstractJavaClasspath(settings, fs, type) {
     private val log = Loggers.get(JavaClasspath::class.java)
 
     override fun init() {

@@ -11,7 +11,7 @@ import org.sonar.api.batch.sensor.SensorContext
 import org.sonar.api.measures.Metric
 
 class ProjectMeasurementStorage(
-    private val detektion: Detektion,
+    private val result: Detektion,
     private val context: SensorContext
 ) {
 
@@ -24,9 +24,10 @@ class ProjectMeasurementStorage(
     }
 
     private fun save(dataKey: Key<Int>, metricKey: Metric<Int>) {
-        detektion.getData(dataKey)?.let {
+        val data = result.getData(dataKey)
+        if (data != null) {
             context.newMeasure<Int>()
-                .withValue(it)
+                .withValue(data)
                 .forMetric(metricKey)
                 .on(context.module())
                 .save()

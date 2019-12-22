@@ -14,9 +14,7 @@ import org.sonar.api.rule.RuleKey
 import java.util.ServiceLoader
 
 val defaultYamlConfig = YamlConfig.loadResource(
-    ClasspathResourceConverter().convert("default-detekt-config.yml")).apply {
-    logger.info(this.toString())
-}
+    ClasspathResourceConverter().convert("default-detekt-config.yml"))
 
 val allLoadedRules = ServiceLoader.load(RuleSetProvider::class.java, Config::javaClass.javaClass.classLoader)
     .flatMap { loadRules(it) }

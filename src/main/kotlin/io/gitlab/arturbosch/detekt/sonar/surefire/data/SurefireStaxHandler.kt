@@ -99,8 +99,7 @@ class SurefireStaxHandler(private val index: UnitTestIndex) {
 
         val childNode = testCaseCursor.descendantElementCursor()
         if (childNode.next != null) {
-            val elementName = childNode.localName
-            when (elementName) {
+            when (childNode.localName) {
                 "skipped" -> {
                     status = UnitTestResult.STATUS_SKIPPED
                     // bug with surefire reporting wrong time for skipped tests

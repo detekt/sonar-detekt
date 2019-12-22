@@ -75,10 +75,9 @@ object SurefireUtils {
     ): List<File>? {
         return if (settings.hasKey(SUREFIRE_REPORT_PATHS_PROPERTY)) {
             settings.getStringArray(SUREFIRE_REPORT_PATHS_PROPERTY)
+                .asSequence()
                 .map { it.trim() }
-                .map { getFileFromPath(fs, pathResolver, it) }
-                .filter { it != null }
-                .map { it!! }
+                .mapNotNull { getFileFromPath(fs, pathResolver, it) }
                 .toList()
         } else null
     }

@@ -14,7 +14,7 @@ import org.sonar.api.config.Configuration
 import java.io.File
 
 class IssueReporter(
-    private val detektion: Detektion,
+    private val result: Detektion,
     private val context: SensorContext
 ) {
 
@@ -23,7 +23,7 @@ class IssueReporter(
     private val config = context.config()
 
     fun run() {
-        detektion.findings.forEach { (ruleSet, findings) ->
+        for ((ruleSet, findings) in result.findings) {
             logger.info("RuleSet: $ruleSet - ${findings.size}")
             val baseline = tryFindBaseline(config, baseDir)
             val filtered = baseline?.filter(findings) ?: findings
