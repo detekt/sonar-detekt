@@ -114,7 +114,11 @@ open class KotlinJaCoCoSensor(
 
         private fun warnUsageOfDeprecatedProperty(config: Configuration, reportPathProperty: String) {
             if (!config.hasKey(REPORT_PATHS_PROPERTY)) {
-                LOG.warn("Property '{}' is deprecated. Please use '{}' instead.", reportPathProperty, REPORT_PATHS_PROPERTY)
+                LOG.warn(
+                    "Property '{}' is deprecated. Please use '{}' instead.",
+                    reportPathProperty,
+                    REPORT_PATHS_PROPERTY
+                )
             }
         }
     }
