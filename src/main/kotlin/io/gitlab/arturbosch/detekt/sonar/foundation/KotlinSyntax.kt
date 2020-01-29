@@ -24,8 +24,8 @@ object KotlinSyntax {
                 PsiDiagnosticUtils.offsetToLineAndColumn(document, psi.textRange.endOffset)
 
         fun highlightByType(psi: PsiElement, type: TypeOfText) {
-            val (start, end) = positions(psi)
             try {
+                val (start, end) = positions(psi)
                 syntax.highlight(
                     inputFile.newRange(
                         start.line,
