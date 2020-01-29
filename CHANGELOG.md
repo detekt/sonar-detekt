@@ -1,5 +1,9 @@
 # Detekt - Changelog
 
+#### 1.3.1
+
+- Errors in syntax highlighting should print a warning and not crash sonar-kotlin.
+
 #### 1.3.0
 
 - Based on detekt 1.5.0
