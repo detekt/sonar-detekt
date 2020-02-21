@@ -1,5 +1,13 @@
 # Detekt - Changelog
 
+#### 1.3.2
+
+- Updated to detekt 1.5.1
+- Turn off autoCorrect value for subconfigs too - [#110](https://github.com/detekt/sonar-kotlin/pull/110)
+- [IndexOutOfBoundsException] Wrong offset xxx. Should be in range: [0, yyy] - [#106](https://github.com/detekt/sonar-kotlin/issues/106)
+
+See all issues at: [1.3.2](https://github.com/detekt/sonar-kotlin/milestone/2)
+
 #### 1.3.1
 
 - Errors in syntax highlighting should print a warning and not crash sonar-kotlin.
