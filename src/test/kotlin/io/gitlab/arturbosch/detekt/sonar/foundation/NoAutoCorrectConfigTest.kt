@@ -11,6 +11,7 @@ import java.net.URL
 import org.assertj.core.api.Assertions.assertThat
 
 class NoAutoCorrectConfigTest : Spek({
+
     describe("a configuration") {
 
         context("with autoCorrect on 1st level") {
