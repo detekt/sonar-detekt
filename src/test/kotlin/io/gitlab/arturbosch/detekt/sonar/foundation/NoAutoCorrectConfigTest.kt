@@ -4,11 +4,11 @@ import io.gitlab.arturbosch.detekt.api.Config
 import io.gitlab.arturbosch.detekt.api.YamlConfig
 import io.mockk.every
 import io.mockk.mockk
+import org.assertj.core.api.Assertions.assertThat
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import java.io.*
+import java.io.ByteArrayInputStream
 import java.net.URL
-import org.assertj.core.api.Assertions.assertThat
 
 class NoAutoCorrectConfigTest : Spek({
 
@@ -16,7 +16,7 @@ class NoAutoCorrectConfigTest : Spek({
 
         context("with autoCorrect on 1st level") {
             val config = NoAutoCorrectConfig(
-                    createConfig("""
+                createConfig("""
                         autoCorrect: true
                     """.trimIndent())
             )
@@ -28,7 +28,7 @@ class NoAutoCorrectConfigTest : Spek({
 
         context("with autoCorrect on 2d level") {
             val config = NoAutoCorrectConfig(
-                    createConfig("""
+                createConfig("""
                         secondLevel:
                           autoCorrect: true
                     """.trimIndent())
@@ -42,7 +42,7 @@ class NoAutoCorrectConfigTest : Spek({
 
         context("with autoCorrect on 3rd level") {
             val config = NoAutoCorrectConfig(
-                    createConfig("""
+                createConfig("""
                         secondLevel:
                           thirdLevel:
                             autoCorrect: true
