@@ -1,0 +1,31 @@
+name: Pre Merge Checks
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  gradle:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        jdk: [8, 11]
+    runs-on: ${{ matrix.os }}
+    if: ${{ !contains(github.event.head_commit.message, 'ci skip') }}
+    env:
+      JDK_VERSION:  ${{ matrix.jdk }}
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+
+    - name: Setup Java
+      uses: actions/setup-java@v1
+      with:
+        java-version: ${{ matrix.jdk }}
+
+    - name: Build sonar-kotlin
+      run: mvn clean install
