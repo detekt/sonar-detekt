@@ -1,8 +1,6 @@
 package io.gitlab.arturbosch.detekt.sonar.sensor
 
 import io.gitlab.arturbosch.detekt.core.DetektFacade
-import io.gitlab.arturbosch.detekt.core.FileProcessorLocator
-import io.gitlab.arturbosch.detekt.core.RuleSetLocator
 import io.gitlab.arturbosch.detekt.sonar.foundation.DETEKT_SENSOR
 import io.gitlab.arturbosch.detekt.sonar.foundation.LANGUAGE_KEY
 import org.sonar.api.batch.sensor.Sensor
@@ -17,9 +15,7 @@ class DetektSensor : Sensor {
 
     override fun execute(context: SensorContext) {
         val settings = createProcessingSettings(context)
-        val providers = RuleSetLocator(settings).load()
-        val processors = FileProcessorLocator(settings).load()
-        val facade = DetektFacade.create(settings, providers, processors)
+        val facade = DetektFacade.create(settings)
         val result = facade.run()
         IssueReporter(result, context).run()
     }
