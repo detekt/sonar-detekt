@@ -1,8 +1,8 @@
 package io.gitlab.arturbosch.detekt.sonar.sensor
 
 import io.gitlab.arturbosch.detekt.api.Config
+import io.gitlab.arturbosch.detekt.api.internal.DisabledAutoCorrectConfig
 import io.gitlab.arturbosch.detekt.sonar.foundation.CONFIG_PATH_KEY
-import io.gitlab.arturbosch.detekt.sonar.rules.defaultYamlConfig
 import org.assertj.core.api.Assertions.assertThat
 import org.sonar.api.config.internal.MapSettings
 import org.spekframework.spek2.Spek
@@ -34,10 +34,10 @@ class LoadConfigSpec : Spek({
             assertThat(config).isNotEqualTo(Config.empty)
         }
 
-        it("should default to default config") {
+        it("should default to disabled auto correct default detekt config") {
             val config = chooseConfig(base, MapSettings().asConfig())
 
-            assertThat(config == defaultYamlConfig)
+            assertThat(config).isInstanceOf(DisabledAutoCorrectConfig::class.java)
         }
     }
 })

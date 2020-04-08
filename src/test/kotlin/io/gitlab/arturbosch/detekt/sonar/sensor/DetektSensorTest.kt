@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.detekt.sonar.sensor
 
-import io.gitlab.arturbosch.detekt.sonar.foundation.KEY
+import io.gitlab.arturbosch.detekt.sonar.foundation.LANGUAGE_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.PATH_FILTERS_KEY
 import io.mockk.every
 import io.mockk.mockk
@@ -8,13 +8,10 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.sonar.api.batch.fs.internal.DefaultFileSystem
-import org.sonar.api.batch.fs.internal.DefaultInputDir
+import org.sonar.api.batch.fs.internal.DefaultInputFile
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder
 import org.sonar.api.batch.sensor.internal.SensorContextTester
 import org.sonar.api.config.internal.MapSettings
-import org.sonar.api.measures.CoreMetrics.COMMENT_LINES
-import org.sonar.api.measures.CoreMetrics.COMPLEXITY
-import org.sonar.api.measures.CoreMetrics.NCLOC
 import org.sonar.api.measures.FileLinesContext
 import org.sonar.api.measures.FileLinesContextFactory
 import java.io.File
@@ -34,8 +31,8 @@ class DetektSensorTest {
     @Before
     fun setUp() {
         // Recreating all mutable objects to avoid retaining states across tests
-        context = SensorContextTester.create(resourcesDir).setSettings(settings)
-        fileSystem = context.fileSystem().add(DefaultInputDir("", ""))
+        context = SensorContextTester.create(resourcesDir.absoluteFile).setSettings(settings)
+        fileSystem = context.fileSystem()
         sensor = DetektSensor()
 
         fileLinesContextFactory = mockk()
@@ -45,38 +42,23 @@ class DetektSensorTest {
     }
 
     @Test
-    fun `measures a single kotlin file`() {
-        val kotlinFileKey = addMockFile("KotlinFile.kt")
+    fun `executes detekt`() {
+        val file = addMockFile("KotlinFile.kt")
 
         sensor.execute(context)
+        val issues = context.allIssues().filter { it.primaryLocation().inputComponent() == file }
 
-        assertThat(context.measure(kotlinFileKey, NCLOC).value()).isEqualTo(2)
-        assertThat(context.measure(kotlinFileKey, COMMENT_LINES).value()).isEqualTo(0)
+        assertThat(issues).hasSize(7)
     }
 
-    @Test
-    fun `measures two classes`() {
-        val a = addMockFile("a/AClassOne.kt")
-        val b = addMockFile("b/BClassTwo.kt")
-
-        sensor.execute(context)
-
-        assertThat(context.measure(a, NCLOC).value()).isEqualTo(9)
-        assertThat(context.measure(a, COMMENT_LINES).value()).isEqualTo(3)
-        assertThat(context.measure(a, COMPLEXITY).value()).isEqualTo(1)
-        assertThat(context.measure(b, NCLOC).value()).isEqualTo(6)
-        assertThat(context.measure(b, COMMENT_LINES).value()).isEqualTo(3)
-        assertThat(context.measure(b, COMPLEXITY).value()).isEqualTo(0)
-    }
-
-    private fun addMockFile(filePath: String): String {
+    private fun addMockFile(filePath: String): DefaultInputFile {
         val sourceFile = File(sourceDir, filePath)
         val kotlinFile = TestInputFileBuilder(RESOURCES_PATH, "$KOTLIN_PATH/$filePath")
-            .setLanguage(KEY)
+            .setLanguage(LANGUAGE_KEY)
             .initMetadata(sourceFile.readText())
             .build()
         fileSystem.add(kotlinFile)
-        return kotlinFile.key()
+        return kotlinFile
     }
 
     companion object {

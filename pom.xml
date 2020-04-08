@@ -3,9 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>io.gitlab.arturbosch</groupId>
-    <artifactId>sonar-kotlin</artifactId>
-    <version>1.5.0</version>
+    <groupId>io.github.detekt</groupId>
+    <artifactId>sonar-detekt</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
 
     <packaging>sonar-plugin</packaging>
 
@@ -13,7 +13,7 @@
         <kotlin.version>1.3.71</kotlin.version>
         <spek.version>2.0.10</spek.version>
         <detekt.version>1.7.4</detekt.version>
-        <sonar.api.version>6.7.7</sonar.api.version>
+        <sonar.api.version>7.9.3</sonar.api.version>
         <assertj.version>3.15.0</assertj.version>
         <jcommander.version>1.78</jcommander.version>
         <mockk.version>1.9.3</mockk.version>
@@ -73,11 +73,6 @@
             <groupId>io.gitlab.arturbosch.detekt</groupId>
             <artifactId>detekt-formatting</artifactId>
             <version>${detekt.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.sonarsource.java</groupId>
-            <artifactId>java-jacoco</artifactId>
-            <version>5.7.0.15470</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -140,8 +135,8 @@
                 <configuration>
                     <pluginClass>io.gitlab.arturbosch.detekt.sonar.DetektPlugin</pluginClass>
                     <pluginDescription>Sonarqube plugin for Kotlin based on detekt.</pluginDescription>
-                    <pluginKey>kotlin</pluginKey>
-                    <pluginName>Kotlin</pluginName>
+                    <pluginKey>detekt</pluginKey>
+                    <pluginName>detekt</pluginName>
                     <pluginSourcesUrl>https://github.com/detekt/sonar-kotlin</pluginSourcesUrl>
                     <pluginUrl>https://github.com/detekt/sonar-kotlin</pluginUrl>
                 </configuration>
@@ -237,6 +232,7 @@
                         </goals>
                         <configuration>
                             <baseline>${project.basedir}/reports/baseline.xml</baseline>
+                            <excludes>**/resources/**</excludes>
                         </configuration>
                     </execution>
                 </executions>

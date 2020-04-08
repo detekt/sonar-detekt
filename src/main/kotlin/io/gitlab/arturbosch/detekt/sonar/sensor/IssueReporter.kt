@@ -5,7 +5,6 @@ import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.cli.baseline.BaselineFacade
 import io.gitlab.arturbosch.detekt.sonar.foundation.BASELINE_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.logger
-import io.gitlab.arturbosch.detekt.sonar.foundation.unwrap
 import io.gitlab.arturbosch.detekt.sonar.rules.ruleKeyLookup
 import org.sonar.api.batch.fs.InputFile
 import org.sonar.api.batch.sensor.SensorContext
@@ -32,7 +31,7 @@ class IssueReporter(
     }
 
     private fun tryFindBaseline(config: Configuration, baseDir: File): BaselineFacade? {
-        return config.get(BASELINE_KEY).unwrap()?.let { path ->
+        fun createBaselineFacade(path: String): BaselineFacade? {
             logger.info("Registered baseline path: $path")
             var baselinePath = File(path)
 
@@ -48,8 +47,11 @@ class IssueReporter(
                     return null
                 }
             }
-            BaselineFacade(baselinePath.toPath())
+            return BaselineFacade(baselinePath.toPath())
         }
+        return config.get(BASELINE_KEY)
+            .orElse(null)
+            ?.let(::createBaselineFacade)
     }
 
     private fun reportIssue(issue: Finding) {
