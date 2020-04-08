@@ -1,4 +1,4 @@
-# sonar-kotlin
+# sonar-detekt
 
 [![Join the chat at https://kotlinlang.slack.com/messages/C88E12QH4/convo/C0BQ5GZ0S-1511956674.000289/](https://img.shields.io/badge/chat-on_slack-red.svg?style=flat-square)](https://kotlinlang.slack.com/messages/C88E12QH4/convo/C0BQ5GZ0S-1511956674.000289/)
 ![Pre Merge Checks](https://github.com/detekt/sonar-kotlin/workflows/Pre%20Merge%20Checks/badge.svg)
@@ -8,25 +8,25 @@
 
 ### Features
 
-- Integrates [detekt](https://github.com/arturbosch/detekt) for code analysis
-- Default quality profile `detekt active` (80 rules) and `detekt all` (164 rules)
-- Syntax highlighting
-- Supports SonarQube 6.7.7 and up
-- Supports detekt's `yaml config` and `baseline.xml` (also `path filters`)
-- Jacoco support
-- Lines of code and complexity metrics
+- Integrates [detekt](https://github.com/arturbosch/detekt) for static code analysis
+- Default quality profiles `detekt active` (80+ rules) and `detekt all` (164+ rules)
+- Supports SonarQube 7.9.3+
+- Supports detekt's `yaml config`, `baseline.xml` and `excludes`
+- Seamless integration with official SonarKotlin (no redundant features)
 
 ### Usage
 
-This sonar-kotlin is not the official sonarqube plugin.
-It was released before the official plugin and uses the same plugin key 'kotlin'.
-That means you can't use this plugin together with the official one.
+#### Sonar Update Center
 
-- `git clone https://github.com/arturbosch/sonar-kotlin`
-- `cd sonar-kotlin`
-- `mvn package`
-- `cp target/sonar-kotlin-[enter_version].jar $SONAR_HOME/extensions/plugins`
-- `cd $SONAR_HOME/bin/[your_os]`
+- TODO
+
+#### Building from source
+
+- `git clone https://github.com/detekt/sonar-detekt`
+- `cd sonar-detekt`
+- `mvn verify`
+- `cp target/sonar-detekt-2.<Minor.Patch>.jar $SONAR_HOME/extensions/plugins`
+- `cd $SONAR_HOME/bin/<OS>`
 - `./sonar.sh restart`
 
 ### Configurations and Baselines (and Filters)
@@ -48,14 +48,14 @@ To make use of this features, you have to set up some properties:
 ![configs](img/config.png)
 
 
-__Detekt path filters__ support multiple regex entries by adding a `,` for separating.
-__Detekt yaml configuration path__ also supports multiple configuration files where the first entered override some 
+__detekt path filters__ support multiple regex entries by adding a `,` for separating.
+__detekt yaml configuration path__ also supports multiple configuration files where the first entered override some 
 values of the later added config files.
 
 ##### Limitations
 
 Sonar analyzes each module individually which makes it harder to search for your config files.
-If you use relative paths, sonar-kotlin first tries to find the provided path inside this module and if it can't find
+If you use relative paths, sonar-detekt first tries to find the provided path inside this module and if it can't find
  it, we are searching for the file in the parent folder. This leads to the limitation that only projects with 
  sub-projects of depth 1 are supported. If you need more config files in your project hierarchies, provide them in 
  the sub-projects with the same relative path available.

@@ -1,5 +1,11 @@
 # Detekt - Changelog
 
+#### 2.0.0
+
+- Rewrite to sonar-detekt dropping redundant features to official SonarKotlin plugin
+- Based on detekt 1.7.4
+- Can be used next to SonarKotlin with mixed rules
+
 #### 1.5.0
 
 - Updated to detekt 1.7.4
