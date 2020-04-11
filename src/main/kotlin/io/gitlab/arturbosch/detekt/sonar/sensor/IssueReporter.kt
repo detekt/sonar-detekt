@@ -50,8 +50,8 @@ class IssueReporter(
             return BaselineFacade(baselinePath.toPath())
         }
         return config.get(BASELINE_KEY)
-            .orElse(null)
             ?.let(::createBaselineFacade)
+            .orElse(null)
     }
 
     private fun reportIssue(issue: Finding) {
