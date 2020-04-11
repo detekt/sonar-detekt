@@ -6,6 +6,15 @@
     <groupId>io.github.detekt</groupId>
     <artifactId>sonar-detekt</artifactId>
     <version>2.0.0-RC1</version>
+    <url>https://github.com/detekt/sonar-kotlin</url>
+
+    <licenses>
+        <license>
+            <name>GNU LGPL 3</name>
+            <url>https://www.gnu.org/licenses/lgpl-3.0.en.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <packaging>sonar-plugin</packaging>
 
@@ -133,12 +142,15 @@
                 <version>1.18.0.372</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <pluginClass>io.gitlab.arturbosch.detekt.sonar.DetektPlugin</pluginClass>
-                    <pluginDescription>Sonarqube plugin for Kotlin based on detekt.</pluginDescription>
                     <pluginKey>detekt</pluginKey>
                     <pluginName>detekt</pluginName>
-                    <pluginSourcesUrl>https://github.com/detekt/sonar-kotlin</pluginSourcesUrl>
+                    <pluginDescription>Sonarqube plugin for Kotlin based on detekt.</pluginDescription>
+                    <pluginClass>io.gitlab.arturbosch.detekt.sonar.DetektPlugin</pluginClass>
                     <pluginUrl>https://github.com/detekt/sonar-kotlin</pluginUrl>
+                    <pluginSourcesUrl>https://github.com/detekt/sonar-kotlin</pluginSourcesUrl>
+                    <pluginIssueTrackerUrl>https://github.com/detekt/sonar-kotlin/issues</pluginIssueTrackerUrl>
+                    <pluginOrganizationName>detekt Team</pluginOrganizationName>
+                    <pluginOrganizationUrl>https://github.com/detekt</pluginOrganizationUrl>
                 </configuration>
             </plugin>
             <plugin>
