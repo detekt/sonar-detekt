@@ -1,17 +1,14 @@
 package io.gitlab.arturbosch.detekt.sonar.sensor
 
 import io.gitlab.arturbosch.detekt.api.Config
-import io.gitlab.arturbosch.detekt.api.internal.FailFastConfig
 import io.gitlab.arturbosch.detekt.api.internal.PathFilters
 import io.gitlab.arturbosch.detekt.cli.CliArgs
 import io.gitlab.arturbosch.detekt.cli.loadConfiguration
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
 import io.gitlab.arturbosch.detekt.sonar.foundation.CONFIG_PATH_KEY
-import io.gitlab.arturbosch.detekt.sonar.foundation.NoAutoCorrectConfig
 import io.gitlab.arturbosch.detekt.sonar.foundation.PATH_FILTERS_DEFAULTS
 import io.gitlab.arturbosch.detekt.sonar.foundation.PATH_FILTERS_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.logger
-import io.gitlab.arturbosch.detekt.sonar.rules.defaultYamlConfig
 import org.sonar.api.batch.sensor.SensorContext
 import org.sonar.api.config.Configuration
 import java.io.File
@@ -24,7 +21,7 @@ fun createProcessingSettings(context: SensorContext): ProcessingSettings {
     val config = chooseConfig(baseDir, settings)
     return ProcessingSettings(
         inputPaths = listOf(baseDir.toPath()),
-        config = NoAutoCorrectConfig(config),
+        config = config,
         pathFilters = filters,
         outPrinter = System.out,
         errPrinter = System.err
@@ -36,18 +33,11 @@ internal fun chooseConfig(baseDir: File, configuration: Configuration): Config {
 
     val possibleParseArguments = CliArgs().apply {
         config = externalConfigPath?.path
+        failFast = true // always use FailFast config to activate all detekt rules
+        autoCorrect = false // never change user files and conflict with sonar's reporting
     }
 
-    return possibleParseArguments.loadConfiguration().let { bestConfigMatch ->
-        // always use FailFast config to activate all detekt rules
-        // let the user decide through sonar's quality profiles which rules should not report instead
-        if (bestConfigMatch == Config.empty) {
-            logger.info("No detekt yaml configuration file found, using the default configuration.")
-            FailFastConfig(Config.empty, defaultYamlConfig)
-        } else {
-            FailFastConfig(bestConfigMatch, defaultYamlConfig)
-        }
-    }
+    return possibleParseArguments.loadConfiguration()
 }
 
 private fun tryFindDetektConfigurationFile(configuration: Configuration, baseDir: File): File? {

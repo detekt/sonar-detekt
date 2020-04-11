@@ -2,7 +2,7 @@ package io.gitlab.arturbosch.detekt.sonar.rules
 
 import io.gitlab.arturbosch.detekt.api.Severity
 
-val severityTranslations = mapOf(
+val severityTranslations: Map<Severity, String> = mapOf(
     Severity.CodeSmell to org.sonar.api.rule.Severity.MAJOR,
     Severity.Defect to org.sonar.api.rule.Severity.CRITICAL,
     Severity.Maintainability to org.sonar.api.rule.Severity.MAJOR,

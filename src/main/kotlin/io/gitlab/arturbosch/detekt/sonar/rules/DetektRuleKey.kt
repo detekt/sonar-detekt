@@ -1,22 +1,19 @@
 package io.gitlab.arturbosch.detekt.sonar.rules
 
-import io.gitlab.arturbosch.detekt.api.BaseRule
 import io.gitlab.arturbosch.detekt.api.Config
 import io.gitlab.arturbosch.detekt.api.Issue
 import io.gitlab.arturbosch.detekt.api.MultiRule
 import io.gitlab.arturbosch.detekt.api.Rule
 import io.gitlab.arturbosch.detekt.api.RuleSetProvider
-import io.gitlab.arturbosch.detekt.api.YamlConfig
-import io.gitlab.arturbosch.detekt.cli.ClasspathResourceConverter
-import io.gitlab.arturbosch.detekt.sonar.foundation.DETEKT_REPOSITORY
+import io.gitlab.arturbosch.detekt.api.internal.BaseRule
+import io.gitlab.arturbosch.detekt.cli.loadDefaultConfig
+import io.gitlab.arturbosch.detekt.sonar.foundation.REPOSITORY_KEY
 import org.sonar.api.rule.RuleKey
 import java.util.ServiceLoader
 
-val defaultYamlConfig = YamlConfig.loadResource(
-    ClasspathResourceConverter().convert("default-detekt-config.yml")
-)
+val defaultConfig: Config = loadDefaultConfig()
 
-val allLoadedRules = ServiceLoader.load(RuleSetProvider::class.java, Config::javaClass.javaClass.classLoader)
+val allLoadedRules: List<Rule> = ServiceLoader.load(RuleSetProvider::class.java, Config::class.java.classLoader)
     .flatMap { loadRules(it) }
     .flatMap { (it as? MultiRule)?.rules ?: listOf(it) }
     .asSequence()
@@ -24,13 +21,13 @@ val allLoadedRules = ServiceLoader.load(RuleSetProvider::class.java, Config::jav
     .toList()
 
 private fun loadRules(provider: RuleSetProvider): List<BaseRule> {
-    val subConfig = defaultYamlConfig.subConfig(provider.ruleSetId)
+    val subConfig = defaultConfig.subConfig(provider.ruleSetId)
     return provider.instance(subConfig).rules
 }
 
-val ruleKeys = allLoadedRules.map { defineRuleKey(it) }
+val ruleKeys: List<DetektRuleKey> = allLoadedRules.map { defineRuleKey(it) }
 
-val ruleKeyLookup = ruleKeys.map { it.ruleKey to it }.toMap()
+val ruleKeyLookup: Map<String, DetektRuleKey> = ruleKeys.associateBy { it.ruleKey }
 
 data class DetektRuleKey(
     private val repositoryKey: String,
@@ -47,9 +44,10 @@ data class DetektRuleKey(
 
         if (other?.javaClass != javaClass && other?.javaClass != RuleKey::class.java) return false
 
-        val ruleKey = other as RuleKey?
-        return repository() == ruleKey!!.repository() && rule() == ruleKey.rule()
+        val ruleKey = other as RuleKey
+        return repository() == ruleKey.repository() && rule() == ruleKey.rule()
     }
 }
 
-private fun defineRuleKey(rule: Rule) = DetektRuleKey(DETEKT_REPOSITORY, rule.ruleId, rule.active, rule.issue)
+private fun defineRuleKey(rule: Rule): DetektRuleKey =
+    DetektRuleKey(REPOSITORY_KEY, rule.ruleId, rule.active, rule.issue)
