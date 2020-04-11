@@ -50,7 +50,7 @@ class IssueReporter(
             return BaselineFacade(baselinePath.toPath())
         }
         return config.get(BASELINE_KEY)
-            ?.let(::createBaselineFacade)
+            .map(::createBaselineFacade)
             .orElse(null)
     }
 

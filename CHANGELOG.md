@@ -2,9 +2,10 @@
 
 #### 2.0.0
 
-- Rewrite to sonar-detekt dropping redundant features to official SonarKotlin plugin
+- Rename to sonar-detekt
 - Based on detekt 1.7.4
-- Can be used next to SonarKotlin with mixed rulesets
+- All redundant features to official SonarKotlin plugin got dropped
+- Compatible with SonarKotlin, allows mixing rulesets
 
 #### 1.5.0
 

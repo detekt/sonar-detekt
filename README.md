@@ -14,6 +14,15 @@
 - Supports detekt's `yaml config`, `baseline.xml` and `excludes`
 - Seamless integration with official SonarKotlin (no redundant features)
 
+#### Non supported features as of 2.x.x
+
+- code coverage
+- test reports
+- syntax highlighting
+- metrics
+
+The official SonarKotlin plugin now supports these features.
+
 ### Usage
 
 #### Sonar Update Center
