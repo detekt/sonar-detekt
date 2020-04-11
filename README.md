@@ -25,7 +25,7 @@
 - `git clone https://github.com/detekt/sonar-detekt`
 - `cd sonar-detekt`
 - `mvn verify`
-- `cp target/sonar-detekt-2.<Minor.Patch>.jar $SONAR_HOME/extensions/plugins`
+- `cp target/sonar-detekt-<version>.jar $SONAR_HOME/extensions/plugins`
 - `cd $SONAR_HOME/bin/<OS>`
 - `./sonar.sh restart`
 

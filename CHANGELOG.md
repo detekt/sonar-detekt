@@ -4,7 +4,7 @@
 
 - Rewrite to sonar-detekt dropping redundant features to official SonarKotlin plugin
 - Based on detekt 1.7.4
-- Can be used next to SonarKotlin with mixed rules
+- Can be used next to SonarKotlin with mixed rulesets
 
 #### 1.5.0
 
