@@ -243,7 +243,6 @@
                             <goal>check</goal>
                         </goals>
                         <configuration>
-                            <baseline>${project.basedir}/reports/baseline.xml</baseline>
                             <excludes>**/resources/**</excludes>
                         </configuration>
                     </execution>
