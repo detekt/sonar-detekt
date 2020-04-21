@@ -3,7 +3,7 @@
 #### 2.0.0
 
 - Rename to sonar-detekt
-- Based on detekt 1.7.4
+- Based on detekt 1.8.0
 - All redundant features to official SonarKotlin plugin got dropped
 - Compatible with SonarKotlin, allows mixing rulesets
 
