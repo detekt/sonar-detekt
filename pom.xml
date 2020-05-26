@@ -23,9 +23,9 @@
         <spek.version>2.0.10</spek.version>
         <detekt.version>1.9.1</detekt.version>
         <sonar.api.version>7.9.3</sonar.api.version>
-        <assertj.version>3.15.0</assertj.version>
+        <assertj.version>3.16.1</assertj.version>
         <jcommander.version>1.78</jcommander.version>
-        <mockk.version>1.9.3</mockk.version>
+        <mockk.version>1.10.0</mockk.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
