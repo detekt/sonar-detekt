@@ -1,5 +1,9 @@
 # Detekt - Changelog
 
+#### 2.1.0
+
+- Based on detekt 1.9.1
+
 #### 2.0.0
 
 - Rename to sonar-detekt
