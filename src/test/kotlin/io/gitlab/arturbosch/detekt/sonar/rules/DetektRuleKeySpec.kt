@@ -4,13 +4,12 @@ import io.gitlab.arturbosch.detekt.api.Debt
 import io.gitlab.arturbosch.detekt.api.Issue
 import io.gitlab.arturbosch.detekt.api.Severity
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
 import org.sonar.api.rule.RuleKey
+import org.spekframework.spek2.Spek
 
-class DetektRuleKeyTest {
+class DetektRuleKeySpec : Spek({
 
-    @Test
-    fun `The rule 'DetektRuleKey(*)' does not exist`() {
+    test("The rule 'DetektRuleKey(*)' does not exist") {
         val rulesByRuleKey = HashMap<RuleKey, Any?>()
 
         rulesByRuleKey[RuleKey.of("detekt-kotlin", "NewLineAtEndOfFile")] = "COUCOU"
@@ -21,4 +20,10 @@ class DetektRuleKeyTest {
         assertThat(rulesByRuleKey).containsKey(ruleKey)
         assertThat(rulesByRuleKey[ruleKey]).isNotNull
     }
-}
+
+    test("loaded rules do not contain duplicates rules from KtLint") {
+        val ids = allLoadedRules.map { it.ruleId }
+
+        assertThat(ids).doesNotContainSequence(excludedDuplicates)
+    }
+})

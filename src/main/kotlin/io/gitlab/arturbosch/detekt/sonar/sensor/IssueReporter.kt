@@ -5,6 +5,7 @@ import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.cli.baseline.BaselineFacade
 import io.gitlab.arturbosch.detekt.sonar.foundation.BASELINE_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.logger
+import io.gitlab.arturbosch.detekt.sonar.rules.excludedDuplicates
 import io.gitlab.arturbosch.detekt.sonar.rules.ruleKeyLookup
 import org.sonar.api.batch.fs.InputFile
 import org.sonar.api.batch.sensor.SensorContext
@@ -22,9 +23,9 @@ class IssueReporter(
     private val config = context.config()
 
     fun run() {
+        val baseline = tryFindBaseline(config, baseDir)
         for ((ruleSet, findings) in result.findings) {
             logger.info("RuleSet: $ruleSet - ${findings.size}")
-            val baseline = tryFindBaseline(config, baseDir)
             val filtered = baseline?.filter(findings) ?: findings
             filtered.forEach(this::reportIssue)
         }
@@ -55,6 +56,9 @@ class IssueReporter(
     }
 
     private fun reportIssue(issue: Finding) {
+        if (issue.id in excludedDuplicates) {
+            return
+        }
         if (issue.startPosition.line < 0) {
             logger.info("Invalid location for ${issue.compactWithSignature()}.")
             return

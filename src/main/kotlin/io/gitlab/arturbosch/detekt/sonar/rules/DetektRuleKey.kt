@@ -13,11 +13,18 @@ import java.util.ServiceLoader
 
 val defaultConfig: Config = loadDefaultConfig()
 
+val excludedDuplicates = setOf(
+    "Filename", // from KtLint; same as MatchingDeclarationName
+    "MaximumLineLength", // from KtLint; same as MaxLineLength
+    "NoUnitReturn" // from KtLint; same as OptionalUnit
+)
+
 val allLoadedRules: List<Rule> = ServiceLoader.load(RuleSetProvider::class.java, Config::class.java.classLoader)
-    .flatMap { loadRules(it) }
-    .flatMap { (it as? MultiRule)?.rules ?: listOf(it) }
     .asSequence()
+    .flatMap { loadRules(it).asSequence() }
+    .flatMap { (it as? MultiRule)?.rules?.asSequence() ?: sequenceOf(it) }
     .filterIsInstance<Rule>()
+    .filterNot { it.ruleId in excludedDuplicates }
     .toList()
 
 private fun loadRules(provider: RuleSetProvider): List<BaseRule> {
