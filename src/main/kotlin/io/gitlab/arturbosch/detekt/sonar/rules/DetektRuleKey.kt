@@ -16,7 +16,8 @@ val defaultConfig: Config = loadDefaultConfig()
 val excludedDuplicates = setOf(
     "Filename", // from KtLint; same as MatchingDeclarationName
     "MaximumLineLength", // from KtLint; same as MaxLineLength
-    "NoUnitReturn" // from KtLint; same as OptionalUnit
+    "NoUnitReturn", // from KtLint; same as OptionalUnit
+    "NoWildcardImports" // from KtLint; same as WildcardImport
 )
 
 val allLoadedRules: List<Rule> = ServiceLoader.load(RuleSetProvider::class.java, Config::class.java.classLoader)
