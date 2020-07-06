@@ -1,43 +1,47 @@
 package io.gitlab.arturbosch.detekt.sonar.rules
 
+import io.github.detekt.tooling.api.DefaultConfigurationProvider
 import io.gitlab.arturbosch.detekt.api.Config
 import io.gitlab.arturbosch.detekt.api.Issue
 import io.gitlab.arturbosch.detekt.api.MultiRule
 import io.gitlab.arturbosch.detekt.api.Rule
 import io.gitlab.arturbosch.detekt.api.RuleSetProvider
 import io.gitlab.arturbosch.detekt.api.internal.BaseRule
-import io.gitlab.arturbosch.detekt.cli.loadDefaultConfig
 import io.gitlab.arturbosch.detekt.sonar.foundation.REPOSITORY_KEY
 import org.sonar.api.rule.RuleKey
 import java.util.ServiceLoader
 
-val defaultConfig: Config = loadDefaultConfig()
+internal val defaultConfig: Config = DefaultConfigurationProvider.load().get()
 
-val excludedDuplicates = setOf(
-    "Filename", // from KtLint; same as MatchingDeclarationName
-    "MaximumLineLength", // from KtLint; same as MaxLineLength
-    "NoUnitReturn", // from KtLint; same as OptionalUnit
-    "NoWildcardImports" // from KtLint; same as WildcardImport
+/**
+ * Exclude similar or duplicated rule implementations from other rule sets than the default one.
+ */
+internal val excludedDuplicates = setOf(
+    "Filename", // MatchingDeclarationName
+    "MaximumLineLength", // MaxLineLength
+    "NoUnitReturn", // OptionalUnit
+    "NoWildcardImports" // WildcardImport
 )
 
-val allLoadedRules: List<Rule> = ServiceLoader.load(RuleSetProvider::class.java, Config::class.java.classLoader)
-    .asSequence()
-    .flatMap { loadRules(it).asSequence() }
-    .flatMap { (it as? MultiRule)?.rules?.asSequence() ?: sequenceOf(it) }
-    .filterIsInstance<Rule>()
-    .filterNot { it.ruleId in excludedDuplicates }
-    .toList()
+internal val allLoadedRules: List<Rule> =
+    ServiceLoader.load(RuleSetProvider::class.java, Config::class.java.classLoader)
+        .asSequence()
+        .flatMap { loadRules(it).asSequence() }
+        .flatMap { (it as? MultiRule)?.rules?.asSequence() ?: sequenceOf(it) }
+        .filterIsInstance<Rule>()
+        .filterNot { it.ruleId in excludedDuplicates }
+        .toList()
 
 private fun loadRules(provider: RuleSetProvider): List<BaseRule> {
     val subConfig = defaultConfig.subConfig(provider.ruleSetId)
     return provider.instance(subConfig).rules
 }
 
-val ruleKeys: List<DetektRuleKey> = allLoadedRules.map { defineRuleKey(it) }
+internal val ruleKeys: List<DetektRuleKey> = allLoadedRules.map { defineRuleKey(it) }
 
-val ruleKeyLookup: Map<String, DetektRuleKey> = ruleKeys.associateBy { it.ruleKey }
+internal val ruleKeyLookup: Map<String, DetektRuleKey> = ruleKeys.associateBy { it.ruleKey }
 
-data class DetektRuleKey(
+internal data class DetektRuleKey(
     private val repositoryKey: String,
     val ruleKey: String,
     val active: Boolean,

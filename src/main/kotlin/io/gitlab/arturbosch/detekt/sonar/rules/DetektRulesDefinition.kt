@@ -17,7 +17,7 @@ class DetektRulesDefinition : RulesDefinition {
     }
 }
 
-fun RulesDefinition.NewRepository.createRules(): RulesDefinition.NewRepository =
+private fun RulesDefinition.NewRepository.createRules(): RulesDefinition.NewRepository =
     apply { allLoadedRules.map { defineRule(it) } }
 
 private fun RulesDefinition.NewRepository.defineRule(rule: Rule) {
