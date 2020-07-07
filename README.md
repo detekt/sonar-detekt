@@ -27,7 +27,7 @@ The official SonarKotlin plugin now supports these features.
 
 #### Sonar Update Center
 
-- TODO
+- Administration > Marketplace > Search for detekt
 
 #### Building from source
 
@@ -38,7 +38,7 @@ The official SonarKotlin plugin now supports these features.
 - `cd $SONAR_HOME/bin/<OS>`
 - `./sonar.sh restart`
 
-### Configurations and Baselines (and Filters)
+### Configurations, Baselines and Filters
 
 Read about detekt configuration files [here](https://arturbosch.github.io/detekt/configurations.html)
 and about detekt baseline formats [here](https://arturbosch.github.io/detekt/baseline.html).
