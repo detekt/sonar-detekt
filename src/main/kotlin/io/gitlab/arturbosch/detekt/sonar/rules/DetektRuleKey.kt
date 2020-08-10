@@ -18,6 +18,7 @@ internal val defaultConfig: Config = DefaultConfigurationProvider.load().get()
  */
 internal val excludedDuplicates = setOf(
     "Filename", // MatchingDeclarationName
+    "FinalNewline", // NewLineAtEndOfFile
     "MaximumLineLength", // MaxLineLength
     "NoUnitReturn", // OptionalUnit
     "NoWildcardImports" // WildcardImport
