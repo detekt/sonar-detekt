@@ -20,7 +20,8 @@ internal val excludedDuplicates = setOf(
     "Filename", // MatchingDeclarationName
     "MaximumLineLength", // MaxLineLength
     "NoUnitReturn", // OptionalUnit
-    "NoWildcardImports" // WildcardImport
+    "NoWildcardImports", // WildcardImport
+    "MultiLineIfElse" // MandatoryBracesIfStatements
 )
 
 internal val allLoadedRules: List<Rule> =
