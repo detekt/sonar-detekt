@@ -21,7 +21,8 @@ internal val excludedDuplicates = setOf(
     "FinalNewline", // NewLineAtEndOfFile
     "MaximumLineLength", // MaxLineLength
     "NoUnitReturn", // OptionalUnit
-    "NoWildcardImports" // WildcardImport
+    "NoWildcardImports", // WildcardImport
+    "MultiLineIfElse" // MandatoryBracesIfStatements
 )
 
 internal val allLoadedRules: List<Rule> =
