@@ -1,5 +1,21 @@
 # Detekt - Changelog
 
+#### 2.2.0 - 2020-08-13
+
+- Based on detekt 1.11.0
+
+##### Changelog
+
+- Exclude MultiLineIfElse as detekt has a similar rule - [#127](https://github.com/detekt/sonar-kotlin/pull/127)
+- Exclude FinalNewline KtLint rule, use detekt's - [#126](https://github.com/detekt/sonar-kotlin/pull/126)
+- Use detekt's tooling api - [#125](https://github.com/detekt/sonar-kotlin/pull/125)
+- Exclude NoWildcardImports KtLint rule - [#124](https://github.com/detekt/sonar-kotlin/pull/124)
+- Rewrite detekt sensor test to spek - [#123](https://github.com/detekt/sonar-kotlin/pull/123)
+- Exclude KtLint rules which detect same issues as detekt itself - [#122](https://github.com/detekt/sonar-kotlin/pull/122)
+- Consider removing duplicated rules from KtLint - [#119](https://github.com/detekt/sonar-kotlin/issues/119)
+
+See all issues at: [2.2.0](https://github.com/detekt/sonar-kotlin/milestone/5)
+
 #### 2.1.0
 
 - Based on detekt 1.9.1
