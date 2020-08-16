@@ -1,11 +1,12 @@
 # Detekt - Changelog
 
-#### 2.2.0 - 2020-08-13
+#### 2.2.0 - 2020-08-16
 
 - Based on detekt 1.11.0
 
 ##### Changelog
 
+- Update to sonar-api 7.9.4 - [#129](https://github.com/detekt/sonar-kotlin/pull/129)
 - Exclude MultiLineIfElse as detekt has a similar rule - [#127](https://github.com/detekt/sonar-kotlin/pull/127)
 - Exclude FinalNewline KtLint rule, use detekt's - [#126](https://github.com/detekt/sonar-kotlin/pull/126)
 - Use detekt's tooling api - [#125](https://github.com/detekt/sonar-kotlin/pull/125)
