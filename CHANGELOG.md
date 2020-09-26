@@ -1,5 +1,9 @@
 # Detekt - Changelog
 
+#### 2.3.0 - 2020-09-26
+
+- Based on detekt 1.14.0
+
 #### 2.2.0 - 2020-08-16
 
 - Based on detekt 1.11.0
