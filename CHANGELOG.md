@@ -104,7 +104,7 @@ See all issues at: [1.3.2](https://github.com/detekt/sonar-kotlin/milestone/2)
 
 #### 0.4.2
 
-- based on detekt RC7, see https://arturbosch.github.io/detekt/changelog.html for closed Issues
+- based on detekt RC7, see https://detekt.github.io/detekt/changelog.html for closed Issues
 
 #### 0.4.1
 

@@ -8,7 +8,7 @@
 
 ### Features
 
-- Integrates [detekt](https://github.com/arturbosch/detekt) for static code analysis
+- Integrates [detekt](https://github.com/detekt/detekt) for static code analysis
 - Default quality profiles `detekt active` (80+ rules) and `detekt all` (164+ rules)
 - Supports SonarQube 7.9.3+
 - Supports detekt's `yaml config`, `baseline.xml` and `excludes`
@@ -40,8 +40,8 @@ The official SonarKotlin plugin now supports these features.
 
 ### Configurations, Baselines and Filters
 
-Read about detekt configuration files [here](https://arturbosch.github.io/detekt/configurations.html)
-and about detekt baseline formats [here](https://arturbosch.github.io/detekt/baseline.html).
+Read about detekt configuration files [here](https://detekt.github.io/detekt/configurations.html)
+and about detekt baseline formats [here](https://detekt.github.io/detekt/baseline.html).
 
 Best ways to get started is to configure the `detekt-gradle-plugin` in your project and use its `detektBaseline` and 
 `detektGenerateConfig` tasks.
