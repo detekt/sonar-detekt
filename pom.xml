@@ -19,10 +19,10 @@
     <packaging>sonar-plugin</packaging>
 
     <properties>
-        <kotlin.version>1.4.10</kotlin.version>
+        <kotlin.version>1.5.30</kotlin.version>
         <spek.version>2.0.13</spek.version>
-        <detekt.version>1.14.1</detekt.version>
-        <sonar.api.version>7.9.4</sonar.api.version>
+        <detekt.version>1.18.1</detekt.version>
+        <sonar.api.version>9.0.1.46107</sonar.api.version>
         <assertj.version>3.17.2</assertj.version>
         <jcommander.version>1.78</jcommander.version>
         <mockk.version>1.10.0</mockk.version>
@@ -38,6 +38,11 @@
             <name>jcenter</name>
             <url>https://jcenter.bintray.com</url>
         </repository>
+        <repository>
+            <id>maven_central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
     </repositories>
 
     <pluginRepositories>
@@ -45,14 +50,6 @@
             <id>central</id>
             <name>jcenter</name>
             <url>https://jcenter.bintray.com</url>
-        </pluginRepository>
-        <pluginRepository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray-ozsie-maven</id>
-            <name>bintray-plugins</name>
-            <url>https://dl.bintray.com/ozsie/maven</url>
         </pluginRepository>
     </pluginRepositories>
 
@@ -232,7 +229,7 @@
             <plugin>
                 <groupId>com.github.ozsie</groupId>
                 <artifactId>detekt-maven-plugin</artifactId>
-                <version>1.13.1</version>
+                <version>1.18.1.1</version>
                 <executions>
                     <execution>
                         <phase>verify</phase>
