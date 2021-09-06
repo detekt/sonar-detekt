@@ -30,7 +30,7 @@ internal fun createSpec(baseDir: Path, configuration: Configuration): Processing
             excludes = getProjectExcludeFilters(configuration)
         }
         rules {
-            activateExperimentalRules = true // publish all; quality profiles will filter
+            activateAllRules = true // publish all; quality profiles will filter
             maxIssuePolicy = RulesSpec.MaxIssuePolicy.AllowAny
             autoCorrect = false // never change user files and conflict with sonar's reporting
         }

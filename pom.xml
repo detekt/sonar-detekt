@@ -19,42 +19,18 @@
     <packaging>sonar-plugin</packaging>
 
     <properties>
-        <kotlin.version>1.4.10</kotlin.version>
-        <spek.version>2.0.13</spek.version>
-        <detekt.version>1.14.1</detekt.version>
-        <sonar.api.version>7.9.4</sonar.api.version>
-        <assertj.version>3.17.2</assertj.version>
+        <kotlin.version>1.5.30</kotlin.version>
+        <spek.version>2.0.17</spek.version>
+        <detekt.version>1.18.1</detekt.version>
+        <sonar.api.version>8.9.2.46101</sonar.api.version>
+        <assertj.version>3.20.2</assertj.version>
         <jcommander.version>1.78</jcommander.version>
-        <mockk.version>1.10.0</mockk.version>
+        <mockk.version>1.12.0</mockk.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
     </properties>
-
-    <repositories>
-        <repository>
-            <id>central</id>
-            <name>jcenter</name>
-            <url>https://jcenter.bintray.com</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>central</id>
-            <name>jcenter</name>
-            <url>https://jcenter.bintray.com</url>
-        </pluginRepository>
-        <pluginRepository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray-ozsie-maven</id>
-            <name>bintray-plugins</name>
-            <url>https://dl.bintray.com/ozsie/maven</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <dependencies>
         <dependency>
@@ -121,6 +97,12 @@
             <groupId>io.mockk</groupId>
             <artifactId>mockk</artifactId>
             <version>${mockk.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.sonarsource.sonarqube</groupId>
+            <artifactId>sonar-plugin-api-impl</artifactId>
+            <version>${sonar.api.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -232,7 +214,7 @@
             <plugin>
                 <groupId>com.github.ozsie</groupId>
                 <artifactId>detekt-maven-plugin</artifactId>
-                <version>1.13.1</version>
+                <version>1.18.1.1</version>
                 <executions>
                     <execution>
                         <phase>verify</phase>
