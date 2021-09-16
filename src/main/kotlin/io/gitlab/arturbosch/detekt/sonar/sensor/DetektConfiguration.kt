@@ -13,6 +13,8 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
+const val PATH_INPUT_DIRS_KEY = "sonar.sources"
+
 internal fun createSpec(context: SensorContext): ProcessingSpec {
     val baseDir = context.fileSystem().baseDir().toPath()
     val settings = context.config()
@@ -26,7 +28,7 @@ internal fun createSpec(baseDir: Path, configuration: Configuration): Processing
     return ProcessingSpec {
         project {
             basePath = baseDir
-            inputPaths = listOf(baseDir)
+            inputPaths = getInputPaths(configuration, baseDir)
             excludes = getProjectExcludeFilters(configuration)
         }
         rules {
@@ -43,6 +45,11 @@ internal fun createSpec(baseDir: Path, configuration: Configuration): Processing
         }
     }
 }
+
+internal fun getInputPaths(configuration: Configuration, basePath: Path): List<Path> =
+    configuration.get(PATH_INPUT_DIRS_KEY).map { sources ->
+        sources.split(",").map { Path.of(it.trim()) }
+    }.orElse(listOf(basePath))
 
 internal fun getProjectExcludeFilters(configuration: Configuration): List<String> =
     configuration.get(PATH_FILTERS_KEY)
