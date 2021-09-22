@@ -9,6 +9,7 @@ import io.gitlab.arturbosch.detekt.sonar.foundation.PATH_FILTERS_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.logger
 import org.sonar.api.batch.sensor.SensorContext
 import org.sonar.api.config.Configuration
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -48,7 +49,7 @@ internal fun createSpec(baseDir: Path, configuration: Configuration): Processing
 
 internal fun getInputPaths(configuration: Configuration, basePath: Path): List<Path> =
     configuration.get(PATH_INPUT_DIRS_KEY).map { sources ->
-        sources.split(",").map { Path.of(it.trim()) }
+        sources.split(",").map { File(it.trim()).toPath() }
     }.orElse(listOf(basePath))
 
 internal fun getProjectExcludeFilters(configuration: Configuration): List<String> =
