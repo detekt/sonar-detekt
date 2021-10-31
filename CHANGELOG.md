@@ -1,5 +1,21 @@
 # Detekt - Changelog
 
+#### 2.4.0 - 2021-10-31
+
+##### Changelog
+
+- Based on detekt 1.18.1
+- Fixed definition of prop `inputPaths` using sonar.sources
+- Fixed usage of `Path` for Java 8
+
+##### Dependencies Update
+
+- Sonar API to 9.1.0.47736
+- Kotlin to 1.5.31
+- AssertJ to 3.21.0
+- JCommander to 1.81
+- Tested on CI against Java 16
+
 #### 2.3.0 - 2020-09-26
 
 - Based on detekt 1.14.1
