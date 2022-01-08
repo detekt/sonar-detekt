@@ -10,7 +10,7 @@
 
 - Integrates [detekt](https://github.com/detekt/detekt) for static code analysis
 - Default quality profiles `detekt active` (80+ rules) and `detekt all` (164+ rules)
-- Supports SonarQube 7.9.3+
+- Supports SonarQube 8.9+
 - Supports detekt's `yaml config`, `baseline.xml` and `excludes`
 - Seamless integration with official SonarKotlin (no redundant features)
 
