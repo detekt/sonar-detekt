@@ -1,5 +1,16 @@
 # Detekt - Changelog
 
+#### 2.5.0 - 2022-01-09
+
+##### Changelog
+
+- Based on detekt 1.19.0
+- Configured `sonarQubeMinVersion` to 8.9
+
+##### Dependencies Update
+
+- Kotlin to 1.6.10
+
 #### 2.4.0 - 2021-10-31
 
 ##### Changelog
