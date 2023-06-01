@@ -6,6 +6,7 @@ import io.gitlab.arturbosch.detekt.sonar.foundation.REPOSITORY_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.LANGUAGE_KEY
 import org.sonar.api.rule.RuleStatus
 import org.sonar.api.server.rule.RulesDefinition
+import java.util.*
 
 class DetektRulesDefinition : RulesDefinition {
 
@@ -27,7 +28,7 @@ private fun RulesDefinition.NewRepository.defineRule(rule: Rule) {
     checkNotNull(severity) { "Unexpected severity '${rule.issue.severity}' for rule '${rule.ruleId}'." }
     val newRule = createRule(rule.ruleId).setName(rule.ruleId)
         .setHtmlDescription(description)
-        .setTags(rule.issue.severity.name.toLowerCase())
+        .setTags(rule.issue.severity.name.lowercase(Locale.getDefault()))
         .setStatus(RuleStatus.READY)
         .setSeverity(severity)
     newRule.setDebtRemediationFunction(

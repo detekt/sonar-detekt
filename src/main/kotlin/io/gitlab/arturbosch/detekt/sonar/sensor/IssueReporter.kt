@@ -32,7 +32,7 @@ class IssueReporter(
             logger.info("Invalid location for ${issue.compactWithSignature()}.")
             return
         }
-        val pathOfIssue = baseDir.resolveSibling(issue.location.file)
+        val pathOfIssue = baseDir.resolveSibling(issue.location.filePath.absolutePath.toString())
         val inputFile = fileSystem.inputFile(fileSystem.predicates().`is`(pathOfIssue))
         if (inputFile != null) {
             ruleKeyLookup[issue.id]?.let {
@@ -42,7 +42,7 @@ class IssueReporter(
                 newIssue.save()
             } ?: logger.warn("Could not find rule key for detekt rule ${issue.id} (${issue.compactWithSignature()}).")
         } else {
-            logger.info("No file found for ${issue.location.file}")
+            logger.info("No file found for ${issue.location.filePath.absolutePath.toString()}")
         }
     }
 
