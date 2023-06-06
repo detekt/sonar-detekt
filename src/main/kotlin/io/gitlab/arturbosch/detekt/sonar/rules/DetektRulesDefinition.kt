@@ -6,7 +6,7 @@ import io.gitlab.arturbosch.detekt.sonar.foundation.REPOSITORY_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.LANGUAGE_KEY
 import org.sonar.api.rule.RuleStatus
 import org.sonar.api.server.rule.RulesDefinition
-import java.util.*
+import java.util.Locale
 
 class DetektRulesDefinition : RulesDefinition {
 
