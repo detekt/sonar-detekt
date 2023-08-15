@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.detekt.sonar.foundation
 
-import io.gitlab.arturbosch.detekt.sonar.rules.DetektRuleKey
+import io.gitlab.arturbosch.detekt.sonar.rules.RuleKeyWrapper
 import io.gitlab.arturbosch.detekt.sonar.rules.ruleKeys
 import io.gitlab.arturbosch.detekt.sonar.rules.severityTranslations
 import org.sonar.api.server.profile.BuiltInQualityProfilesDefinition
@@ -17,16 +17,16 @@ class DetektProfile : BuiltInQualityProfilesDefinition {
     private fun registerProfile(
         context: RuleContext,
         name: String,
-        rules: List<DetektRuleKey>,
+        keys: List<RuleKeyWrapper>,
         isDefault: Boolean
     ) {
         val profile = context.createBuiltInQualityProfile(name, LANGUAGE_KEY)
         profile.isDefault = isDefault
 
-        for (ruleKey in rules) {
-            val severity = severityTranslations[ruleKey.issue.severity]
-                ?: error("Unexpected severity '${ruleKey.issue.severity}'")
-            profile.activateRule(ruleKey.repository(), ruleKey.rule())
+        for (keyWrapper in keys) {
+            val severity = severityTranslations[keyWrapper.issue.severity]
+                ?: error("Unexpected severity '${keyWrapper.issue.severity}'")
+            profile.activateRule(keyWrapper.key.repository(), keyWrapper.key.rule())
                 .overrideSeverity(severity)
         }
 

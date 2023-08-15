@@ -24,26 +24,30 @@ class IssueReporter(
         }
     }
 
-    private fun reportIssue(issue: Finding) {
-        if (issue.id in excludedDuplicates) {
+    @Suppress("ReturnCount")
+    private fun reportIssue(finding: Finding) {
+        if (finding.id in excludedDuplicates) {
             return
         }
-        if (issue.startPosition.line < 0) {
-            logger.info("Invalid location for ${issue.compactWithSignature()}.")
+        if (finding.startPosition.line < 0) {
+            logger.info("Invalid location for ${finding.compactWithSignature()}.")
             return
         }
-        val pathOfIssue = baseDir.resolveSibling(issue.location.filePath.absolutePath.toString())
+        val pathOfIssue = baseDir.resolveSibling(finding.location.filePath.absolutePath.toString())
         val inputFile = fileSystem.inputFile(fileSystem.predicates().`is`(pathOfIssue))
-        if (inputFile != null) {
-            ruleKeyLookup[issue.id]?.let {
-                val newIssue = context.newIssue()
-                    .forRule(it)
-                    .primaryLocation(issue, inputFile)
-                newIssue.save()
-            } ?: logger.warn("Could not find rule key for detekt rule ${issue.id} (${issue.compactWithSignature()}).")
-        } else {
-            logger.info("No file found for ${issue.location.filePath.absolutePath.toString()}")
+        if (inputFile == null) {
+            logger.info("No file found for ${finding.location.filePath.absolutePath}")
+            return
         }
+        val wrapper = ruleKeyLookup[finding.id]
+        if (wrapper == null) {
+            logger.warn("Could not find rule key for detekt rule ${finding.id} (${finding.compactWithSignature()}).")
+            return
+        }
+        context.newIssue()
+            .forRule(wrapper.key)
+            .primaryLocation(finding, inputFile)
+            .save()
     }
 
     private fun NewIssue.primaryLocation(finding: Finding, inputFile: InputFile): NewIssue {

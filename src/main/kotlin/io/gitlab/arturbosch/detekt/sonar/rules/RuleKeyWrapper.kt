@@ -41,29 +41,19 @@ private fun loadRules(provider: RuleSetProvider): List<BaseRule> {
     return provider.instance(subConfig).rules
 }
 
-internal val ruleKeys: List<DetektRuleKey> = allLoadedRules.map { defineRuleKey(it) }
+internal val ruleKeys: List<RuleKeyWrapper> = allLoadedRules.map { defineRuleKey(it) }
 
-internal val ruleKeyLookup: Map<String, DetektRuleKey> = ruleKeys.associateBy { it.ruleKey }
+internal val ruleKeyLookup: Map<String, RuleKeyWrapper> = ruleKeys.associateBy { it.ruleId }
 
-internal data class DetektRuleKey(
-    private val repositoryKey: String,
-    val ruleKey: String,
+internal class RuleKeyWrapper(
+    repository: String,
+    val issue: Issue,
     val active: Boolean,
-    val issue: Issue
-) : RuleKey(repositoryKey, ruleKey) {
-    override fun hashCode(): Int {
-        return super.hashCode()
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-
-        if (other?.javaClass != javaClass && other?.javaClass != RuleKey::class.java) return false
-
-        val ruleKey = other as RuleKey
-        return repository() == ruleKey.repository() && rule() == ruleKey.rule()
-    }
+) {
+    val key: RuleKey = RuleKey.of(repository, issue.id)
+    val ruleId: String
+        get() = key.rule()
 }
 
-private fun defineRuleKey(rule: Rule): DetektRuleKey =
-    DetektRuleKey(REPOSITORY_KEY, rule.ruleId, rule.active, rule.issue)
+private fun defineRuleKey(rule: Rule): RuleKeyWrapper =
+    RuleKeyWrapper(REPOSITORY_KEY, rule.issue, rule.active)

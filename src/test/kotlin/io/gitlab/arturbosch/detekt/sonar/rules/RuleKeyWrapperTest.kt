@@ -7,23 +7,17 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.sonar.api.rule.RuleKey
 
-class DetektRuleKeyTest {
+class RuleKeyWrapperTest {
 
     @Test
-    fun `The rule 'DetektRuleKey' does not exist`() {
-        val rulesByRuleKey = HashMap<RuleKey, Any?>()
-
-        rulesByRuleKey[RuleKey.of("detekt-kotlin", "NewLineAtEndOfFile")] = "COUCOU"
-
-        val ruleKey = DetektRuleKey(
+    fun `wrapper saves additional information and is not instance of RuleKey`() {
+        val ruleKey = RuleKeyWrapper(
             "detekt-kotlin",
-            "NewLineAtEndOfFile",
+            Issue("NewLineAtEndOfFile", Severity.Style, debt = Debt.FIVE_MINS, description = ""),
             true,
-            Issue("NewLineAtEndOfFile", Severity.Style, debt = Debt(mins = 5), description = "")
         )
-
-        assertThat(rulesByRuleKey).containsKey(ruleKey)
-        assertThat(rulesByRuleKey[ruleKey]).isNotNull
+        assertThat(ruleKey).isNotInstanceOf(RuleKey::class.java)
+        assertThat(ruleKey.key).isEqualTo(RuleKey.of("detekt-kotlin", "NewLineAtEndOfFile"))
     }
 
     @Test
