@@ -14,7 +14,7 @@ internal class DetektConfigurationTest {
     @Nested
     internal class `try loading configuration file via property` {
 
-        val base = Paths.get(javaClass.getResource("/configBase/config/detekt-config.yml").toURI()).parent
+        private val base = Paths.get(javaClass.getResource("/configBase/config/detekt-config.yml").toURI()).parent
 
         @Test
         fun `should match config on sub path level`() {
@@ -46,7 +46,7 @@ internal class DetektConfigurationTest {
     }
 
     @Nested
-    internal class `exclude filters"` {
+    internal class `exclude filters` {
 
         @Test
         fun `transforms filters to a list`() {
