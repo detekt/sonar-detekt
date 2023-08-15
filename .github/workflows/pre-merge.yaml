@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        jdk: [11, 17]
+        jdk: [17]
     runs-on: ${{ matrix.os }}
     if: ${{ !contains(github.event.head_commit.message, 'ci skip') }}
     env:

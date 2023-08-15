@@ -1,10 +1,11 @@
 # Detekt - Changelog
 
-#### 2.5.1 - 2023-08-02
+#### 2.6.0 - 2023-08-XX
 
 ##### Changelog
 
 - Based on detekt 1.23.1
+- Incremented minimal supported Sonarqube version to 9.9 LTS
 
 #### 2.5.0 - 2022-01-09
 

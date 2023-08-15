@@ -10,9 +10,9 @@
 
 - Integrates [detekt](https://github.com/detekt/detekt) for static code analysis
 - Default quality profiles `detekt active` (80+ rules) and `detekt all` (164+ rules)
-- Supports SonarQube 8.9+
+- Supports SonarQube up from 9.9 LTS
 - Supports detekt's `yaml config`, `baseline.xml` and `excludes`
-- Seamless integration with official SonarKotlin (no redundant features)
+- Seamless integration with official sonar-kotlin plugin (no redundant features)
 
 #### Non supported features as of 2.x.x
 
@@ -21,7 +21,7 @@
 - syntax highlighting
 - metrics
 
-The official SonarKotlin plugin now supports these features.
+The official sonar-kotlin plugin now supports these features.
 
 ### Usage
 
@@ -30,6 +30,8 @@ The official SonarKotlin plugin now supports these features.
 - Administration > Marketplace > Search for detekt
 
 #### Building from source
+
+Use Java 17 to build sonar-detekt:
 
 - `git clone https://github.com/detekt/sonar-detekt`
 - `cd sonar-detekt`
