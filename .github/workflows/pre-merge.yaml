@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        jdk: [8, 11, 16]
+        jdk: [11, 17]
     runs-on: ${{ matrix.os }}
     if: ${{ !contains(github.event.head_commit.message, 'ci skip') }}
     env:
@@ -28,5 +28,5 @@ jobs:
         distribution: 'temurin'
         java-version: ${{ matrix.jdk }}
 
-    - name: Build sonar-kotlin
+    - name: Build sonar-detekt
       run: mvn clean install
