@@ -13,10 +13,8 @@ gradle-app.setting
 # Cache of project
 .gradletasknamecache
 
-# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
-# gradle/wrapper/gradle-wrapper.properties
-sonar-kotlin.iml
-sonar-kotlin.ipr
-sonar-kotlin.iws
-sonar-kotlin_main.iml
-sonar-kotlin_test.iml
+sonar-detekt.iml
+sonar-detekt.ipr
+sonar-detekt.iws
+sonar-detekt_main.iml
+sonar-detekt_test.iml

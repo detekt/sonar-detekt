@@ -2,8 +2,8 @@ package io.gitlab.arturbosch.detekt.sonar.rules
 
 import io.gitlab.arturbosch.detekt.api.Rule
 import io.gitlab.arturbosch.detekt.sonar.foundation.DETEKT_ANALYZER
-import io.gitlab.arturbosch.detekt.sonar.foundation.REPOSITORY_KEY
 import io.gitlab.arturbosch.detekt.sonar.foundation.LANGUAGE_KEY
+import io.gitlab.arturbosch.detekt.sonar.foundation.REPOSITORY_KEY
 import org.sonar.api.rule.RuleStatus
 import org.sonar.api.server.rule.RulesDefinition
 import java.util.Locale
@@ -32,5 +32,6 @@ private fun RulesDefinition.NewRepository.defineRule(rule: Rule) {
         .setStatus(RuleStatus.READY)
         .setSeverity(severity)
     newRule.setDebtRemediationFunction(
-        newRule.debtRemediationFunctions().linear(rule.issue.debt.toString()))
+        newRule.debtRemediationFunctions().linear(rule.issue.debt.toString())
+    )
 }
