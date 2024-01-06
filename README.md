@@ -1,5 +1,13 @@
 # sonar-detekt
 
+Now that Sonarqube officially supports Kotlin with detekt issue import, this plugin repository has been archived.
+
+Some links which may help you setup sonar-kotlin with detekt findings:
+- Sonar-Kotlin documentation: https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/languages/kotlin/
+- External analyzers: https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/importing-external-issues/external-analyzer-reports/
+
+---
+
 [![Join the chat at https://kotlinlang.slack.com/messages/C88E12QH4/convo/C0BQ5GZ0S-1511956674.000289/](https://img.shields.io/badge/chat-on_slack-red.svg?style=flat-square)](https://kotlinlang.slack.com/messages/C88E12QH4/convo/C0BQ5GZ0S-1511956674.000289/)
 ![Pre Merge Checks](https://github.com/detekt/sonar-kotlin/workflows/Pre%20Merge%20Checks/badge.svg)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Farturbosch%2Fsonar-kotlin.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Farturbosch%2Fsonar-kotlin?ref=badge_shield)
